@@ -1,0 +1,206 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block page_title %}Reservation Inspector: {{ booking.booking_reference }}{% endblock %}
+{% block page_subtitle %}Review passenger manifest, reschedule slot, or process cancellation{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <!-- Left Column: Details & Actions -->
+  <div class="col-lg-8">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+        <div>
+          <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2">REFERENCE: {{ booking.booking_reference }}</span>
+          <h3 class="text-white fw-bold mb-0">{{ booking.full_name }}</h3>
+        </div>
+        <div>
+          <span class="badge-status {% if booking.status == 'CONFIRMED' %}badge-status-confirmed{% else %}badge-status-cancelled{% endif %} fs-6 px-3 py-2">
+            Status: {{ booking.get_status_display }}
+          </span>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">Mobile Number</span>
+          <strong class="text-white fs-6">{{ booking.mobile_number }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">Email Address</span>
+          <strong class="text-white fs-6">{{ booking.email }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">City / Place of Origin</span>
+          <strong class="text-white fs-6">{{ booking.place }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">Passenger Count</span>
+          <strong class="text-warning fs-5">{{ booking.number_of_members }} Rider{{ booking.number_of_members|pluralize }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">Reserved Flight Date</span>
+          <strong class="text-white fs-6">{{ booking.booking_date|date:"l, d F Y" }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <span class="text-muted small d-block">Flight Slot & Time</span>
+          <strong class="text-white fs-6">{{ booking.slot.name }}</strong>
+          <div class="text-warning small"><i class="bi bi-clock me-1"></i>{{ booking.slot.formatted_time }}</div>
+        </div>
+      </div>
+
+      {% if booking.admin_notes %}
+      <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-4">
+        <span class="text-muted small d-block mb-1">Administrative Notes:</span>
+        <div class="text-light small" style="white-space: pre-wrap;">{{ booking.admin_notes }}</div>
+      </div>
+      {% endif %}
+
+      <!-- Action Buttons -->
+      <div class="d-flex flex-wrap gap-2 pt-3 border-top border-secondary border-opacity-25">
+        {% if booking.status == 'CONFIRMED' %}
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modifyModal">
+            <i class="bi bi-pencil-square me-1"></i> Reschedule / Modify Booking
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+            <i class="bi bi-x-circle me-1"></i> Cancel Booking & Release Capacity
+          </button>
+        {% else %}
+          <button type="button" class="btn btn-secondary" disabled>
+            <i class="bi bi-slash-circle me-1"></i> Booking is Cancelled
+          </button>
+        {% endif %}
+        <a href="{% url 'bookings:booking_success' booking.booking_reference %}" target="_blank" class="btn btn-outline-light">
+          <i class="bi bi-printer me-1"></i> View Passenger Voucher
+        </a>
+      </div>
+    </div>
+
+    <!-- Audit History Trail -->
+    <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-journal-text text-warning me-2"></i> Audit Trail & Activity Log</h5>
+      
+      <div class="d-flex flex-column gap-3">
+        {% for log in audit_logs %}
+        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="badge {% if log.action == 'CREATED' %}bg-success{% elif log.action == 'MODIFIED' %}bg-warning text-dark{% else %}bg-danger{% endif %} fw-bold">
+              {{ log.action }}
+            </span>
+            <span class="text-muted small">{{ log.timestamp|date:"d-M-Y H:i:s" }}</span>
+          </div>
+          <div class="text-light small mt-1">{{ log.details }}</div>
+          <div class="text-muted small mt-1">
+            <i class="bi bi-person me-1"></i> Performed by: 
+            {% if log.performed_by %}
+              <strong>{{ log.performed_by.username }}</strong>
+            {% else %}
+              <em>Customer Self-Service (Online)</em>
+            {% endif %}
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-muted small">No audit log records for this booking.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Navigation & Quick Info -->
+  <div class="col-lg-4">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <h6 class="text-white fw-bold mb-3">Operational Info</h6>
+      <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+        <li><strong>Created:</strong> {{ booking.created_at|date:"d-M-Y H:i" }}</li>
+        <li><strong>Last Updated:</strong> {{ booking.updated_at|date:"d-M-Y H:i" }}</li>
+        <li><strong>Slot Capacity:</strong> {{ booking.slot.max_capacity }} riders</li>
+        <li><strong>Active Status:</strong> {% if booking.slot.is_active %}<span class="text-success">Slot Active</span>{% else %}<span class="text-danger">Slot Inactive</span>{% endif %}</li>
+      </ul>
+      <hr class="border-secondary border-opacity-25 my-3">
+      <a href="{% url 'dashboard:bookings_list' %}" class="btn btn-outline-secondary w-100 btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Return to Bookings Manifest
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cancel Booking -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-danger">
+      <form method="post" action="{% url 'dashboard:booking_detail' booking.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="cancel">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Cancel Reservation</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">
+            Are you sure you want to cancel booking <strong>{{ booking.booking_reference }}</strong> for <strong>{{ booking.full_name }}</strong>?
+          </p>
+          <div class="alert alert-dark border border-warning small text-warning">
+            <i class="bi bi-info-circle me-1"></i> This action will immediately release <strong>{{ booking.number_of_members }} seat(s)</strong> back to the slot capacity on {{ booking.booking_date|date:"d-M-Y" }}.
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Cancellation Reason</label>
+            <input type="text" name="cancel_reason" class="form-control" placeholder="e.g. Customer requested cancellation due to travel delay" required>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Confirm Cancellation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Reschedule / Modify Booking -->
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-secondary">
+      <form method="post" action="{% url 'dashboard:booking_detail' booking.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="modify">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold text-white"><i class="bi bi-pencil-square text-warning me-2"></i> Reschedule Reservation</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Flight Date *</label>
+            <input type="date" name="booking_date" class="form-control" value="{{ booking.booking_date|date:'Y-m-d' }}" required>
+            <span class="text-muted small">Wednesdays and holidays are automatically blocked.</span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Time Slot *</label>
+            <select name="slot" class="form-select" required>
+              {% for s in slots %}
+              <option value="{{ s.id }}" {% if booking.slot_id == s.id %}selected{% endif %}>
+                {{ s.name }} ({{ s.formatted_time }})
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Number of Passengers (1 - 6) *</label>
+            <input type="number" name="number_of_members" class="form-control" min="1" max="6" value="{{ booking.number_of_members }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Reschedule Reason / Admin Notes</label>
+            <textarea name="admin_notes" class="form-control" rows="2" placeholder="Rescheduled per customer phone request..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning">Save Rescheduled Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

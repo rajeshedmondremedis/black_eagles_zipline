@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ site_settings.site_name }} | {{ site_settings.tagline }}{% endblock %}
+
+{% block content %}
+<!-- 1. Hero Section -->
+<section class="hero-wrapper">
+  <div class="container position-relative" style="z-index: 2;">
+    <div class="row align-items-center">
+      <div class="col-lg-9 col-xl-8">
+        <div class="hero-badge">
+          <i class="bi bi-geo-alt-fill"></i> Western Ghats Elite Flight Canyon
+        </div>
+        <h1 class="hero-title text-white">
+          Experience the Thrill.<br>
+          <span style="color: var(--accent-orange);">Fly Beyond Limits.</span>
+        </h1>
+        <p class="hero-lead">
+          {{ site_settings.hero_subheading }}
+        </p>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <a href="{% url 'bookings:booking_page' %}" class="btn-adventure-primary fs-6 px-4 py-3">
+            <i class="bi bi-calendar2-check-fill"></i> Book Your Adventure
+          </a>
+          <a href="#about-experience" class="btn-adventure-outline fs-6 px-4 py-3">
+            <i class="bi bi-compass"></i> Explore More
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Floating Stats Ribbon -->
+<div class="container">
+  <div class="stats-ribbon">
+    <div class="row g-3 align-items-center justify-content-between">
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-value">1,200m+</div>
+        <div class="stat-label">Canyon Flight Span</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item border-start border-secondary border-opacity-25">
+        <div class="stat-value">60 km/h</div>
+        <div class="stat-label">Top Airspeed</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item border-start border-secondary border-opacity-25">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Safety Track Record</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item border-start border-secondary border-opacity-25">
+        <div class="stat-value">6 Pax</div>
+        <div class="stat-label">Exclusive Slot Size</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. About The Experience Section -->
+<section id="about-experience" class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="section-tag">Pure Wilderness Flight</span>
+        <h2 class="section-heading">Soar Above The Clouds Across Breathtaking Forest Chasms</h2>
+        <p class="text-muted mb-4" style="line-height: 1.8;">
+          {{ site_settings.about_story }}
+        </p>
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-shield-check fs-2 text-warning"></i>
+              <div>
+                <h6 class="text-white mb-1">Dual-Cable Rigging</h6>
+                <p class="text-muted small mb-0">High-tensile aircraft steel cables with redundant safety anchors.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-award fs-2 text-warning"></i>
+              <div>
+                <h6 class="text-white mb-1">Certified Jumpmasters</h6>
+                <p class="text-muted small mb-0">Internationally trained guides accompany every flight slot.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="{% url 'website:about' %}" class="btn-adventure-outline">
+          Read Full Story <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="position-relative">
+          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Black Eagles Zipline Action" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-25">
+          <div class="position-absolute bottom-0 start-0 m-4 p-3 rounded-3 bg-dark bg-opacity-75 backdrop-blur border border-secondary border-opacity-25 d-none d-sm-block">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2">
+                <i class="bi bi-camera-reels-fill fs-4"></i>
+              </div>
+              <div>
+                <div class="text-white fw-bold">HD GoPro Camera Helmets</div>
+                <div class="text-muted small">Capture every heart-pounding second</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Why Choose Black Eagles Zipline -->
+<section class="section-pad bg-surface border-top border-bottom border-secondary border-opacity-25" style="background-color: var(--bg-surface);">
+  <div class="container">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="section-tag">Engineered For Thrill & Trust</span>
+      <h2 class="section-heading">Why Black Eagles Stands Above The Rest</h2>
+      <p class="text-muted">We don't just offer rides—we curate elite aerial adventures backed by aerospace-grade inspection standards.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box">
+            <i class="bi bi-shield-fill-check"></i>
+          </div>
+          <h5 class="text-white mb-2">Zero Compromise Safety</h5>
+          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+            Dual continuous life-lines, CE & UIAA certified harness gear, and pre-flight weight verification. Inspected each dawn before flight 1 launches.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <h5 class="text-white mb-2">Exclusive Small Groups (Max 6)</h5>
+          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+            We limit every slot to just 6 passengers. No massive tourist crowds, zero chaotic rushing, and personal 1-on-1 assistance from launch to landing.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box">
+            <i class="bi bi-tree-fill"></i>
+          </div>
+          <h5 class="text-white mb-2">Untouched Canopy Vistas</h5>
+          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+            Traverse over cascading waterfalls, dense bamboo groves, and sweeping canyon cliffs untouched by industrial development.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Featured Adventure Gallery -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+      <div>
+        <span class="section-tag">Visual Chronicles</span>
+        <h2 class="section-heading mb-0">Featured Flight Moments</h2>
+      </div>
+      <a href="{% url 'website:gallery' %}" class="btn-adventure-outline mt-3 mt-md-0">
+        View All Photos <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+
+    <div class="row g-4">
+      {% for img in featured_gallery %}
+      <div class="col-md-6 col-lg-3">
+        <div class="gallery-card" data-img-src="{{ img.image.url }}" data-img-title="{{ img.title }}" data-img-caption="{{ img.caption }}">
+          <img src="{{ img.image.url }}" alt="{{ img.title }}">
+          <div class="gallery-overlay">
+            <span class="gallery-tag">{{ img.get_category_display }}</span>
+            <h6 class="text-white mb-1 fw-bold">{{ img.title }}</h6>
+            <p class="text-muted small mb-0">{{ img.caption|truncatewords:8 }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <p>No featured gallery images uploaded yet.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 6. Pricing Preview Section -->
+<section class="section-pad" style="background-color: var(--bg-surface);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tag">Transparent Value</span>
+      <h2 class="section-heading">Ticket Packages & Rates</h2>
+      <p class="text-muted">Configurable online rates with comprehensive safety gear and certified guide accompaniment.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      {% for pkg in pricing_packages %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pricing-card {% if pkg.is_featured %}featured{% endif %} h-100 d-flex flex-direction-column justify-content-between">
+          {% if pkg.badge %}
+            <span class="pricing-badge">{{ pkg.badge }}</span>
+          {% endif %}
+          <div>
+            <h4 class="text-white mb-1">{{ pkg.name }}</h4>
+            <div class="text-muted small mb-3"><i class="bi bi-stopwatch me-1"></i> {{ pkg.duration }}</div>
+            <div class="mb-4">
+              <span class="price-currency">₹</span>
+              <span class="price-val">{{ pkg.price|floatformat:0 }}</span>
+              <span class="text-muted">/ person</span>
+            </div>
+            <p class="text-muted small mb-4">{{ pkg.description }}</p>
+            <hr class="border-secondary border-opacity-25 my-4">
+            <ul class="list-unstyled mb-4">
+              {% for feat in pkg.feature_list %}
+              <li class="d-flex align-items-center gap-2 mb-2 small text-light">
+                <i class="bi bi-check-circle-fill text-warning"></i>
+                <span>{{ feat }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div>
+            <a href="{% url 'bookings:booking_page' %}" class="btn-adventure-primary w-100 justify-content-center">
+              Book This Package
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 7. Testimonials Section -->
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tag">Guest Experiences</span>
+      <h2 class="section-heading">What Flyers Are Saying</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="d-flex gap-1 text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="text-light small mb-4" style="line-height: 1.8;">
+            "The initial step off platform 1 took my breath away! The dual cables and jumpmasters were so calm and professional that all fear vanished in seconds. Pure flight freedom."
+          </p>
+          <div class="d-flex align-items-center gap-3 mt-auto">
+            <div class="rounded-circle bg-warning text-dark fw-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+              RK
+            </div>
+            <div>
+              <h6 class="text-white mb-0">Rahul Krishna</h6>
+              <span class="text-muted small">Bangalore • Visited Oct 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="d-flex gap-1 text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="text-light small mb-4" style="line-height: 1.8;">
+            "We booked the 6-person slot for our college reunion group. Having the entire slot dedicated to our friends made it completely intimate and unforgettable. 10/10 recommended!"
+          </p>
+          <div class="d-flex align-items-center gap-3 mt-auto">
+            <div class="rounded-circle bg-warning text-dark fw-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+              SM
+            </div>
+            <div>
+              <h6 class="text-white mb-0">Sneha Menon</h6>
+              <span class="text-muted small">Kochi • Visited Nov 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="d-flex gap-1 text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="text-light small mb-4" style="line-height: 1.8;">
+            "Top-notch Petzl gear, computerized online slot reservation, and absolutely no waiting in lines. Best adventure tourism infrastructure in South India."
+          </p>
+          <div class="d-flex align-items-center gap-3 mt-auto">
+            <div class="rounded-circle bg-warning text-dark fw-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+              AT
+            </div>
+            <div>
+              <h6 class="text-white mb-0">Arun Thomas</h6>
+              <span class="text-muted small">Chennai • Visited Sep 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Interactive Location & Contact Section -->
+<section class="section-pad border-top border-secondary border-opacity-25" style="background-color: var(--bg-surface);">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <span class="section-tag">Reach The Summit</span>
+        <h2 class="section-heading">How To Reach Black Eagles Zipline</h2>
+        <p class="text-muted mb-4">
+          Located conveniently atop the Eagle Ridge scenic corridor with dedicated tourist parking, visitor lounge, and lockbox amenities.
+        </p>
+
+        <div class="mb-4">
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <i class="bi bi-geo-alt-fill text-warning fs-4"></i>
+            <div>
+              <h6 class="text-white mb-0">Base Camp Address</h6>
+              <p class="text-muted small mb-0">{{ site_settings.address }}</p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <i class="bi bi-telephone-fill text-warning fs-4"></i>
+            <div>
+              <h6 class="text-white mb-0">Helpline & Bookings</h6>
+              <p class="text-muted small mb-0">{{ site_settings.phone_number }}</p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-envelope-fill text-warning fs-4"></i>
+            <div>
+              <h6 class="text-white mb-0">Inquiries Email</h6>
+              <p class="text-muted small mb-0">{{ site_settings.email_address }}</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="{% url 'website:contact' %}" class="btn-adventure-outline">
+          Get Driving Directions <i class="bi bi-map ms-1"></i>
+        </a>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="rounded-4 overflow-hidden border border-secondary border-opacity-25 shadow-lg" style="height: 380px;">
+          <iframe 
+            src="{{ site_settings.google_maps_embed_url }}" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal for Gallery Photos -->
+<div class="modal fade" id="galleryLightboxModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark text-white border border-secondary">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="lightboxTitle"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-3">
+        <img id="lightboxImage" src="" alt="Gallery Preview" class="img-fluid rounded mb-3" style="max-height: 70vh;">
+        <p id="lightboxCaption" class="text-muted small mb-0"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

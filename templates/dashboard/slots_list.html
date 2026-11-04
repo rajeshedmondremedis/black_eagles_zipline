@@ -1,0 +1,176 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block page_title %}Daily Flight Slots Management{% endblock %}
+{% block page_subtitle %}Configure the 4 daily departures, operating hours, capacity limits, and active status{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-bold">
+        Operating Policy: 4 Daily Slots • Max 6 Pax Each • 24 Daily Max Capacity
+      </span>
+    </div>
+    <button type="button" class="btn btn-adventure-primary" data-bs-toggle="modal" data-bs-target="#createSlotModal">
+      <i class="bi bi-plus-circle me-1"></i> Add New Slot
+    </button>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for item in slot_stats %}
+  <div class="col-md-6 col-xl-3">
+    <div class="p-4 rounded-4 h-100 d-flex flex-column justify-content-between" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <div>
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Order #{{ item.slot.order }}</span>
+          {% if item.slot.is_active %}
+            <span class="badge bg-success">Active</span>
+          {% else %}
+            <span class="badge bg-danger">Inactive</span>
+          {% endif %}
+        </div>
+
+        <h5 class="text-white fw-bold mb-1">{{ item.slot.name }}</h5>
+        <div class="text-warning small mb-3">
+          <i class="bi bi-clock-fill me-1"></i> {{ item.slot.formatted_time }}
+        </div>
+
+        <hr class="border-secondary border-opacity-25 my-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+          <span>Max Capacity:</span>
+          <strong class="text-white fs-6">{{ item.slot.max_capacity }} Pax</strong>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+          <span>Today's Booked:</span>
+          <strong class="text-white">{{ item.today_booked }} Pax</strong>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center small text-muted">
+          <span>Today's Remaining:</span>
+          {% if item.today_remaining > 0 %}
+            <span class="text-success fw-bold">{{ item.today_remaining }} Seat(s)</span>
+          {% else %}
+            <span class="text-danger fw-bold">FULL</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-4 pt-3 border-top border-secondary border-opacity-25">
+        <button type="button" class="btn btn-sm btn-outline-warning flex-grow-1" data-bs-toggle="modal" data-bs-target="#editSlotModal{{ item.slot.id }}">
+          <i class="bi bi-pencil me-1"></i> Edit
+        </button>
+        <form method="post" action="{% url 'dashboard:slot_toggle' item.slot.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm {% if item.slot.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %}" title="Toggle active status">
+            {% if item.slot.is_active %}<i class="bi bi-pause-fill"></i> Pause{% else %}<i class="bi bi-play-fill"></i> Activate{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal for Slot -->
+  <div class="modal fade" id="editSlotModal{{ item.slot.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border border-secondary">
+        <form method="post" action="{% url 'dashboard:slot_edit' item.slot.id %}">
+          {% csrf_token %}
+          <div class="modal-header border-secondary border-opacity-25">
+            <h5 class="modal-title fw-bold">Edit {{ item.slot.name }}</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label text-light small fw-bold">Slot Name *</label>
+              <input type="text" name="name" class="form-control" value="{{ item.slot.name }}" required>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label text-light small fw-bold">Start Time *</label>
+                <input type="time" name="start_time" class="form-control" value="{{ item.slot.start_time|time:'H:i' }}" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label text-light small fw-bold">End Time *</label>
+                <input type="time" name="end_time" class="form-control" value="{{ item.slot.end_time|time:'H:i' }}" required>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label text-light small fw-bold">Max Capacity *</label>
+                <input type="number" name="max_capacity" class="form-control" min="1" max="50" value="{{ item.slot.max_capacity }}" required>
+                <span class="text-muted small">Cannot be lowered below confirmed bookings.</span>
+              </div>
+              <div class="col-6">
+                <label class="form-label text-light small fw-bold">Display Order</label>
+                <input type="number" name="order" class="form-control" value="{{ item.slot.order }}" required>
+              </div>
+            </div>
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" name="is_active" id="activeCheck{{ item.slot.id }}" {% if item.slot.is_active %}checked{% endif %}>
+              <label class="form-check-label text-light small" for="activeCheck{{ item.slot.id }}">Slot is Active & Bookable</label>
+            </div>
+          </div>
+          <div class="modal-footer border-secondary border-opacity-25">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-warning">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Modal: Create New Slot -->
+<div class="modal fade" id="createSlotModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-secondary">
+      <form method="post" action="{% url 'dashboard:slot_create' %}">
+        {% csrf_token %}
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold">Create New Operating Slot</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Slot Name *</label>
+            <input type="text" name="name" class="form-control" placeholder="e.g. Slot 5 – Twilight Canopy Flyover" required>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">Start Time *</label>
+              <input type="time" name="start_time" class="form-control" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">End Time *</label>
+              <input type="time" name="end_time" class="form-control" required>
+            </div>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">Max Capacity *</label>
+              <input type="number" name="max_capacity" class="form-control" min="1" max="50" value="6" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">Display Order</label>
+              <input type="number" name="order" class="form-control" value="5" required>
+            </div>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" name="is_active" id="newActiveCheck" checked>
+            <label class="form-check-label text-light small" for="newActiveCheck">Active immediately</label>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-adventure-primary">Create Slot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

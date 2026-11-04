@@ -1,0 +1,135 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block page_title %}Holiday & Blackout Calendar{% endblock %}
+{% block page_subtitle %}Manage blackout dates and operational closures. Wednesdays are automatically blocked by system rules.{% endblock %}
+
+{% block content %}
+<!-- Wednesday Automated Blocker Notice -->
+<div class="alert alert-dark border border-success border-opacity-50 p-3 rounded-4 mb-4 d-flex align-items-center gap-3">
+  <div class="rounded-circle bg-success bg-opacity-20 text-success p-2">
+    <i class="bi bi-shield-lock-fill fs-4"></i>
+  </div>
+  <div>
+    <h6 class="text-white fw-bold mb-0">System Automated Rule: Wednesdays Permanently Closed</h6>
+    <span class="text-muted small">Every Wednesday is automatically blocked in the booking engine for routine line testing and jumpmaster recertification. You do not need to add Wednesdays manually here.</span>
+  </div>
+</div>
+
+<!-- Warning Dialog If Existing Bookings Conflict with Proposed Holiday -->
+{% if pending_warning %}
+<div class="alert alert-danger border-2 p-4 rounded-4 mb-4 shadow-lg">
+  <div class="d-flex align-items-start gap-3">
+    <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
+    <div class="flex-grow-1">
+      <h4 class="text-white fw-bold">EXISTING BOOKINGS CONFLICT DETECTED</h4>
+      <p class="text-light mb-3">
+        You are scheduling a holiday on <strong>{{ warn_date }}</strong>, but there are already 
+        <strong>{{ affected_count }} confirmed booking(s)</strong> (totaling <strong>{{ affected_pax }} riders</strong>) on this date!
+      </p>
+      <form method="post" action="{% url 'dashboard:holidays_list' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <input type="hidden" name="holiday_date" value="{{ warn_date }}">
+        <input type="hidden" name="title" value="{{ warn_title }}">
+        <input type="hidden" name="description" value="{{ warn_description }}">
+        <input type="hidden" name="override_warning" value="1">
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-check-circle me-1"></i> Confirm & Proceed Adding Holiday Anyway
+          </button>
+          <a href="{% url 'dashboard:holidays_list' %}" class="btn btn-outline-light">
+            Cancel Operation
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="row g-4">
+  <!-- Add Holiday Form -->
+  <div class="col-lg-4">
+    <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-calendar-plus text-warning me-2"></i> Add Holiday / Blackout Date</h5>
+      <p class="text-muted small mb-4">Prevent bookings on special holidays, severe weather warnings, or maintenance days.</p>
+
+      <form method="post" action="{% url 'dashboard:holidays_list' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+
+        <div class="mb-3">
+          <label class="form-label text-light small fw-bold">Holiday Date *</label>
+          <input type="date" name="holiday_date" class="form-control" min="{{ today|date:'Y-m-d' }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-light small fw-bold">Holiday Title / Occasion *</label>
+          <input type="text" name="title" class="form-control" placeholder="e.g. Independence Day, Annual Line Recabling" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-light small fw-bold">Public Notice / Description</label>
+          <textarea name="description" class="form-control" rows="3" placeholder="Optional explanation displayed to customers..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-adventure-primary w-100 justify-content-center py-2">
+          <i class="bi bi-plus-circle me-1"></i> Add Holiday
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Holidays Table -->
+  <div class="col-lg-8">
+    <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+      <h5 class="text-white fw-bold mb-3">Scheduled Holidays & Blackouts</h5>
+
+      <div class="table-responsive">
+        <table class="table table-dark-custom mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Occasion / Title</th>
+              <th>Description</th>
+              <th>Scheduled On</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for h in holidays %}
+            <tr>
+              <td>
+                <strong class="text-warning">{{ h.holiday_date|date:"d-M-Y" }}</strong>
+                <div class="text-muted small">{{ h.holiday_date|date:"l" }}</div>
+              </td>
+              <td class="text-white fw-bold">{{ h.title }}</td>
+              <td class="text-muted small">{{ h.description|default:"—" }}</td>
+              <td class="text-muted small">{{ h.created_at|date:"d-M-Y" }}</td>
+              <td>
+                <form method="post" action="{% url 'dashboard:holidays_list' %}" onsubmit="return confirm('Remove holiday {{ h.title }} on {{ h.holiday_date|date:"d-M-Y" }}?');">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="holiday_id" value="{{ h.id }}">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">
+                No custom holidays scheduled. Only the default Wednesday maintenance closure is active.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

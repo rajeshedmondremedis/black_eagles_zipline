@@ -1,0 +1,184 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block page_title %}Safety Guidelines Management{% endblock %}
+{% block page_subtitle %}Review and edit client-approved flight protocols, health requirements, and weight thresholds{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-bold">
+        Certified Operations: Editable by administrator upon client sign-off
+      </span>
+    </div>
+    <button type="button" class="btn btn-adventure-primary" data-bs-toggle="modal" data-bs-target="#newGuidelineModal">
+      <i class="bi bi-plus-circle me-1"></i> Add New Guideline
+    </button>
+  </div>
+</div>
+
+<div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+  <div class="table-responsive">
+    <table class="table table-dark-custom mb-0">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Order</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for g in guidelines %}
+        <tr>
+          <td>
+            <span class="badge bg-secondary">{{ g.get_category_display }}</span>
+          </td>
+          <td class="text-white fw-bold">
+            <i class="bi bi-{{ g.icon_name }} text-warning me-1"></i> {{ g.title }}
+          </td>
+          <td class="text-muted small" style="max-width: 400px;">{{ g.description }}</td>
+          <td>
+            {% if g.is_active %}
+              <span class="badge bg-success">Active</span>
+            {% else %}
+              <span class="badge bg-danger">Hidden</span>
+            {% endif %}
+          </td>
+          <td>{{ g.order }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editGuideModal{{ g.id }}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <form method="post" action="{% url 'dashboard:safety_manage' %}" onsubmit="return confirm('Delete guideline {{ g.title }}?');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="guideline_id" value="{{ g.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Edit Guideline Modal -->
+        <div class="modal fade" id="editGuideModal{{ g.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border border-secondary">
+              <form method="post" action="{% url 'dashboard:safety_manage' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="save">
+                <input type="hidden" name="guideline_id" value="{{ g.id }}">
+                <div class="modal-header border-secondary border-opacity-25">
+                  <h5 class="modal-title fw-bold">Edit Guideline</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label class="form-label text-light small fw-bold">Category *</label>
+                    <select name="category" class="form-select" required>
+                      {% for code, label in categories %}
+                      <option value="{{ code }}" {% if g.category == code %}selected{% endif %}>{{ label }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-light small fw-bold">Title *</label>
+                    <input type="text" name="title" class="form-control" value="{{ g.title }}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-light small fw-bold">Description *</label>
+                    <textarea name="description" class="form-control" rows="4" required>{{ g.description }}</textarea>
+                  </div>
+                  <div class="row g-2 mb-3">
+                    <div class="col-6">
+                      <label class="form-label text-light small fw-bold">Bootstrap Icon Name</label>
+                      <input type="text" name="icon_name" class="form-control" value="{{ g.icon_name }}">
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label text-light small fw-bold">Display Order</label>
+                      <input type="number" name="order" class="form-control" value="{{ g.order }}">
+                    </div>
+                  </div>
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" name="is_active" id="activeGuide{{ g.id }}" {% if g.is_active %}checked{% endif %}>
+                    <label class="form-check-label text-light small" for="activeGuide{{ g.id }}">Active & Displayed Publicly</label>
+                  </div>
+                </div>
+                <div class="modal-footer border-secondary border-opacity-25">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-warning">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            No safety guidelines added yet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal: New Guideline -->
+<div class="modal fade" id="newGuidelineModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border border-secondary">
+      <form method="post" action="{% url 'dashboard:safety_manage' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="save">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold">Add Safety Guideline</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Category *</label>
+            <select name="category" class="form-select" required>
+              {% for code, label in categories %}
+              <option value="{{ code }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Title *</label>
+            <input type="text" name="title" class="form-control" placeholder="e.g. Helmet & Harness Mandate" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-light small fw-bold">Description *</label>
+            <textarea name="description" class="form-control" rows="4" placeholder="Full instruction approved by safety officer..." required></textarea>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">Icon Name</label>
+              <input type="text" name="icon_name" class="form-control" value="shield-check">
+            </div>
+            <div class="col-6">
+              <label class="form-label text-light small fw-bold">Display Order</label>
+              <input type="number" name="order" class="form-control" value="0">
+            </div>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" name="is_active" id="newActiveGuide" checked>
+            <label class="form-check-label text-light small" for="newActiveGuide">Active immediately</label>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-adventure-primary">Create Guideline</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

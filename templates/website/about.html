@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(180deg, rgba(7, 13, 10, 0.7) 0%, #070D0A 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8rem !important;">
+  <div class="container text-center py-5">
+    <span class="hero-badge">Our Heritage & Mission</span>
+    <h1 class="display-4 fw-bold text-white mb-3">About Black Eagles Zipline</h1>
+    <p class="text-light lead max-w-700 mx-auto">
+      Bridging engineering precision and wilderness adventure across the iconic Western Ghats.
+    </p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5 mb-5">
+      <div class="col-lg-6">
+        <span class="section-tag">Who We Are</span>
+        <h2 class="section-heading">Born from a Passion for Wilderness Flight</h2>
+        <p class="text-muted" style="line-height: 1.8;">
+          {{ site_settings.about_story }}
+        </p>
+        <p class="text-muted" style="line-height: 1.8;">
+          Our facility was conceived to bring world-standard canopy tour experiences to Indian adventure tourism. Operating on rigid environmental protection protocols, every platform and anchor is designed to harmonize with forest topography without damaging tree root systems or wildlife migration trails.
+        </p>
+      </div>
+      <div class="col-lg-6">
+        <div class="rounded-4 overflow-hidden shadow-lg border border-secondary border-opacity-25">
+          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Zipline Flying" class="img-fluid">
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Pillars -->
+    <div class="row g-4 my-5">
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box"><i class="bi bi-shield-shaded"></i></div>
+          <h4 class="text-white mb-2">Aerospace Safety</h4>
+          <p class="text-muted small mb-0" style="line-height: 1.7;">
+            Dual stainless-steel wire lines with a combined breaking strain of over 28,000 kg. High-grade ZipStop magnetic decelerators ensure smooth, effortless arrivals.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box"><i class="bi bi-person-badge"></i></div>
+          <h4 class="text-white mb-2">Elite Certified Crew</h4>
+          <p class="text-muted small mb-0" style="line-height: 1.7;">
+            Our riggers and jumpmasters hold certified mountaineering and aerial rescue credentials, undergoing recertification and medical fitness testing quarterly.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="adventure-card">
+          <div class="card-icon-box"><i class="bi bi-globe-americas"></i></div>
+          <h4 class="text-white mb-2">Eco-Conscious Design</h4>
+          <p class="text-muted small mb-0" style="line-height: 1.7;">
+            Solar-powered dispatch stations, strict zero-plastic valley zones, and continuous participation in regional reforestation programs.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location details -->
+    <div class="p-4 p-md-5 rounded-4 mt-5" style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle);">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="section-tag">Base Camp & Sanctuary</span>
+          <h3 class="text-white fw-bold mb-3">Our Location: The Western Ghats Gateway</h3>
+          <p class="text-muted mb-3" style="line-height: 1.7;">
+            Perched at an elevation of 1,100 meters above sea level, Black Eagles Zipline offers a crisp mountain climate year-round. Overlooking the legendary Eagle Peak valley, riders catch panoramic sunrises and rolling mist blankets during early morning flights.
+          </p>
+          <div class="d-flex flex-wrap gap-4 text-light small">
+            <div><i class="bi bi-check2 text-warning me-1"></i> Elevation: 1,100m MSL</div>
+            <div><i class="bi bi-check2 text-warning me-1"></i> Temperature: 18°C - 26°C</div>
+            <div><i class="bi bi-check2 text-warning me-1"></i> Free Guest Parking</div>
+          </div>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="{% url 'bookings:booking_page' %}" class="btn-adventure-primary fs-6 px-4 py-3">
+            <i class="bi bi-calendar2-check-fill"></i> Reserve Today
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

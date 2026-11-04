@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flight Confirmation - {{ booking.booking_reference }}</title>
+</head>
+<body style="font-family: Arial, sans-serif; background: #070D0A; color: #FFFFFF; padding: 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background: #0F1F17; border-radius: 12px; overflow: hidden; border: 1px solid #1E4D36;">
+    <div style="background: #0F2A1D; padding: 25px; text-align: center; border-bottom: 2px solid #F77F00;">
+      <h2 style="color: #FFFFFF; margin: 0;">BLACK EAGLES ZIPLINE</h2>
+      <p style="color: #F77F00; margin: 5px 0 0; font-weight: bold;">Flight Confirmation Voucher</p>
+    </div>
+    <div style="padding: 25px;">
+      <p>Dear <strong>{{ booking.full_name }}</strong>,</p>
+      <p>Your zipline flight reservation is confirmed. Here are your booking details:</p>
+      
+      <table style="width: 100%; border-collapse: collapse; margin: 20px 0; color: #E2E8F0;">
+        <tr>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;"><strong>Booking Reference:</strong></td>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36; color: #F77F00; font-weight: bold;">{{ booking.booking_reference }}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;"><strong>Flight Date:</strong></td>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;">{{ booking.booking_date|date:"l, d F Y" }}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;"><strong>Time Slot:</strong></td>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;">{{ booking.slot.formatted_time }} ({{ booking.slot.name }})</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;"><strong>Passengers:</strong></td>
+          <td style="padding: 8px 0; border-bottom: 1px solid #1E4D36;">{{ booking.number_of_members }} person(s)</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0;"><strong>Status:</strong></td>
+          <td style="padding: 8px 0; color: #10B981; font-weight: bold;">CONFIRMED</td>
+        </tr>
+      </table>
+
+      <div style="background: #14281E; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <h4 style="color: #F77F00; margin-top: 0;">Arrival Instructions:</h4>
+        <ul style="padding-left: 20px; margin-bottom: 0; font-size: 13px; color: #CBD5E1;">
+          <li>Arrive at least 20 minutes prior to departure for safety briefing.</li>
+          <li>Wear closed-toe athletic or hiking shoes.</li>
+        </ul>
+      </div>
+
+      <p style="margin-top: 25px; font-size: 13px; color: #94A3B8;">
+        Location: {{ site_settings.address }}<br>
+        Helpline: {{ site_settings.phone_number }}
+      </p>
+    </div>
+  </div>
+</body>
+</html>

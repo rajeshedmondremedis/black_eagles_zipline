@@ -1,0 +1,281 @@
+/* ==========================================================================
+   BLACK EAGLES ZIPLINE - ADMIN DASHBOARD DESIGN SYSTEM
+   Dark High-Performance Operations Console
+   Developed for PL SOFT TECH SOLUTIONS
+   ========================================================================== */
+
+:root {
+  --dash-bg: #0A110D;
+  --dash-sidebar: #0E1A14;
+  --dash-card: #13241C;
+  --dash-card-hover: #182C22;
+  --dash-border: rgba(255, 255, 255, 0.08);
+  --dash-primary: #10B981; /* Emerald Neon */
+  --dash-accent: #F77F00;  /* Adventure Orange */
+  --dash-text: #F1F5F9;
+  --dash-muted: #94A3B8;
+  --dash-danger: #EF4444;
+  --dash-warning: #F59E0B;
+}
+
+body.dashboard-body {
+  background-color: var(--dash-bg);
+  color: var(--dash-text);
+  font-family: 'Outfit', 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.dash-sidebar {
+  width: 260px;
+  background-color: var(--dash-sidebar);
+  border-right: 1px solid var(--dash-border);
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.sidebar-brand {
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--dash-border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.sidebar-brand .brand-icon {
+  color: var(--dash-accent);
+  font-size: 1.5rem;
+}
+
+.sidebar-menu {
+  padding: 1.25rem 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.menu-category-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--dash-muted);
+  padding: 0.75rem 0.75rem 0.25rem;
+  font-weight: 700;
+}
+
+.dash-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.85rem;
+  color: var(--dash-muted);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-bottom: 0.2rem;
+}
+
+.dash-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+}
+
+.dash-nav-link.active {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  color: var(--dash-primary);
+  border-left: 3px solid var(--dash-primary);
+  font-weight: 600;
+}
+
+.dash-nav-link i {
+  font-size: 1.15rem;
+}
+
+/* Main Content Area */
+.dash-main {
+  margin-left: 260px;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+@media (max-width: 991.98px) {
+  .dash-sidebar {
+    transform: translateX(-100%);
+  }
+  .dash-sidebar.show {
+    transform: translateX(0);
+  }
+  .dash-main {
+    margin-left: 0;
+    padding: 1.25rem;
+  }
+}
+
+/* Topbar */
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.dash-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  color: #FFFFFF;
+}
+
+.dash-subtitle {
+  font-size: 0.85rem;
+  color: var(--dash-muted);
+  margin: 0;
+}
+
+/* Metric / KPI Cards */
+.kpi-card {
+  background-color: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.kpi-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.kpi-icon-emerald {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.kpi-icon-orange {
+  background: rgba(247, 127, 0, 0.15);
+  color: var(--dash-accent);
+}
+
+.kpi-icon-blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+}
+
+.kpi-icon-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+}
+
+.kpi-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #FFFFFF;
+  margin-bottom: 0.35rem;
+}
+
+.kpi-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--dash-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tables */
+.table-dark-custom {
+  background-color: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.table-dark-custom thead {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.table-dark-custom th {
+  color: var(--dash-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+  border: none;
+}
+
+.table-dark-custom td {
+  padding: 0.9rem 1rem;
+  color: #E2E8F0;
+  border-top: 1px solid var(--dash-border);
+  vertical-align: middle;
+  font-size: 0.88rem;
+}
+
+.table-dark-custom tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Status Badges */
+.badge-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 30px;
+}
+
+.badge-status-confirmed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-status-cancelled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Slot Occupancy Bar */
+.slot-progress-track {
+  background: rgba(255, 255, 255, 0.08);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.slot-progress-fill {
+  background: linear-gradient(90deg, #10B981, #F77F00);
+  height: 100%;
+}
+
+.slot-progress-fill.full {
+  background: #EF4444;
+}

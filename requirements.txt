@@ -1,0 +1,22 @@
+# ==============================================================================
+# BLACK EAGLES ZIPLINE - PRODUCTION REQUIREMENTS
+# Developed by PL SOFT TECH SOLUTIONS
+# ==============================================================================
+
+# Core Framework
+Django>=5.0.0,<6.2.0
+python-dotenv>=1.0.0
+
+# Database Driver (MySQL 8.x)
+mysqlclient>=2.2.0
+mysql-connector-python>=8.0.0
+
+# Reports & Document Export
+openpyxl>=3.1.2
+reportlab>=4.1.0
+
+# Image & Media Handling
+Pillow>=10.2.0
+
+# Production WSGI Application Server
+gunicorn>=21.2.0

@@ -1,0 +1,122 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block page_title %}Reports & Manifest Exports{% endblock %}
+{% block page_subtitle %}Generate audit-ready Excel workbooks and branded PDF passenger manifests{% endblock %}
+
+{% block content %}
+<!-- Filter & Export Controls Card -->
+<div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+  <form method="get" action="{% url 'reports:reports_page' %}">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label text-muted small fw-bold">From Date</label>
+        <input type="date" name="start_date" class="form-control" value="{{ filter_meta.start_date }}">
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label text-muted small fw-bold">To Date</label>
+        <input type="date" name="end_date" class="form-control" value="{{ filter_meta.end_date }}">
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label text-muted small fw-bold">Slot</label>
+        <select name="slot_id" class="form-select">
+          <option value="">All Slots</option>
+          {% for s in slots %}
+          <option value="{{ s.id }}" {% if filter_meta.slot_id == s.id|stringformat:"s" %}selected{% endif %}>
+            {{ s.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label text-muted small fw-bold">Status</label>
+        <select name="status" class="form-select">
+          <option value="">All Statuses</option>
+          <option value="CONFIRMED" {% if filter_meta.status == 'CONFIRMED' %}selected{% endif %}>Confirmed</option>
+          <option value="CANCELLED" {% if filter_meta.status == 'CANCELLED' %}selected{% endif %}>Cancelled</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-secondary w-100 py-2">
+          <i class="bi bi-filter"></i> Apply Filter
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <hr class="border-secondary border-opacity-25 my-4">
+
+  <!-- Download Actions -->
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div class="d-flex gap-3 text-muted small">
+      <div>Total Matching: <strong class="text-white">{{ total_count }}</strong> bookings</div>
+      <div>•</div>
+      <div>Confirmed Riders: <strong class="text-success">{{ confirmed_members }}</strong> pax</div>
+      <div>•</div>
+      <div>Range: <strong class="text-warning">{{ filter_meta.date_range }}</strong></div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <!-- Excel Export Button -->
+      <a href="{% url 'reports:export_excel' %}?start_date={{ filter_meta.start_date }}&end_date={{ filter_meta.end_date }}&slot_id={{ filter_meta.slot_id }}&status={{ filter_meta.status }}" class="btn btn-success">
+        <i class="bi bi-file-earmark-excel-fill me-1"></i> Export Excel (.xlsx)
+      </a>
+
+      <!-- PDF Export Button -->
+      <a href="{% url 'reports:export_pdf' %}?start_date={{ filter_meta.start_date }}&end_date={{ filter_meta.end_date }}&slot_id={{ filter_meta.slot_id }}&status={{ filter_meta.status }}" target="_blank" class="btn btn-danger">
+        <i class="bi bi-file-earmark-pdf-fill me-1"></i> Export PDF (.pdf)
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Manifest Preview Table -->
+<div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+  <h5 class="text-white fw-bold mb-3">Manifest Preview (Top 100 Records)</h5>
+
+  <div class="table-responsive">
+    <table class="table table-dark-custom mb-0">
+      <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Lead Rider</th>
+          <th>Contact</th>
+          <th>Flight Date</th>
+          <th>Slot</th>
+          <th>Pax</th>
+          <th>Status</th>
+          <th>Booked Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td><strong class="text-warning">{{ b.booking_reference }}</strong></td>
+          <td class="text-white fw-bold">{{ b.full_name }}</td>
+          <td class="text-muted small">{{ b.mobile_number }}<br>{{ b.email }}</td>
+          <td>{{ b.booking_date|date:"d-M-Y" }}</td>
+          <td class="small">{{ b.slot.name }}<br><span class="text-muted">({{ b.slot.formatted_time }})</span></td>
+          <td><span class="badge bg-secondary">{{ b.number_of_members }}</span></td>
+          <td>
+            <span class="badge-status {% if b.status == 'CONFIRMED' %}badge-status-confirmed{% else %}badge-status-cancelled{% endif %}">
+              {{ b.get_status_display }}
+            </span>
+          </td>
+          <td class="text-muted small">{{ b.created_at|date:"d-M-Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center py-4 text-muted">
+            No bookings found for the selected criteria.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
