@@ -3,13 +3,18 @@
 
 {% block title %}Book Zipline Flight Slot | {{ site_settings.site_name }}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="py-5" style="background: linear-gradient(180deg, rgba(7, 13, 10, 0.75) 0%, #070D0A 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8rem !important;">
+<!-- Page Header Banner -->
+<div class="py-5" style="background: linear-gradient(180deg, rgba(14, 22, 19, 0.75) 0%, var(--surface-body) 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8.5rem !important;">
   <div class="container text-center py-4">
-    <span class="hero-badge">Flight Reservation</span>
+    <span class="hero-badge"><i class="bi bi-calendar2-check"></i> Flight Reservation</span>
     <h1 class="display-5 fw-bold text-white mb-2">Book Your Zipline Adventure</h1>
-    <p class="text-light opacity-75 max-w-700 mx-auto small">
-      4 daily departures • Maximum 6 riders per slot for maximum safety, comfort & personal guide attention.
+    <p class="text-light-grey opacity-75 max-w-700 mx-auto small">
+      4 daily departures • Maximum 6 riders per slot for dedicated jumpmaster safety & personal flight guidance.
     </p>
   </div>
 </div>
@@ -17,7 +22,7 @@
 <section class="section-pad pt-4">
   <div class="container">
     <div class="row g-5">
-      <!-- Main Booking Column (Steps 1, 2, 3) -->
+      <!-- Main Booking Column (Steps 1, 2, 3, 4) -->
       <div class="col-lg-8">
         <form id="customerBookingForm" method="post" action="{% url 'bookings:booking_submit' %}" class="booking-container">
           {% csrf_token %}
@@ -33,9 +38,9 @@
             </div>
             <div class="row g-3 align-items-center">
               <div class="col-md-7">
-                <label for="id_booking_date" class="form-label text-light small fw-bold">Flight Date (Wednesdays Closed)</label>
+                <label for="id_booking_date" class="form-label text-light-grey small fw-bold">Flight Date (Wednesdays Closed)</label>
                 <div class="input-group">
-                  <span class="input-group-text bg-dark border-secondary text-warning">
+                  <span class="input-group-text bg-dark border-secondary text-orange">
                     <i class="bi bi-calendar3"></i>
                   </span>
                   <input 
@@ -50,8 +55,8 @@
                 </div>
               </div>
               <div class="col-md-5 pt-md-4">
-                <div class="text-muted small">
-                  <i class="bi bi-shield-exclamation text-warning me-1"></i>
+                <div class="text-light-grey opacity-75 small">
+                  <i class="bi bi-shield-exclamation text-orange me-1"></i>
                   <span>Wednesdays are reserved for safety & line maintenance.</span>
                 </div>
               </div>
@@ -67,10 +72,10 @@
 
             <!-- Loading Spinner -->
             <div id="slotLoading" class="text-center py-4 d-none">
-              <div class="spinner-border text-warning" role="status">
+              <div class="spinner-border text-orange" role="status">
                 <span class="visually-hidden">Checking live capacity...</span>
               </div>
-              <div class="text-muted small mt-2">Checking real-time slot availability...</div>
+              <div class="text-light-grey small mt-2">Checking real-time slot availability...</div>
             </div>
 
             <!-- Error Banner (Wednesdays / Holidays / Full) -->
@@ -108,7 +113,7 @@
                   <i class="bi bi-plus"></i>
                 </button>
               </div>
-              <div class="text-muted small">
+              <div class="text-light-grey small">
                 Slots seat maximum 6 members to guarantee dedicated jumpmaster safety.
               </div>
             </div>
@@ -123,22 +128,22 @@
 
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="id_full_name" class="form-label text-light small fw-bold">Full Name *</label>
+                <label for="id_full_name" class="form-label text-light-grey small fw-bold">Full Name *</label>
                 <input type="text" name="full_name" id="id_full_name" class="form-control form-control-lg" placeholder="John Doe" required>
               </div>
 
               <div class="col-md-6">
-                <label for="id_mobile_number" class="form-label text-light small fw-bold">Mobile Number (WhatsApp) *</label>
+                <label for="id_mobile_number" class="form-label text-light-grey small fw-bold">Mobile Number (WhatsApp) *</label>
                 <input type="tel" name="mobile_number" id="id_mobile_number" class="form-control form-control-lg" placeholder="e.g. 9876543210" required>
               </div>
 
               <div class="col-md-6">
-                <label for="id_email" class="form-label text-light small fw-bold">Email Address *</label>
+                <label for="id_email" class="form-label text-light-grey small fw-bold">Email Address *</label>
                 <input type="email" name="email" id="id_email" class="form-control form-control-lg" placeholder="name@example.com" required>
               </div>
 
               <div class="col-md-6">
-                <label for="id_place" class="form-label text-light small fw-bold">City / Place of Origin *</label>
+                <label for="id_place" class="form-label text-light-grey small fw-bold">City / Place of Origin *</label>
                 <input type="text" name="place" id="id_place" class="form-control form-control-lg" placeholder="e.g. Bangalore, Kochi, Wayanad" required>
               </div>
             </div>
@@ -149,8 +154,8 @@
             <button type="submit" id="btnSubmitBooking" class="btn-adventure-primary w-100 justify-content-center py-3 fs-5 shadow-lg">
               <i class="bi bi-check2-circle"></i> Confirm Flight Reservation
             </button>
-            <p class="text-center text-muted small mt-2 mb-0">
-              <i class="bi bi-lock-fill me-1"></i> Database-locked concurrency protection. Pay at counter / zero online card hassle.
+            <p class="text-center text-light-grey small mt-2 mb-0">
+              <i class="bi bi-lock-fill text-orange me-1"></i> Database-locked concurrency protection. Pay at counter upon arrival.
             </p>
           </div>
         </form>
@@ -158,32 +163,32 @@
 
       <!-- Booking Summary Sidebar -->
       <div class="col-lg-4">
-        <div class="p-4 rounded-4 position-sticky" style="top: 100px; background-color: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div class="booking-summary-card">
           <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-receipt-cutoff text-warning"></i> Reservation Summary
+            <i class="bi bi-receipt-cutoff text-orange"></i> Reservation Summary
           </h5>
-          <hr class="border-secondary border-opacity-25">
+          <hr class="border-secondary border-opacity-25 my-3">
 
           <div class="d-flex flex-column gap-3 mb-4">
-            <div>
-              <span class="text-muted small d-block">Scheduled Date</span>
-              <strong id="summaryDate" class="text-white fs-6">Loading...</strong>
+            <div class="summary-row">
+              <span class="label">Scheduled Date</span>
+              <strong id="summaryDate" class="value">Loading...</strong>
             </div>
 
-            <div>
-              <span class="text-muted small d-block">Operating Slot</span>
-              <strong id="summarySlot" class="text-warning fs-6">Select a slot</strong>
+            <div class="summary-row">
+              <span class="label">Operating Slot</span>
+              <strong id="summarySlot" class="value text-orange">Select a slot</strong>
             </div>
 
-            <div>
-              <span class="text-muted small d-block">Riders Reserved</span>
-              <strong id="summaryMembers" class="text-white fs-6">1 Passenger</strong>
+            <div class="summary-row">
+              <span class="label">Riders Reserved</span>
+              <strong id="summaryMembers" class="value">1 Passenger</strong>
             </div>
           </div>
 
           <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-4">
-            <h6 class="text-white small fw-bold mb-2"><i class="bi bi-shield-check text-warning me-1"></i> Booking Guarantee</h6>
-            <ul class="text-muted small ps-3 mb-0" style="line-height: 1.6;">
+            <h6 class="text-white small fw-bold mb-2"><i class="bi bi-shield-check text-orange me-1"></i> Booking Guarantee</h6>
+            <ul class="text-light-grey opacity-75 small ps-3 mb-0" style="line-height: 1.7;">
               <li>Instant unique booking reference generated.</li>
               <li>Seats locked in real-time.</li>
               <li>Free cancellation / rescheduling through our helpline.</li>
@@ -191,9 +196,9 @@
           </div>
 
           <div class="text-center">
-            <div class="text-muted small mb-1">Need assistance?</div>
+            <div class="text-light-grey small mb-1">Need assistance?</div>
             <a href="tel:{{ site_settings.phone_number }}" class="text-white fw-bold text-decoration-none">
-              <i class="bi bi-telephone-outbound text-warning me-1"></i> {{ site_settings.phone_number }}
+              <i class="bi bi-telephone-outbound text-orange me-1"></i> {{ site_settings.phone_number }}
             </a>
           </div>
         </div>
@@ -206,4 +211,3 @@
 {% block extra_js %}
 <script src="{% static 'js/booking.js' %}"></script>
 {% endblock %}
-

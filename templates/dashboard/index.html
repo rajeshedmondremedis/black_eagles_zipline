@@ -35,7 +35,7 @@
       <div class="kpi-icon-box kpi-icon-orange">
         <i class="bi bi-airplane-engines"></i>
       </div>
-      <div class="kpi-value" style="color: var(--dash-accent);">{{ today_confirmed_count }}</div>
+      <div class="kpi-value text-orange">{{ today_confirmed_count }}</div>
       <div class="kpi-label">Today's Bookings</div>
     </div>
   </div>
@@ -55,17 +55,17 @@
 <!-- Today's Slot Capacities & Occupancy Progress -->
 <div class="row g-4 mb-4">
   <div class="col-lg-8">
-    <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+    <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h5 class="text-white fw-bold mb-1">Today's Daily Flight Slots</h5>
           <p class="text-muted small mb-0">{{ today|date:"l, d F Y" }} • 4 Fixed Operating Slots</p>
         </div>
         <div class="d-flex gap-2">
-          <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
+          <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-35 px-2 py-1">
             {{ available_slots_today_count }} Available
           </span>
-          <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
+          <span class="badge bg-danger bg-opacity-15 text-danger border border-danger border-opacity-35 px-2 py-1">
             {{ fully_booked_today_count }} Full
           </span>
         </div>
@@ -74,7 +74,7 @@
       <div class="row g-3">
         {% for item in slots_today_info %}
         <div class="col-md-6">
-          <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--dash-border);">
+          <div class="p-3 rounded-3" style="background: rgba(233, 237, 233, 0.03); border: 1px solid var(--dash-border);">
             <div class="d-flex justify-content-between align-items-start mb-1">
               <div>
                 <strong class="text-white">{{ item.slot.name }}</strong>
@@ -144,7 +144,7 @@
         {% for b in recent_bookings %}
         <tr>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-warning text-decoration-none">
+            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-orange text-decoration-none">
               {{ b.booking_reference }}
             </a>
           </td>
@@ -154,7 +154,7 @@
           </td>
           <td>{{ b.booking_date|date:"d-M-Y" }}</td>
           <td>
-            <div class="small">{{ b.slot.name }}</div>
+            <div class="small text-white">{{ b.slot.name }}</div>
             <div class="text-muted small">({{ b.slot.formatted_time }})</div>
           </td>
           <td><span class="badge bg-secondary fs-6">{{ b.number_of_members }}</span></td>
@@ -186,7 +186,9 @@
 {% block extra_js %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('weeklyTrendChart').getContext('2d');
+    const chartEl = document.getElementById('weeklyTrendChart');
+    if (!chartEl) return;
+    const ctx = chartEl.getContext('2d');
     const chart = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -197,24 +199,31 @@
           backgroundColor: '#10B981',
           borderColor: '#34D399',
           borderWidth: 1,
-          borderRadius: 6
+          borderRadius: 8
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1C2723',
+            titleColor: '#F8F8F4',
+            bodyColor: '#34D399',
+            borderColor: 'rgba(233,237,233,0.16)',
+            borderWidth: 1
+          }
         },
         scales: {
           x: {
-            grid: { display: false, color: 'rgba(255,255,255,0.05)' },
-            ticks: { color: '#94A3B8', font: { size: 10 } }
+            grid: { display: false },
+            ticks: { color: '#8E9E96', font: { size: 10 } }
           },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            ticks: { color: '#94A3B8', stepSize: 1, font: { size: 10 } }
+            grid: { color: 'rgba(233,237,233,0.06)' },
+            ticks: { color: '#8E9E96', stepSize: 1, font: { size: 10 } }
           }
         }
       }
@@ -222,4 +231,3 @@
   });
 </script>
 {% endblock %}
-

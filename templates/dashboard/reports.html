@@ -52,12 +52,12 @@
 
   <!-- Download Actions -->
   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-    <div class="d-flex gap-3 text-muted small">
+    <div class="d-flex flex-wrap gap-3 text-muted small">
       <div>Total Matching: <strong class="text-white">{{ total_count }}</strong> bookings</div>
       <div>•</div>
       <div>Confirmed Riders: <strong class="text-success">{{ confirmed_members }}</strong> pax</div>
       <div>•</div>
-      <div>Range: <strong class="text-warning">{{ filter_meta.date_range }}</strong></div>
+      <div>Range: <strong class="text-orange">{{ filter_meta.date_range }}</strong></div>
     </div>
 
     <div class="d-flex gap-2">
@@ -95,7 +95,7 @@
       <tbody>
         {% for b in bookings %}
         <tr>
-          <td><strong class="text-warning">{{ b.booking_reference }}</strong></td>
+          <td><strong class="text-orange">{{ b.booking_reference }}</strong></td>
           <td class="text-white fw-bold">{{ b.full_name }}</td>
           <td class="text-muted small">{{ b.mobile_number }}<br>{{ b.email }}</td>
           <td>{{ b.booking_date|date:"d-M-Y" }}</td>
@@ -120,4 +120,3 @@
   </div>
 </div>
 {% endblock %}
-

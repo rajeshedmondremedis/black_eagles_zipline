@@ -4,7 +4,7 @@
 {% block title %}{{ site_settings.site_name }} | {{ site_settings.tagline }}{% endblock %}
 
 {% block content %}
-<!-- 1. Hero Section -->
+<!-- 1. Full-Screen Hero Section -->
 <section class="hero-wrapper">
   <div class="container position-relative" style="z-index: 2;">
     <div class="row align-items-center">
@@ -14,21 +14,27 @@
         </div>
         <h1 class="hero-title text-white">
           Experience the Thrill.<br>
-          <span style="color: var(--accent-orange);">Fly Beyond Limits.</span>
+          <span class="text-accent">Embrace the Adventure.</span>
         </h1>
         <p class="hero-lead">
           {{ site_settings.hero_subheading }}
         </p>
         <div class="d-flex flex-wrap align-items-center gap-3">
           <a href="{% url 'bookings:booking_page' %}" class="btn-adventure-primary fs-6 px-4 py-3">
-            <i class="bi bi-calendar2-check-fill"></i> Book Your Adventure
+            <i class="bi bi-calendar2-check-fill"></i> Book Your Ride
           </a>
-          <a href="#about-experience" class="btn-adventure-outline fs-6 px-4 py-3">
-            <i class="bi bi-compass"></i> Explore More
+          <a href="{% url 'website:gallery' %}" class="btn-adventure-outline fs-6 px-4 py-3">
+            <i class="bi bi-images"></i> Explore Gallery
           </a>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Scroll Down Indicator -->
+  <div class="hero-scroll-indicator d-none d-md-flex">
+    <div class="scroll-wheel"></div>
+    <span>Scroll to Explore</span>
   </div>
 </section>
 
@@ -62,26 +68,30 @@
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <span class="section-tag">Pure Wilderness Flight</span>
-        <h2 class="section-heading">Soar Above The Clouds Across Breathtaking Forest Chasms</h2>
-        <p class="text-muted mb-4" style="line-height: 1.8;">
+        <h2 class="section-heading text-white">Soar Above The Clouds Across Breathtaking Forest Chasms</h2>
+        <p class="text-light-grey mb-4" style="line-height: 1.8;">
           {{ site_settings.about_story }}
         </p>
         <div class="row g-3 mb-4">
           <div class="col-sm-6">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-shield-check fs-2 text-warning"></i>
+              <div class="card-icon-box flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                <i class="bi bi-shield-check"></i>
+              </div>
               <div>
-                <h6 class="text-white mb-1">Dual-Cable Engineering</h6>
-                <p class="text-muted small mb-0">High-tensile steel lines with redundant safety anchor systems.</p>
+                <h6 class="text-white mb-1">Dual-Cable Rigging</h6>
+                <p class="text-light-grey opacity-75 small mb-0">High-tensile lines with redundant anchor systems.</p>
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-award fs-2 text-warning"></i>
+              <div class="card-icon-box flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                <i class="bi bi-award"></i>
+              </div>
               <div>
                 <h6 class="text-white mb-1">Trained Jumpmasters</h6>
-                <p class="text-muted small mb-0">Certified safety guides accompany each departure slot.</p>
+                <p class="text-light-grey opacity-75 small mb-0">Certified safety guides escort each departure group.</p>
               </div>
             </div>
           </div>
@@ -93,15 +103,15 @@
 
       <div class="col-lg-6">
         <div class="position-relative">
-          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Black Eagles Zipline Action" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-25">
+          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Black Eagles Zipline Action" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-25" style="object-fit: cover; width: 100%; max-height: 480px;">
           <div class="position-absolute bottom-0 start-0 m-4 p-3 rounded-3 bg-dark bg-opacity-75 backdrop-blur border border-secondary border-opacity-25 d-none d-sm-block">
             <div class="d-flex align-items-center gap-3">
-              <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2">
+              <div class="rounded-circle bg-warning bg-opacity-10 text-orange p-2">
                 <i class="bi bi-camera-reels-fill fs-4"></i>
               </div>
               <div>
-                <div class="text-white fw-bold">Action Photo Moments</div>
-                <div class="text-muted small">Capture your aerial flight across the valley</div>
+                <div class="text-white fw-bold">Aerial Action Moments</div>
+                <div class="text-light-grey small">Intimate flights with max 6 riders per slot</div>
               </div>
             </div>
           </div>
@@ -112,12 +122,12 @@
 </section>
 
 <!-- 4. Why Choose Black Eagles Zipline -->
-<section class="section-pad bg-surface border-top border-bottom border-secondary border-opacity-25" style="background-color: var(--bg-surface);">
+<section class="section-pad border-top border-bottom border-secondary border-opacity-10" style="background-color: var(--c-charcoal);">
   <div class="container">
     <div class="text-center max-w-700 mx-auto mb-5">
       <span class="section-tag">Engineered For Thrill & Trust</span>
-      <h2 class="section-heading">Why Fly With Black Eagles Zipline</h2>
-      <p class="text-muted">Experience world-class outdoor flight recreation built on strict daily inspections and intimate group sizes.</p>
+      <h2 class="section-heading text-white">Why Fly With Black Eagles Zipline</h2>
+      <p class="text-light-grey">Experience world-class outdoor flight recreation built on strict daily inspections and intimate group sizes.</p>
     </div>
 
     <div class="row g-4">
@@ -127,7 +137,7 @@
             <i class="bi bi-shield-fill-check"></i>
           </div>
           <h5 class="text-white mb-2">Dedicated Safety Protocols</h5>
-          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+          <p class="text-light-grey opacity-75 mb-0 small" style="line-height: 1.8;">
             Dual continuous life-lines, certified full-body harness gear, and pre-flight gear fitting. Inspected each morning before operations begin.
           </p>
         </div>
@@ -138,7 +148,7 @@
             <i class="bi bi-people-fill"></i>
           </div>
           <h5 class="text-white mb-2">Small Groups (Max 6)</h5>
-          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+          <p class="text-light-grey opacity-75 mb-0 small" style="line-height: 1.8;">
             Every slot is capped at 6 passengers. No massive tourist crowds, zero chaotic rushing, and personal attention from launch to landing.
           </p>
         </div>
@@ -149,7 +159,7 @@
             <i class="bi bi-tree-fill"></i>
           </div>
           <h5 class="text-white mb-2">Natural Canopy Vistas</h5>
-          <p class="text-muted mb-0 small" style="line-height: 1.7;">
+          <p class="text-light-grey opacity-75 mb-0 small" style="line-height: 1.8;">
             Traverse over dense mountain forests, native flora, and sweeping valley cliffs preserved in their natural wilderness setting.
           </p>
         </div>
@@ -158,13 +168,13 @@
   </div>
 </section>
 
-<!-- 5. Featured Adventure Gallery -->
+<!-- 5. Featured Adventure Gallery Preview -->
 <section class="section-pad">
   <div class="container">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
       <div>
         <span class="section-tag">Visual Chronicles</span>
-        <h2 class="section-heading mb-0">Featured Flight Moments</h2>
+        <h2 class="section-heading text-white mb-0">Featured Flight Moments</h2>
       </div>
       <a href="{% url 'website:gallery' %}" class="btn-adventure-outline mt-3 mt-md-0">
         View All Photos <i class="bi bi-arrow-right ms-1"></i>
@@ -175,11 +185,11 @@
       {% for img in featured_gallery %}
       <div class="col-md-6 col-lg-4">
         <div class="gallery-card" data-img-src="{{ img.image.url }}" data-img-title="{{ img.title }}" data-img-caption="{{ img.caption }}">
-          <img src="{{ img.image.url }}" alt="{{ img.title }}">
+          <img src="{{ img.image.url }}" alt="{{ img.title }}" loading="lazy">
           <div class="gallery-overlay">
             <span class="gallery-tag">{{ img.get_category_display }}</span>
             <h6 class="text-white mb-1 fw-bold">{{ img.title }}</h6>
-            <p class="text-muted small mb-0">{{ img.caption|truncatewords:8 }}</p>
+            <p class="text-light-grey small mb-0">{{ img.caption|truncatewords:8 }}</p>
           </div>
         </div>
       </div>
@@ -193,12 +203,12 @@
 </section>
 
 <!-- 6. Pricing Preview Section -->
-<section class="section-pad" style="background-color: var(--bg-surface);">
+<section class="section-pad" style="background-color: var(--c-charcoal);">
   <div class="container">
-    <div class="text-center mb-5">
+    <div class="text-center max-w-700 mx-auto mb-5">
       <span class="section-tag">Transparent Value</span>
-      <h2 class="section-heading">Ticket Packages & Rates</h2>
-      <p class="text-muted">Administrator-configurable rates with comprehensive safety gear and certified guide accompaniment.</p>
+      <h2 class="section-heading text-white">Ticket Packages & Rates</h2>
+      <p class="text-light-grey">Administrator-configurable rates with comprehensive safety gear and certified guide accompaniment.</p>
     </div>
 
     <div class="row g-4 justify-content-center">
@@ -210,18 +220,18 @@
           {% endif %}
           <div>
             <h4 class="text-white mb-1">{{ pkg.name }}</h4>
-            <div class="text-muted small mb-3"><i class="bi bi-stopwatch me-1"></i> {{ pkg.duration }}</div>
+            <div class="text-light-grey small mb-3"><i class="bi bi-stopwatch text-orange me-1"></i> {{ pkg.duration }}</div>
             <div class="mb-4">
               <span class="price-currency">₹</span>
               <span class="price-val">{{ pkg.price|floatformat:0 }}</span>
-              <span class="text-muted">/ person</span>
+              <span class="text-light-grey small">/ person</span>
             </div>
-            <p class="text-muted small mb-4">{{ pkg.description }}</p>
+            <p class="text-light-grey small mb-4" style="line-height: 1.7;">{{ pkg.description }}</p>
             <hr class="border-secondary border-opacity-25 my-4">
-            <ul class="list-unstyled mb-4">
+            <ul class="price-feature-list">
               {% for feat in pkg.feature_list %}
-              <li class="d-flex align-items-center gap-2 mb-2 small text-light">
-                <i class="bi bi-check-circle-fill text-warning"></i>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
                 <span>{{ feat }}</span>
               </li>
               {% endfor %}
@@ -239,13 +249,13 @@
   </div>
 </section>
 
-<!-- 7. Rider Preparation & Booking Highlights -->
+<!-- 7. Rider Preparation Highlights -->
 <section class="section-pad">
   <div class="container">
-    <div class="text-center mb-5">
+    <div class="text-center max-w-700 mx-auto mb-5">
       <span class="section-tag">Rider Preparation</span>
-      <h2 class="section-heading">The Black Eagles Advantage</h2>
-      <p class="text-muted max-w-700 mx-auto">Engineered from ground to canopy to provide a seamless, comfortable, and thrilling adventure experience.</p>
+      <h2 class="section-heading text-white">The Black Eagles Advantage</h2>
+      <p class="text-light-grey">Engineered from ground to canopy to provide a seamless, comfortable, and thrilling adventure experience.</p>
     </div>
 
     <div class="row g-4">
@@ -255,7 +265,7 @@
             <i class="bi bi-clock-history"></i>
           </div>
           <h5 class="text-white mb-2">Zero-Wait Departures</h5>
-          <p class="text-muted small mb-0" style="line-height: 1.8;">
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
             With real-time online slot scheduling, your reserved departure time is reserved exclusively for your party. No chaotic ticket lines or uncertain wait times.
           </p>
         </div>
@@ -267,7 +277,7 @@
             <i class="bi bi-shield-lock"></i>
           </div>
           <h5 class="text-white mb-2">Wednesday Maintenance</h5>
-          <p class="text-muted small mb-0" style="line-height: 1.8;">
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
             We keep our lines closed every Wednesday for rigorous inspection, tension testing, and guide training to maintain the highest operational integrity.
           </p>
         </div>
@@ -279,7 +289,7 @@
             <i class="bi bi-receipt-cutoff"></i>
           </div>
           <h5 class="text-white mb-2">Instant Confirmation</h5>
-          <p class="text-muted small mb-0" style="line-height: 1.8;">
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
             Receive an instant computerized booking voucher with your unique reference code (`BEZ-YYYY-XXXXXX`). Pay securely at the counter upon arrival.
           </p>
         </div>
@@ -288,39 +298,45 @@
   </div>
 </section>
 
-<!-- 8. Interactive Location & Contact Section -->
-<section class="section-pad border-top border-secondary border-opacity-25" style="background-color: var(--bg-surface);">
+<!-- 8. Interactive Location & Base Camp Section -->
+<section class="section-pad border-top border-secondary border-opacity-10" style="background-color: var(--c-charcoal);">
   <div class="container">
     <div class="row g-5 align-items-center">
       <div class="col-lg-5">
         <span class="section-tag">Reach The Summit</span>
-        <h2 class="section-heading">How To Reach Black Eagles Zipline</h2>
-        <p class="text-muted mb-4">
+        <h2 class="section-heading text-white">How To Reach Black Eagles Zipline</h2>
+        <p class="text-light-grey mb-4" style="line-height: 1.8;">
           Located conveniently along the scenic mountain corridor with dedicated tourist parking, visitor lounge, and lockbox amenities.
         </p>
 
         <div class="mb-4">
           <div class="d-flex align-items-start gap-3 mb-3">
-            <i class="bi bi-geo-alt-fill text-warning fs-4"></i>
+            <div class="card-icon-box flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
             <div>
               <h6 class="text-white mb-0">Base Camp Address</h6>
-              <p class="text-muted small mb-0">{{ site_settings.address }}</p>
+              <p class="text-light-grey small mb-0">{{ site_settings.address }}</p>
             </div>
           </div>
 
           <div class="d-flex align-items-start gap-3 mb-3">
-            <i class="bi bi-telephone-fill text-warning fs-4"></i>
+            <div class="card-icon-box flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
             <div>
               <h6 class="text-white mb-0">Helpline & Bookings</h6>
-              <p class="text-muted small mb-0">{{ site_settings.phone_number }}</p>
+              <p class="text-light-grey small mb-0">{{ site_settings.phone_number }}</p>
             </div>
           </div>
 
           <div class="d-flex align-items-start gap-3">
-            <i class="bi bi-envelope-fill text-warning fs-4"></i>
+            <div class="card-icon-box flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+              <i class="bi bi-envelope-fill"></i>
+            </div>
             <div>
               <h6 class="text-white mb-0">Inquiries Email</h6>
-              <p class="text-muted small mb-0">{{ site_settings.email_address }}</p>
+              <p class="text-light-grey small mb-0">{{ site_settings.email_address }}</p>
             </div>
           </div>
         </div>
@@ -339,7 +355,8 @@
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Google Maps Location">
           </iframe>
         </div>
       </div>
@@ -350,17 +367,16 @@
 <!-- Lightbox Modal for Gallery Photos -->
 <div class="modal fade" id="galleryLightboxModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-dark text-white border border-secondary">
+    <div class="modal-content bg-dark text-white border border-secondary border-opacity-50" style="border-radius: 20px; overflow: hidden;">
       <div class="modal-header border-0 pb-0">
         <h5 class="modal-title fw-bold" id="lightboxTitle"></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center p-3">
-        <img id="lightboxImage" src="" alt="Gallery Preview" class="img-fluid rounded mb-3" style="max-height: 70vh;">
-        <p id="lightboxCaption" class="text-muted small mb-0"></p>
+        <img id="lightboxImage" src="" alt="Gallery Preview" class="img-fluid rounded-3 mb-3 shadow" style="max-height: 72vh; object-fit: contain;">
+        <p id="lightboxCaption" class="text-light-grey small mb-0"></p>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}

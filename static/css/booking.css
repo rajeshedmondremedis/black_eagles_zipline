@@ -1,0 +1,302 @@
+/* ==========================================================================
+   BLACK EAGLES ZIPLINE - BOOKING EXPERIENCE STYLESHEET
+   Developed for PL SOFT TECH SOLUTIONS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Stepper & Step Indicators
+   -------------------------------------------------------------------------- */
+.booking-container {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  box-shadow: var(--shadow-md);
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--c-warm-white);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.step-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-orange) 0%, #D86310 100%);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-orange);
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Date Picker Customization
+   -------------------------------------------------------------------------- */
+.datepicker-input {
+  color-scheme: dark;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.85rem 1.25rem !important;
+  border-radius: 14px !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. Slot Cards (Interactive Selection)
+   -------------------------------------------------------------------------- */
+.slot-card {
+  background: rgba(14, 22, 19, 0.75);
+  border: 2px solid var(--border-medium);
+  border-radius: 16px;
+  padding: 1.35rem 1.25rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  height: 100%;
+}
+
+.slot-card:hover {
+  border-color: rgba(244, 123, 32, 0.5);
+  background: rgba(244, 123, 32, 0.05);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.slot-card.selected {
+  border-color: var(--c-orange);
+  background: linear-gradient(135deg, rgba(244, 123, 32, 0.15) 0%, rgba(18, 59, 42, 0.25) 100%);
+  box-shadow: 0 0 0 1px var(--c-orange), var(--shadow-orange);
+  transform: translateY(-2px);
+}
+
+.slot-card.selected::after {
+  content: '\F26E'; /* Bootstrap icon check2-circle */
+  font-family: 'bootstrap-icons';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  color: var(--c-orange);
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.seat-badge {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.seat-badge.available {
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34D399;
+}
+
+.seat-badge.limited {
+  background: rgba(244, 123, 32, 0.16);
+  border: 1px solid rgba(244, 123, 32, 0.4);
+  color: var(--c-orange);
+}
+
+.seat-badge.full {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #F87171;
+}
+
+/* --------------------------------------------------------------------------
+   4. Member Stepper Counter
+   -------------------------------------------------------------------------- */
+.counter-box {
+  display: inline-flex;
+  align-items: center;
+  background: var(--c-charcoal-dark);
+  border: 2px solid var(--border-medium);
+  border-radius: 9999px;
+  padding: 0.3rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.counter-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(233, 237, 233, 0.08);
+  color: var(--c-warm-white);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.counter-btn:hover {
+  background: var(--c-orange);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-orange);
+}
+
+.counter-btn:active {
+  transform: scale(0.92);
+}
+
+.counter-input {
+  width: 60px;
+  border: none !important;
+  background: transparent !important;
+  color: var(--c-warm-white) !important;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-align: center;
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Sticky Reservation Summary Card
+   -------------------------------------------------------------------------- */
+.booking-summary-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 100px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--border-subtle);
+  font-size: 0.92rem;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.summary-row .label {
+  color: var(--c-text-muted);
+}
+
+.summary-row .value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--c-warm-white);
+}
+
+/* --------------------------------------------------------------------------
+   6. Luxury Boarding Voucher (booking_success.html)
+   -------------------------------------------------------------------------- */
+.ticket-voucher {
+  background: #FFFFFF;
+  color: var(--c-text-dark);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.ticket-header {
+  background: linear-gradient(135deg, var(--c-forest-deep) 0%, var(--c-charcoal) 100%);
+  color: #FFFFFF;
+  padding: 2.25rem 2.5rem;
+  border-bottom: 3px solid var(--c-orange);
+}
+
+.ticket-ref-pill {
+  background: rgba(244, 123, 32, 0.2);
+  border: 1px solid var(--c-orange);
+  color: #FFA04D;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.55rem 1.4rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.ticket-perforation {
+  position: relative;
+  height: 24px;
+  background: #FFFFFF;
+  margin: 1.5rem -1px;
+}
+
+.ticket-perforation::before, .ticket-perforation::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  background-color: var(--surface-body);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.ticket-perforation::before { left: -14px; }
+.ticket-perforation::after { right: -14px; }
+
+.ticket-perforation-line {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  border-top: 2px dashed #CBD5E1;
+}
+
+@media (max-width: 576px) {
+  .ticket-header {
+    padding: 1.5rem 1.25rem;
+  }
+  .ticket-ref-pill {
+    font-size: 0.95rem;
+    padding: 0.4rem 1rem;
+  }
+  .booking-container {
+    padding: 1.25rem 1rem;
+    border-radius: 18px;
+  }
+}
+
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print, nav, footer, .btn-adventure-primary, .btn-adventure-outline {
+    display: none !important;
+  }
+  .ticket-voucher {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    margin: 0 !important;
+  }
+}

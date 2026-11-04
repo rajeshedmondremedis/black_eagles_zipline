@@ -1,0 +1,443 @@
+/* ==========================================================================
+   BLACK EAGLES ZIPLINE - MASTER DESIGN SYSTEM
+   Palette Specification:
+     - Deep forest green: #123B2A
+     - Dark charcoal:     #17211D
+     - Adventure orange:  #F47B20
+     - Warm white:        #F8F8F4
+     - Light grey:        #E9EDE9
+     - Text:              #25332C (light theme) / #F8F8F4 (dark theme)
+   Developed for PL SOFT TECH SOLUTIONS
+   ========================================================================== */
+
+:root {
+  /* Core Brand Colors */
+  --c-forest-deep: #123B2A;
+  --c-forest-dark: #0D261B;
+  --c-forest-light: #1A523A;
+  --c-charcoal: #17211D;
+  --c-charcoal-dark: #0E1613;
+  --c-charcoal-card: #1C2723;
+  --c-charcoal-card-hover: #23312C;
+  --c-orange: #F47B20;
+  --c-orange-hover: #E06810;
+  --c-orange-glow: rgba(244, 123, 32, 0.28);
+  --c-warm-white: #F8F8F4;
+  --c-light-grey: #E9EDE9;
+  --c-text-dark: #25332C;
+  --c-text-muted: #8E9E96;
+  --c-text-dim: #5E7167;
+
+  /* Functional Status Colors */
+  --c-emerald: #10B981;
+  --c-emerald-glow: rgba(16, 185, 129, 0.25);
+  --c-crimson: #EF4444;
+  --c-amber: #F59E0B;
+
+  /* Surface & Border Variables */
+  --surface-body: var(--c-charcoal-dark);
+  --surface-card: var(--c-charcoal-card);
+  --surface-card-hover: var(--c-charcoal-card-hover);
+  --surface-glass: rgba(23, 33, 29, 0.88);
+  --border-subtle: rgba(233, 237, 233, 0.08);
+  --border-medium: rgba(233, 237, 233, 0.16);
+  --border-accent: rgba(244, 123, 32, 0.4);
+  --border-forest: rgba(18, 59, 42, 0.6);
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.5);
+  --shadow-orange: 0 8px 24px var(--c-orange-glow);
+  --shadow-emerald: 0 8px 24px var(--c-emerald-glow);
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.18s ease;
+  --transition-base: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base Elements & Typography
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface-body);
+  color: var(--c-warm-white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 576px) {
+  .section-pad {
+    padding: 3rem 0;
+  }
+  .btn-adventure-primary, .btn-adventure-outline {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--c-warm-white);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin-top: 0;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; }
+h3 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 700; }
+h4 { font-size: clamp(1.15rem, 1.8vw, 1.45rem); font-weight: 700; }
+h5 { font-size: 1.15rem; font-weight: 600; }
+h6 { font-size: 0.95rem; font-weight: 600; }
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+p.lead {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--c-light-grey);
+}
+
+a {
+  color: var(--c-orange);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--c-orange-hover);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn-adventure-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, var(--c-orange) 0%, #D86310 100%);
+  color: #FFFFFF !important;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 0.8rem 1.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-orange);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn-adventure-primary:hover {
+  background: linear-gradient(135deg, #FF8933 0%, var(--c-orange) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(244, 123, 32, 0.42);
+  color: #FFFFFF !important;
+}
+
+.btn-adventure-primary:active {
+  transform: translateY(0);
+}
+
+.btn-adventure-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: rgba(23, 33, 29, 0.6);
+  backdrop-filter: blur(8px);
+  color: var(--c-warm-white) !important;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.8rem 1.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn-adventure-outline:hover {
+  background: rgba(244, 123, 32, 0.12);
+  border-color: var(--c-orange);
+  color: var(--c-orange) !important;
+  transform: translateY(-2px);
+}
+
+.btn-adventure-forest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: var(--c-forest-deep);
+  color: var(--c-warm-white) !important;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-forest);
+  transition: all var(--transition-base);
+}
+
+.btn-adventure-forest:hover {
+  background: var(--c-forest-light);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   Badges & Tags
+   ========================================================================== */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(18, 59, 42, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 123, 32, 0.35);
+  color: var(--c-warm-white);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-uppercase: uppercase;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.hero-badge i {
+  color: var(--c-orange);
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--c-orange);
+  margin-bottom: 0.5rem;
+}
+
+.section-heading {
+  margin-bottom: 1.25rem;
+  font-weight: 800;
+}
+
+/* Category Filter Pills (inspired by reference image) */
+.filter-pill-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem;
+  background: rgba(14, 22, 19, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-light-grey);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.filter-pill:hover {
+  color: #FFFFFF;
+  background: rgba(233, 237, 233, 0.06);
+}
+
+.filter-pill.active {
+  background: var(--c-orange);
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: var(--shadow-orange);
+}
+
+/* ==========================================================================
+   Adventure Cards & Surfaces
+   ========================================================================== */
+.adventure-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 2rem 1.75rem;
+  height: 100%;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.adventure-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--c-forest-light), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.adventure-card:hover {
+  background: var(--surface-card-hover);
+  border-color: var(--border-accent);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.adventure-card:hover::before {
+  opacity: 1;
+}
+
+.card-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: rgba(244, 123, 32, 0.12);
+  border: 1px solid rgba(244, 123, 32, 0.25);
+  color: var(--c-orange);
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  transition: all var(--transition-base);
+}
+
+.adventure-card:hover .card-icon-box {
+  background: var(--c-orange);
+  color: #FFFFFF;
+  transform: scale(1.06);
+  box-shadow: var(--shadow-orange);
+}
+
+/* ==========================================================================
+   Form Controls (Shared)
+   ========================================================================== */
+.form-control, .form-select {
+  background-color: var(--c-charcoal-dark) !important;
+  border: 1px solid var(--border-medium) !important;
+  color: var(--c-warm-white) !important;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--c-orange) !important;
+  box-shadow: 0 0 0 3px var(--c-orange-glow) !important;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: var(--c-text-dim);
+}
+
+.form-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-light-grey);
+  margin-bottom: 0.4rem;
+}
+
+/* ==========================================================================
+   Utility Helpers
+   ========================================================================== */
+.section-pad {
+  padding: clamp(3.5rem, 6vw, 6rem) 0;
+}
+
+.bg-forest-deep { background-color: var(--c-forest-deep) !important; }
+.bg-charcoal { background-color: var(--c-charcoal) !important; }
+.bg-charcoal-dark { background-color: var(--c-charcoal-dark) !important; }
+.text-orange { color: var(--c-orange) !important; }
+.text-forest { color: var(--c-forest-light) !important; }
+.text-warm-white { color: var(--c-warm-white) !important; }
+.text-light-grey { color: var(--c-light-grey) !important; }
+
+.max-w-700 { max-width: 700px; }
+.max-w-850 { max-width: 850px; }
+.max-w-600 { max-width: 600px; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-charcoal-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #25332C;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-forest-light);
+}

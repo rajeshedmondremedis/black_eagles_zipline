@@ -9,24 +9,24 @@
   <!-- Upload Form -->
   <div class="col-lg-4">
     <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-cloud-arrow-up text-warning me-2"></i> Upload New Photograph</h5>
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-cloud-arrow-up text-orange me-2"></i> Upload New Photograph</h5>
 
       <form method="post" action="{% url 'dashboard:gallery_manage' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="action" value="add">
 
         <div class="mb-3">
-          <label class="form-label text-light small fw-bold">Image Title *</label>
+          <label class="form-label text-light-grey small fw-bold">Image Title *</label>
           <input type="text" name="title" class="form-control" placeholder="e.g. Canopy Flyover" required>
         </div>
 
         <div class="mb-3">
-          <label class="form-label text-light small fw-bold">Caption / Description</label>
+          <label class="form-label text-light-grey small fw-bold">Caption / Description</label>
           <input type="text" name="caption" class="form-control" placeholder="Brief note on location or activity">
         </div>
 
         <div class="mb-3">
-          <label class="form-label text-light small fw-bold">Category *</label>
+          <label class="form-label text-light-grey small fw-bold">Category *</label>
           <select name="category" class="form-select" required>
             {% for code, label in categories %}
             <option value="{{ code }}">{{ label }}</option>
@@ -35,16 +35,16 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label text-light small fw-bold">Image File (JPG/PNG/WEBP) *</label>
+          <label class="form-label text-light-grey small fw-bold">Image File (JPG/PNG/WEBP) *</label>
           <input type="file" name="image" class="form-control" accept="image/*" required>
         </div>
 
         <div class="form-check form-switch mb-4">
           <input class="form-check-input" type="checkbox" name="is_featured" id="featCheck">
-          <label class="form-check-label text-light small" for="featCheck">Featured on Homepage Preview</label>
+          <label class="form-check-label text-light-grey small" for="featCheck">Featured on Homepage Preview</label>
         </div>
 
-        <button type="submit" class="btn btn-adventure-primary w-100 py-2 justify-content-center">
+        <button type="submit" class="btn btn-dash-primary w-100 py-2 justify-content-center">
           <i class="bi bi-upload me-1"></i> Add Photo to Gallery
         </button>
       </form>
@@ -100,4 +100,3 @@
   </div>
 </div>
 {% endblock %}
-

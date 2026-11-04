@@ -2,13 +2,13 @@
 <footer class="footer-adventure">
   <div class="container">
     <div class="row g-4 mb-5">
-      <!-- Col 1: Brand & Bio -->
+      <!-- Col 1: Brand & Socials -->
       <div class="col-lg-4">
         <a class="footer-brand text-decoration-none d-flex align-items-center gap-2 mb-3" href="{% url 'website:home' %}">
-          <i class="bi bi-feather text-warning fs-3"></i>
+          <i class="bi bi-feather text-orange fs-3"></i>
           <span>BLACK EAGLES</span> ZIPLINE
         </a>
-        <p class="text-muted mb-4 small" style="line-height: 1.7;">
+        <p class="text-light-grey opacity-75 mb-4 small" style="line-height: 1.8;">
           {{ site_settings.about_summary }}
         </p>
         <div class="d-flex align-items-center">
@@ -27,62 +27,61 @@
         </div>
       </div>
 
-      <!-- Col 2: Quick Links -->
+      <!-- Col 2: Navigation Links -->
       <div class="col-6 col-lg-2 ms-lg-auto">
-        <h6 class="text-white fw-bold mb-3 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Explore</h6>
-        <ul class="list-unstyled">
+        <h6 class="text-white fw-bold mb-3 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Navigation</h6>
+        <ul class="list-unstyled mb-0">
           <li><a href="{% url 'website:home' %}" class="footer-link">Home Experience</a></li>
           <li><a href="{% url 'website:about' %}" class="footer-link">About Our Valley</a></li>
           <li><a href="{% url 'website:gallery' %}" class="footer-link">Photo Gallery</a></li>
           <li><a href="{% url 'website:safety' %}" class="footer-link">Safety Standards</a></li>
           <li><a href="{% url 'website:pricing' %}" class="footer-link">Packages & Pricing</a></li>
-          <li><a href="{% url 'website:contact' %}" class="footer-link">Contact & Location</a></li>
+          <li><a href="{% url 'website:contact' %}" class="footer-link">Contact & Directions</a></li>
         </ul>
       </div>
 
       <!-- Col 3: Operating Schedule -->
       <div class="col-6 col-lg-3">
         <h6 class="text-white fw-bold mb-3 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Flight Hours</h6>
-        <p class="text-muted small mb-2">
-          <i class="bi bi-clock-fill text-warning me-2"></i>
+        <p class="text-light-grey small mb-2">
+          <i class="bi bi-clock-fill text-orange me-2"></i>
           {{ site_settings.operating_hours }}
         </p>
-        <div class="p-2 rounded bg-dark border border-secondary text-warning small mb-3">
-          <i class="bi bi-shield-lock-fill me-1"></i>
-          <strong>Notice:</strong> Closed every Wednesday for structural line inspection & rig testing.
+        <div class="footer-notice-box mb-3">
+          <i class="bi bi-shield-lock-fill text-orange me-1"></i>
+          <strong>Notice:</strong> Closed every Wednesday for line testing & guide training.
         </div>
-        <p class="text-muted small mb-0">
-          <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+        <p class="text-light-grey small mb-0">
+          <i class="bi bi-geo-alt-fill text-orange me-2"></i>
           {{ site_settings.address }}
         </p>
       </div>
 
-      <!-- Col 4: Booking & Support -->
+      <!-- Col 4: Online Booking CTA -->
       <div class="col-lg-3">
         <h6 class="text-white fw-bold mb-3 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Instant Reservation</h6>
-        <p class="text-muted small mb-3">Reserve your daily flight slot online. 4 fixed slots daily, max 6 riders per slot for safety & personal guidance.</p>
+        <p class="text-light-grey small mb-3">Reserve your daily flight slot online. 4 departures daily, maximum 6 riders per slot for personal jumpmaster escort.</p>
         <a href="{% url 'bookings:booking_page' %}" class="btn-adventure-primary w-100 justify-content-center mb-3">
           <i class="bi bi-calendar2-check-fill"></i> Check Available Slots
         </a>
-        <div class="text-muted small">
+        <div class="text-light-grey small">
           Helpline: <strong class="text-white">{{ site_settings.phone_number }}</strong>
         </div>
       </div>
     </div>
 
     <!-- Sub-footer with Copyright & Credits -->
-    <div class="pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-muted">
+    <div class="pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-light-grey">
       <div>
         &copy; {% now "Y" %} <strong>{{ site_settings.site_name }}</strong>. All rights reserved.
       </div>
       <div class="d-flex align-items-center gap-3">
-        <span>Architected & Developed by <strong class="text-warning">PL SOFT TECH SOLUTIONS</strong></span>
+        <span>Architected & Developed by <strong class="text-orange">PL SOFT TECH SOLUTIONS</strong></span>
         <span>•</span>
-        <a href="{% url 'dashboard:login' %}" class="text-muted text-decoration-none hover-light">
-          <i class="bi bi-shield-lock"></i> Staff Portal
+        <a href="{% url 'dashboard:login' %}" class="text-light-grey text-decoration-none">
+          <i class="bi bi-shield-lock"></i> Operations Console
         </a>
       </div>
     </div>
   </div>
 </footer>
-

@@ -4,32 +4,38 @@
 {% block title %}About Us | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div class="py-5" style="background: linear-gradient(180deg, rgba(7, 13, 10, 0.7) 0%, #070D0A 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8rem !important;">
+<!-- Banner Section -->
+<div class="py-5" style="background: linear-gradient(180deg, rgba(14, 22, 19, 0.72) 0%, var(--surface-body) 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8.5rem !important;">
   <div class="container text-center py-5">
     <span class="hero-badge">Our Heritage & Mission</span>
     <h1 class="display-4 fw-bold text-white mb-3">About Black Eagles Zipline</h1>
-    <p class="text-light lead max-w-700 mx-auto">
-      Outdoor recreation engineered for excitement and guided by certified safety protocols.
+    <p class="text-light-grey lead max-w-700 mx-auto">
+      Outdoor flight recreation engineered for authentic excitement and guided by certified safety protocols.
     </p>
   </div>
 </div>
 
 <section class="section-pad">
   <div class="container">
+    <!-- Story & Image Section -->
     <div class="row align-items-center g-5 mb-5">
       <div class="col-lg-6">
         <span class="section-tag">Who We Are</span>
-        <h2 class="section-heading">Wilderness Adventure With Certified Safety</h2>
-        <p class="text-muted" style="line-height: 1.8;">
+        <h2 class="section-heading text-white">Wilderness Flight With Uncompromising Safety</h2>
+        <p class="text-light-grey mb-3" style="line-height: 1.8;">
           {{ site_settings.about_story }}
         </p>
-        <p class="text-muted" style="line-height: 1.8;">
+        <p class="text-light-grey opacity-75" style="line-height: 1.8;">
           {{ site_settings.about_summary }}
         </p>
       </div>
       <div class="col-lg-6">
-        <div class="rounded-4 overflow-hidden shadow-lg border border-secondary border-opacity-25">
-          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Zipline Flying" class="img-fluid">
+        <div class="rounded-4 overflow-hidden shadow-lg border border-secondary border-opacity-25 position-relative">
+          <img src="{% static 'images/hero-zipline.jpg' %}" alt="Black Eagles Zipline Valley" class="img-fluid" style="width: 100%; height: 380px; object-fit: cover;">
+          <div class="position-absolute bottom-0 start-0 m-3 p-3 rounded-3 bg-dark bg-opacity-75 backdrop-blur border border-secondary border-opacity-25">
+            <span class="text-orange small fw-bold text-uppercase d-block" style="letter-spacing: 1px;">Natural Corridor</span>
+            <span class="text-white small">Pure canopy flight line</span>
+          </div>
         </div>
       </div>
     </div>
@@ -40,8 +46,8 @@
         <div class="adventure-card">
           <div class="card-icon-box"><i class="bi bi-shield-shaded"></i></div>
           <h4 class="text-white mb-2">Dual-Cable Engineering</h4>
-          <p class="text-muted small mb-0" style="line-height: 1.7;">
-            Dual continuous high-tensile wire lines with backup safety anchors and braking systems inspected every morning prior to customer departures.
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
+            Dual continuous high-tensile wire lines with backup safety anchors and magnetic braking systems inspected every morning prior to customer departures.
           </p>
         </div>
       </div>
@@ -49,7 +55,7 @@
         <div class="adventure-card">
           <div class="card-icon-box"><i class="bi bi-person-badge"></i></div>
           <h4 class="text-white mb-2">Certified Jumpmasters</h4>
-          <p class="text-muted small mb-0" style="line-height: 1.7;">
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
             Trained and certified aerial adventure guides escort every flight group, ensuring proper harness fitting and clear instructions on platform decks.
           </p>
         </div>
@@ -58,26 +64,26 @@
         <div class="adventure-card">
           <div class="card-icon-box"><i class="bi bi-globe-americas"></i></div>
           <h4 class="text-white mb-2">Eco-Conscious Canopy</h4>
-          <p class="text-muted small mb-0" style="line-height: 1.7;">
+          <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
             Designed to minimize ecological footprint, respecting natural wildlife habitats, indigenous trees, and mountain valley preservation.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Location details -->
-    <div class="p-4 p-md-5 rounded-4 mt-5" style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle);">
+    <!-- Base Camp Location Details Card -->
+    <div class="p-4 p-md-5 rounded-4 mt-5" style="background-color: var(--c-charcoal); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-md);">
       <div class="row align-items-center g-4">
         <div class="col-lg-8">
           <span class="section-tag">Base Camp</span>
           <h3 class="text-white fw-bold mb-3">Our Valley Location</h3>
-          <p class="text-muted mb-3" style="line-height: 1.7;">
+          <p class="text-light-grey mb-3" style="line-height: 1.8;">
             {{ site_settings.address }}
           </p>
-          <div class="d-flex flex-wrap gap-4 text-light small">
-            <div><i class="bi bi-check2 text-warning me-1"></i> Dedicated Tourist Parking</div>
-            <div><i class="bi bi-check2 text-warning me-1"></i> Equipment Fitting Bay</div>
-            <div><i class="bi bi-check2 text-warning me-1"></i> Complimentary Lockers</div>
+          <div class="d-flex flex-wrap gap-4 text-light-grey small">
+            <div><i class="bi bi-check2 text-orange me-1"></i> Dedicated Tourist Parking</div>
+            <div><i class="bi bi-check2 text-orange me-1"></i> Equipment Fitting Bay</div>
+            <div><i class="bi bi-check2 text-orange me-1"></i> Complimentary Lockers</div>
           </div>
         </div>
         <div class="col-lg-4 text-lg-end">

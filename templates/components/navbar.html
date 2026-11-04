@@ -1,17 +1,17 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark navbar-adventure fixed-top">
+<nav class="navbar navbar-expand-lg navbar-adventure fixed-top">
   <div class="container">
     <a class="navbar-brand" href="{% url 'website:home' %}">
       <i class="bi bi-feather brand-logo-icon"></i>
       <span>BLACK EAGLES</span> ZIPLINE
     </a>
 
-    <button class="navbar-toggler border-0 shadow-none text-white" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler border-0 shadow-none text-white p-1" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list fs-1 text-warning"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'website:home' %}">Home</a>
         </li>
@@ -32,11 +32,10 @@
         </li>
         <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
           <a class="btn-adventure-primary" href="{% url 'bookings:booking_page' %}">
-            <i class="bi bi-calendar2-check-fill"></i> Book Slot
+            <i class="bi bi-calendar2-check-fill"></i> Book Your Ride
           </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-

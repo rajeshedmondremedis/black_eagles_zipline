@@ -11,25 +11,25 @@
   <!-- Core Brand & Hero Content -->
   <div class="col-lg-6">
     <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-megaphone text-warning me-2"></i> Branding & Hero Section</h5>
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-megaphone text-orange me-2"></i> Branding & Hero Section</h5>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Company / Brand Name</label>
+        <label class="form-label text-light-grey small fw-bold">Company / Brand Name</label>
         <input type="text" name="site_name" class="form-control" value="{{ settings.site_name }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Brand Tagline</label>
+        <label class="form-label text-light-grey small fw-bold">Brand Tagline</label>
         <input type="text" name="tagline" class="form-control" value="{{ settings.tagline }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Hero Main Heading</label>
+        <label class="form-label text-light-grey small fw-bold">Hero Main Heading</label>
         <input type="text" name="hero_heading" class="form-control" value="{{ settings.hero_heading }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Hero Subtitle / Introduction</label>
+        <label class="form-label text-light-grey small fw-bold">Hero Subtitle / Introduction</label>
         <textarea name="hero_subheading" class="form-control" rows="3" required>{{ settings.hero_subheading }}</textarea>
       </div>
 
@@ -70,17 +70,17 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">About Page Summary</label>
+        <label class="form-label text-light-grey small fw-bold">About Page Summary</label>
         <textarea name="about_summary" class="form-control" rows="3">{{ settings.about_summary }}</textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">About Our Valley Story</label>
+        <label class="form-label text-light-grey small fw-bold">About Our Valley Story</label>
         <textarea name="about_story" class="form-control" rows="4">{{ settings.about_story }}</textarea>
       </div>
 
       <div class="mb-0">
-        <label class="form-label text-light small fw-bold">Safety Commitment Overview</label>
+        <label class="form-label text-light-grey small fw-bold">Safety Commitment Overview</label>
         <textarea name="safety_overview" class="form-control" rows="3">{{ settings.safety_overview }}</textarea>
       </div>
     </div>
@@ -89,36 +89,36 @@
   <!-- Contact Info & Social Links -->
   <div class="col-lg-6">
     <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-geo-alt text-warning me-2"></i> Contact & Location Details</h5>
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-geo-alt text-orange me-2"></i> Contact & Location Details</h5>
 
       <div class="row g-2 mb-3">
         <div class="col-6">
-          <label class="form-label text-light small fw-bold">Phone / Helpline Number</label>
+          <label class="form-label text-light-grey small fw-bold">Phone / Helpline Number</label>
           <input type="text" name="phone_number" class="form-control" value="{{ settings.phone_number }}" required>
         </div>
         <div class="col-6">
-          <label class="form-label text-light small fw-bold">WhatsApp Number</label>
+          <label class="form-label text-light-grey small fw-bold">WhatsApp Number</label>
           <input type="text" name="whatsapp_number" class="form-control" value="{{ settings.whatsapp_number }}" required>
         </div>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Official Email Address</label>
+        <label class="form-label text-light-grey small fw-bold">Official Email Address</label>
         <input type="email" name="email_address" class="form-control" value="{{ settings.email_address }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Base Camp Physical Address</label>
+        <label class="form-label text-light-grey small fw-bold">Base Camp Physical Address</label>
         <textarea name="address" class="form-control" rows="2" required>{{ settings.address }}</textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label text-light small fw-bold">Operating Hours Description</label>
+        <label class="form-label text-light-grey small fw-bold">Operating Hours Description</label>
         <input type="text" name="operating_hours" class="form-control" value="{{ settings.operating_hours }}" required>
       </div>
 
       <div class="mb-4">
-        <label class="form-label text-light small fw-bold">Google Maps Embed URL</label>
+        <label class="form-label text-light-grey small fw-bold">Google Maps Embed URL</label>
         <input type="text" name="google_maps_embed_url" class="form-control" value="{{ settings.google_maps_embed_url }}">
         <span class="text-muted small">Paste iframe src URL from Google Maps share embed option.</span>
       </div>
@@ -143,11 +143,10 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-adventure-primary w-100 py-3 justify-content-center fs-6">
+      <button type="submit" class="btn btn-dash-primary w-100 py-3 justify-content-center fs-6">
         <i class="bi bi-save2-fill me-1"></i> Save Website Settings
       </button>
     </div>
   </div>
 </form>
 {% endblock %}
-

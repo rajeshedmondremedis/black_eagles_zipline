@@ -4,11 +4,12 @@
 {% block title %}Safety Guidelines | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div class="py-5" style="background: linear-gradient(180deg, rgba(7, 13, 10, 0.7) 0%, #070D0A 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8rem !important;">
+<!-- Banner Section -->
+<div class="py-5" style="background: linear-gradient(180deg, rgba(14, 22, 19, 0.72) 0%, var(--surface-body) 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8.5rem !important;">
   <div class="container text-center py-5">
     <span class="hero-badge">Gold Standard Protocols</span>
     <h1 class="display-4 fw-bold text-white mb-3">Safety & Operational Guidelines</h1>
-    <p class="text-light lead max-w-700 mx-auto">
+    <p class="text-light-grey lead max-w-700 mx-auto">
       Your safety is our foundational commitment. Read our certified protocols, rider physical eligibility, and flight requirements.
     </p>
   </div>
@@ -17,12 +18,14 @@
 <section class="section-pad">
   <div class="container">
     <!-- Administrator note alert -->
-    <div class="alert alert-dark border border-warning border-opacity-50 p-4 rounded-4 mb-5 shadow-sm">
+    <div class="p-4 rounded-4 mb-5 shadow-sm" style="background-color: var(--c-charcoal); border: 1px solid var(--border-accent);">
       <div class="d-flex align-items-start gap-3">
-        <i class="bi bi-info-circle-fill text-warning fs-3"></i>
+        <div class="card-icon-box flex-shrink-0 mb-0" style="width: 48px; height: 48px; font-size: 1.4rem;">
+          <i class="bi bi-shield-check"></i>
+        </div>
         <div>
           <h5 class="text-white fw-bold mb-1">Official Policy & Operational Notice</h5>
-          <p class="text-muted small mb-0" style="line-height: 1.7;">
+          <p class="text-light-grey small mb-0" style="line-height: 1.8;">
             {{ site_settings.safety_overview }} 
             Physical weight thresholds, age restrictions, and health advisories are strictly administered for rider equilibrium and automatic magnetic braking system calibration. All guidelines are client-verified and updated regularly through our administrative console.
           </p>
@@ -31,12 +34,14 @@
     </div>
 
     <!-- Categorized Guidelines -->
-    <div class="row g-5">
+    <div class="row g-4">
       {% for category_title, items in guidelines_by_cat.items %}
       <div class="col-lg-6">
-        <div class="p-4 rounded-4 h-100" style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div class="p-4 p-md-5 rounded-4 h-100" style="background-color: var(--surface-card); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);">
           <div class="d-flex align-items-center gap-2 mb-4">
-            <span class="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase" style="letter-spacing: 0.5px;">{{ category_title }}</span>
+            <span class="badge bg-forest-deep text-orange border border-forest px-3 py-2 fw-bold text-uppercase" style="letter-spacing: 0.08em; font-size: 0.8rem;">
+              {{ category_title }}
+            </span>
           </div>
 
           <div class="d-flex flex-column gap-4">
@@ -47,13 +52,13 @@
               </div>
               <div>
                 <h5 class="text-white mb-2">{{ g.title }}</h5>
-                <p class="text-muted small mb-0" style="line-height: 1.7;">
+                <p class="text-light-grey opacity-75 small mb-0" style="line-height: 1.8;">
                   {{ g.description }}
                 </p>
               </div>
             </div>
             {% if not forloop.last %}
-            <hr class="border-secondary border-opacity-25 my-1">
+            <hr class="border-secondary border-opacity-15 my-1">
             {% endif %}
             {% endfor %}
           </div>
@@ -62,13 +67,13 @@
       {% endfor %}
     </div>
 
-    <!-- Pre-Flight Checklist Card -->
-    <div class="p-4 p-md-5 rounded-4 mt-5" style="background: linear-gradient(135deg, #0F2A1D 0%, #070D0A 100%); border: 1px solid var(--border-accent);">
+    <!-- Pre-Flight Checklist Banner -->
+    <div class="p-4 p-md-5 rounded-4 mt-5" style="background: linear-gradient(135deg, var(--c-forest-deep) 0%, var(--surface-body) 100%); border: 1px solid var(--border-forest); box-shadow: var(--shadow-md);">
       <div class="row align-items-center g-4">
         <div class="col-lg-8">
           <h3 class="text-white fw-bold mb-2">Ready for Takeoff?</h3>
-          <p class="text-light opacity-75 mb-0" style="line-height: 1.7;">
-            Select your preferred date, pick an operating slot, and reserve your seats with instant confirmation.
+          <p class="text-light-grey mb-0" style="line-height: 1.8;">
+            Select your preferred operating date, pick an open departure slot, and reserve your seats with instant computerized confirmation.
           </p>
         </div>
         <div class="col-lg-4 text-lg-end">
@@ -81,4 +86,3 @@
   </div>
 </section>
 {% endblock %}
-

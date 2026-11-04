@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block page_title %}Bookings Manifest{% endblock %}
-{% block page_subtitle %}Search, filter, inspect, and manage customer reservations{% endblock %}
+{% block page_subtitle %}Search, filter, inspect, and manage customer flight reservations{% endblock %}
 
 {% block content %}
 <div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
@@ -48,7 +48,7 @@
 
     <!-- Filter Buttons -->
     <div class="col-md-1">
-      <button type="submit" class="btn btn-adventure-primary w-100 py-2 justify-content-center" title="Apply Filter">
+      <button type="submit" class="btn btn-dash-primary w-100 py-2 justify-content-center" title="Apply Filter">
         <i class="bi bi-funnel-fill"></i>
       </button>
     </div>
@@ -86,7 +86,7 @@
         {% for b in bookings %}
         <tr>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-warning text-decoration-none">
+            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-orange text-decoration-none">
               {{ b.booking_reference }}
             </a>
           </td>
@@ -134,4 +134,3 @@
   </div>
 </div>
 {% endblock %}
-

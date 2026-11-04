@@ -4,11 +4,12 @@
 {% block title %}Contact & Location | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div class="py-5" style="background: linear-gradient(180deg, rgba(7, 13, 10, 0.7) 0%, #070D0A 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8rem !important;">
+<!-- Banner Section -->
+<div class="py-5" style="background: linear-gradient(180deg, rgba(14, 22, 19, 0.72) 0%, var(--surface-body) 100%), url('{% static 'images/hero-zipline.jpg' %}') center/cover no-repeat; padding-top: 8.5rem !important;">
   <div class="container text-center py-5">
     <span class="hero-badge">Get In Touch</span>
     <h1 class="display-4 fw-bold text-white mb-3">Contact Black Eagles Zipline</h1>
-    <p class="text-light lead max-w-700 mx-auto">
+    <p class="text-light-grey lead max-w-700 mx-auto">
       Have questions about directions, weather conditions, or group bookings? Our adventure specialists are here to help.
     </p>
   </div>
@@ -20,7 +21,7 @@
       <!-- Contact Info Cards -->
       <div class="col-lg-5">
         <span class="section-tag">Direct Helpline</span>
-        <h2 class="section-heading mb-4">Reach Our Camp Team</h2>
+        <h2 class="section-heading text-white mb-4">Reach Our Camp Team</h2>
 
         <div class="d-flex flex-column gap-3 mb-4">
           <div class="adventure-card p-3">
@@ -29,7 +30,7 @@
                 <i class="bi bi-telephone-fill"></i>
               </div>
               <div>
-                <span class="text-muted small d-block">Phone Support</span>
+                <span class="text-light-grey small d-block">Phone Support</span>
                 <strong class="text-white">{{ site_settings.phone_number }}</strong>
               </div>
             </div>
@@ -37,11 +38,11 @@
 
           <div class="adventure-card p-3">
             <div class="d-flex align-items-center gap-3">
-              <div class="card-icon-box mb-0" style="width: 46px; height: 46px; font-size: 1.3rem; background: rgba(37, 211, 102, 0.15); color: #25D366;">
+              <div class="card-icon-box mb-0" style="width: 46px; height: 46px; font-size: 1.3rem; background: rgba(37, 211, 102, 0.15); color: #25D366; border-color: rgba(37, 211, 102, 0.3);">
                 <i class="bi bi-whatsapp"></i>
               </div>
               <div>
-                <span class="text-muted small d-block">WhatsApp Chat</span>
+                <span class="text-light-grey small d-block">WhatsApp Chat</span>
                 <a href="https://wa.me/{{ site_settings.whatsapp_number|cut:' '|cut:'+' }}" target="_blank" class="fw-bold text-success text-decoration-none">
                   {{ site_settings.whatsapp_number }} <i class="bi bi-box-arrow-up-right ms-1 small"></i>
                 </a>
@@ -55,7 +56,7 @@
                 <i class="bi bi-envelope-fill"></i>
               </div>
               <div>
-                <span class="text-muted small d-block">Official Email</span>
+                <span class="text-light-grey small d-block">Official Email</span>
                 <strong class="text-white">{{ site_settings.email_address }}</strong>
               </div>
             </div>
@@ -67,7 +68,7 @@
                 <i class="bi bi-geo-alt-fill"></i>
               </div>
               <div>
-                <span class="text-muted small d-block">Base Camp Location</span>
+                <span class="text-light-grey small d-block">Base Camp Location</span>
                 <p class="text-white small mb-0">{{ site_settings.address }}</p>
               </div>
             </div>
@@ -78,48 +79,48 @@
         <h6 class="text-white fw-bold mb-3">Connect on Social Media</h6>
         <div class="d-flex align-items-center gap-2">
           {% if site_settings.facebook_url %}
-            <a href="{{ site_settings.facebook_url }}" target="_blank" class="social-circle-btn"><i class="bi bi-facebook"></i></a>
+            <a href="{{ site_settings.facebook_url }}" target="_blank" class="social-circle-btn" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
           {% endif %}
           {% if site_settings.instagram_url %}
-            <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-circle-btn"><i class="bi bi-instagram"></i></a>
+            <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-circle-btn" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
           {% endif %}
           {% if site_settings.youtube_url %}
-            <a href="{{ site_settings.youtube_url }}" target="_blank" class="social-circle-btn"><i class="bi bi-youtube"></i></a>
+            <a href="{{ site_settings.youtube_url }}" target="_blank" class="social-circle-btn" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
           {% endif %}
           {% if site_settings.twitter_url %}
-            <a href="{{ site_settings.twitter_url }}" target="_blank" class="social-circle-btn"><i class="bi bi-twitter-x"></i></a>
+            <a href="{{ site_settings.twitter_url }}" target="_blank" class="social-circle-btn" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
           {% endif %}
         </div>
       </div>
 
       <!-- Contact Inquiry Form -->
       <div class="col-lg-7">
-        <div class="p-4 p-md-5 rounded-4 shadow-lg" style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div class="p-4 p-md-5 rounded-4 shadow-lg" style="background-color: var(--surface-card); border: 1px solid var(--border-subtle);">
           <span class="section-tag">Quick Inquiry</span>
           <h3 class="text-white fw-bold mb-2">Send Us A Message</h3>
-          <p class="text-muted small mb-4">Fill out the form below and our team will get in touch with you.</p>
+          <p class="text-light-grey small mb-4">Fill out the form below and our team will get in touch with you.</p>
 
           <form method="post" action="{% url 'website:contact' %}">
             {% csrf_token %}
             <div class="row g-3">
               <div class="col-md-6">
-                <label class="form-label text-light small fw-bold">Your Name *</label>
+                <label class="form-label">Your Name *</label>
                 {{ form.name }}
               </div>
               <div class="col-md-6">
-                <label class="form-label text-light small fw-bold">Phone Number *</label>
+                <label class="form-label">Phone Number *</label>
                 {{ form.phone }}
               </div>
               <div class="col-md-6">
-                <label class="form-label text-light small fw-bold">Email Address *</label>
+                <label class="form-label">Email Address *</label>
                 {{ form.email }}
               </div>
               <div class="col-md-6">
-                <label class="form-label text-light small fw-bold">Inquiry Subject *</label>
+                <label class="form-label">Inquiry Subject *</label>
                 {{ form.subject }}
               </div>
               <div class="col-12">
-                <label class="form-label text-light small fw-bold">Your Message / Query *</label>
+                <label class="form-label">Your Message / Query *</label>
                 {{ form.message }}
               </div>
               <div class="col-12 mt-4">
@@ -136,7 +137,7 @@
     <!-- Google Map Embed Section -->
     <div class="row mt-5 pt-4">
       <div class="col-12">
-        <h4 class="text-white fw-bold mb-3"><i class="bi bi-map-fill text-warning me-2"></i> Find Us on Google Maps</h4>
+        <h4 class="text-white fw-bold mb-3"><i class="bi bi-map-fill text-orange me-2"></i> Find Us on Google Maps</h4>
         <div class="rounded-4 overflow-hidden shadow-lg border border-secondary border-opacity-25" style="height: 420px;">
           <iframe 
             src="{{ site_settings.google_maps_embed_url }}" 
@@ -145,7 +146,8 @@
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Google Maps Location">
           </iframe>
         </div>
       </div>
@@ -153,4 +155,3 @@
   </div>
 </section>
 {% endblock %}
-

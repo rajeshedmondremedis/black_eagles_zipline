@@ -6,13 +6,13 @@
 
 {% block content %}
 <div class="row g-4 mb-4">
-  <div class="col-12 d-flex justify-content-between align-items-center">
+  <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
     <div>
-      <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-bold">
+      <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-35 px-3 py-2 fw-bold">
         Certified Operations: Editable by administrator upon client sign-off
       </span>
     </div>
-    <button type="button" class="btn btn-adventure-primary" data-bs-toggle="modal" data-bs-target="#newGuidelineModal">
+    <button type="button" class="btn btn-dash-primary" data-bs-toggle="modal" data-bs-target="#newGuidelineModal">
       <i class="bi bi-plus-circle me-1"></i> Add New Guideline
     </button>
   </div>
@@ -38,9 +38,9 @@
             <span class="badge bg-secondary">{{ g.get_category_display }}</span>
           </td>
           <td class="text-white fw-bold">
-            <i class="bi bi-{{ g.icon_name }} text-warning me-1"></i> {{ g.title }}
+            <i class="bi bi-{{ g.icon_name }} text-orange me-1"></i> {{ g.title }}
           </td>
-          <td class="text-muted small" style="max-width: 400px;">{{ g.description }}</td>
+          <td class="text-light-grey small" style="max-width: 400px;">{{ g.description }}</td>
           <td>
             {% if g.is_active %}
               <span class="badge bg-success">Active</span>
@@ -58,7 +58,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="guideline_id" value="{{ g.id }}">
-                <button type="submit" class="btn btn-sm btn-outline-danger">
+                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                   <i class="bi bi-trash"></i>
                 </button>
               </form>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="mb-3">
-                    <label class="form-label text-light small fw-bold">Category *</label>
+                    <label class="form-label text-light-grey small fw-bold">Category *</label>
                     <select name="category" class="form-select" required>
                       {% for code, label in categories %}
                       <option value="{{ code }}" {% if g.category == code %}selected{% endif %}>{{ label }}</option>
@@ -88,31 +88,31 @@
                     </select>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label text-light small fw-bold">Title *</label>
+                    <label class="form-label text-light-grey small fw-bold">Title *</label>
                     <input type="text" name="title" class="form-control" value="{{ g.title }}" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label text-light small fw-bold">Description *</label>
+                    <label class="form-label text-light-grey small fw-bold">Description *</label>
                     <textarea name="description" class="form-control" rows="4" required>{{ g.description }}</textarea>
                   </div>
                   <div class="row g-2 mb-3">
                     <div class="col-6">
-                      <label class="form-label text-light small fw-bold">Bootstrap Icon Name</label>
+                      <label class="form-label text-light-grey small fw-bold">Bootstrap Icon Name</label>
                       <input type="text" name="icon_name" class="form-control" value="{{ g.icon_name }}">
                     </div>
                     <div class="col-6">
-                      <label class="form-label text-light small fw-bold">Display Order</label>
+                      <label class="form-label text-light-grey small fw-bold">Display Order</label>
                       <input type="number" name="order" class="form-control" value="{{ g.order }}">
                     </div>
                   </div>
                   <div class="form-check form-switch mb-2">
                     <input class="form-check-input" type="checkbox" name="is_active" id="activeGuide{{ g.id }}" {% if g.is_active %}checked{% endif %}>
-                    <label class="form-check-label text-light small" for="activeGuide{{ g.id }}">Active & Displayed Publicly</label>
+                    <label class="form-check-label text-light-grey small" for="activeGuide{{ g.id }}">Active & Displayed Publicly</label>
                   </div>
                 </div>
                 <div class="modal-footer border-secondary border-opacity-25">
                   <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-warning">Save Changes</button>
+                  <button type="submit" class="btn btn-dash-primary">Save Changes</button>
                 </div>
               </form>
             </div>
@@ -143,7 +143,7 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label text-light small fw-bold">Category *</label>
+            <label class="form-label text-light-grey small fw-bold">Category *</label>
             <select name="category" class="form-select" required>
               {% for code, label in categories %}
               <option value="{{ code }}">{{ label }}</option>
@@ -151,35 +151,34 @@
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label text-light small fw-bold">Title *</label>
+            <label class="form-label text-light-grey small fw-bold">Title *</label>
             <input type="text" name="title" class="form-control" placeholder="e.g. Helmet & Harness Mandate" required>
           </div>
           <div class="mb-3">
-            <label class="form-label text-light small fw-bold">Description *</label>
+            <label class="form-label text-light-grey small fw-bold">Description *</label>
             <textarea name="description" class="form-control" rows="4" placeholder="Full instruction approved by safety officer..." required></textarea>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-6">
-              <label class="form-label text-light small fw-bold">Icon Name</label>
+              <label class="form-label text-light-grey small fw-bold">Icon Name</label>
               <input type="text" name="icon_name" class="form-control" value="shield-check">
             </div>
             <div class="col-6">
-              <label class="form-label text-light small fw-bold">Display Order</label>
+              <label class="form-label text-light-grey small fw-bold">Display Order</label>
               <input type="number" name="order" class="form-control" value="0">
             </div>
           </div>
           <div class="form-check form-switch mb-2">
             <input class="form-check-input" type="checkbox" name="is_active" id="newActiveGuide" checked>
-            <label class="form-check-label text-light small" for="newActiveGuide">Active immediately</label>
+            <label class="form-check-label text-light-grey small" for="newActiveGuide">Active immediately</label>
           </div>
         </div>
         <div class="modal-footer border-secondary border-opacity-25">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-adventure-primary">Create Guideline</button>
+          <button type="submit" class="btn btn-dash-primary">Create Guideline</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 {% endblock %}
-
