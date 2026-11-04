@@ -13,3 +13,4 @@ def extract_validation_error_message(e):
     if hasattr(e, 'message'):
         return e.message
     return str(e)
+

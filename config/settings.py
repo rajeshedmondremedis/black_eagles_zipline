@@ -71,21 +71,45 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Supports MySQL 8.x in production and SQLite3 fallback for local testing
 DB_ENGINE = os.getenv('DB_ENGINE', 'django.db.backends.sqlite3')
 
+def is_mysql_available(host, port):
+    import socket
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(0.5)
+        res = s.connect_ex((host, int(port)))
+        s.close()
+        return res == 0
+    except Exception:
+        return False
+
+db_host = os.getenv('DB_HOST', '127.0.0.1')
+db_port = os.getenv('DB_PORT', '3306')
+
 if DB_ENGINE == 'django.db.backends.mysql':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('DB_NAME', 'black_eagles_zipline'),
-            'USER': os.getenv('DB_USER', 'root'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
-            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-            'PORT': os.getenv('DB_PORT', '3306'),
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
+    # In local development mode, if MySQL daemon is not running, fall back gracefully to SQLite
+    if DEBUG and not is_mysql_available(db_host, db_port):
+        print(f"[DEVELOPMENT NOTICE] MySQL not reachable on {db_host}:{db_port}. Using local SQLite3 fallback.")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.getenv('DB_NAME', 'black_eagles_zipline'),
+                'USER': os.getenv('DB_USER', 'root'),
+                'PASSWORD': os.getenv('DB_PASSWORD', ''),
+                'HOST': db_host,
+                'PORT': db_port,
+                'OPTIONS': {
+                    'charset': 'utf8mb4',
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                },
+            }
+        }
 else:
     DATABASES = {
         'default': {
