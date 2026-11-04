@@ -61,3 +61,4 @@ class ReportsExportTests(TestCase):
         # PDF files always start with %PDF
         self.assertTrue(response.content.startswith(b'%PDF'))
         self.assertTrue(len(response.content) > 1000)
+

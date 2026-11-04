@@ -7,7 +7,8 @@
 Django>=5.0.0,<6.2.0
 python-dotenv>=1.0.0
 
-# Database Driver (MySQL 8.x)
+# Database Driver (MySQL 8.x / MariaDB)
+pymysql>=1.2.0
 mysqlclient>=2.2.0
 mysql-connector-python>=8.0.0
 
@@ -20,3 +21,4 @@ Pillow>=10.2.0
 
 # Production WSGI Application Server
 gunicorn>=21.2.0
+

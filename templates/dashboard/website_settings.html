@@ -33,6 +33,42 @@
         <textarea name="hero_subheading" class="form-control" rows="3" required>{{ settings.hero_subheading }}</textarea>
       </div>
 
+      <h6 class="text-white fw-bold mt-4 mb-2">Homepage Stats Highlights</h6>
+      <div class="row g-2 mb-2">
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 1 Value</label>
+          <input type="text" name="stat_1_val" class="form-control" value="{{ settings.stat_1_val }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 1 Label</label>
+          <input type="text" name="stat_1_lbl" class="form-control" value="{{ settings.stat_1_lbl }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 2 Value</label>
+          <input type="text" name="stat_2_val" class="form-control" value="{{ settings.stat_2_val }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 2 Label</label>
+          <input type="text" name="stat_2_lbl" class="form-control" value="{{ settings.stat_2_lbl }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 3 Value</label>
+          <input type="text" name="stat_3_val" class="form-control" value="{{ settings.stat_3_val }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 3 Label</label>
+          <input type="text" name="stat_3_lbl" class="form-control" value="{{ settings.stat_3_lbl }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 4 Value</label>
+          <input type="text" name="stat_4_val" class="form-control" value="{{ settings.stat_4_val }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Stat 4 Label</label>
+          <input type="text" name="stat_4_lbl" class="form-control" value="{{ settings.stat_4_lbl }}">
+        </div>
+      </div>
+
       <div class="mb-3">
         <label class="form-label text-light small fw-bold">About Page Summary</label>
         <textarea name="about_summary" class="form-control" rows="3">{{ settings.about_summary }}</textarea>
@@ -114,3 +150,4 @@
   </div>
 </form>
 {% endblock %}
+

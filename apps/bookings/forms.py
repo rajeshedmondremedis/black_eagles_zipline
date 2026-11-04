@@ -112,3 +112,4 @@ class AdminBookingEditForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-select'}),
             'admin_notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+

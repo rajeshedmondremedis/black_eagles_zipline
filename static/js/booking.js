@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hiddenSlotInput) hiddenSlotInput.value = '';
     updateSummary();
 
-    // Check Wednesday on client side for instant feedback
+    // Check Wednesday on client side for instant feedback (noon anchor avoids timezone boundary shifts)
     const [year, month, day] = dateStr.split('-').map(Number);
-    const chosenDate = new Date(year, month - 1, day);
+    const chosenDate = new Date(year, month - 1, day, 12, 0, 0);
     if (chosenDate.getDay() === 3) { // Wednesday is day 3 in JS getDay() (Sunday=0, Wed=3)
       showError("Sorry! Bookings are not available on this date.");
       slotContainer.innerHTML = '';
@@ -221,3 +221,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+

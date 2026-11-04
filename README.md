@@ -248,3 +248,4 @@ sudo certbot --nginx -d blackeagleszipline.com -d www.blackeagleszipline.com
 
 This application was engineered by **PL SOFT TECH SOLUTIONS** to commercial production standards for **Black Eagles Zipline**.
 All business details (slot timings, physical addresses, phone numbers, ticket package prices, weight and age restrictions) are fully configurable via the `/admin-panel/` console without editing source code.
+

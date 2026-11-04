@@ -19,3 +19,4 @@ urlpatterns = [
     path('admin-panel/pricing/', views.pricing_manage, name='pricing_manage'),
     path('admin-panel/safety/', views.safety_manage, name='safety_manage'),
 ]
+

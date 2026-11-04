@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from apps.core.decorators import admin_required
 from apps.bookings.models import Booking, BookingSlot
 from apps.reports.excel_generator import generate_bookings_excel
 from apps.reports.pdf_generator import generate_bookings_pdf
@@ -56,7 +56,7 @@ def get_filtered_bookings(request):
     return bookings, filter_meta
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def reports_page(request):
     bookings, filter_meta = get_filtered_bookings(request)
     slots = BookingSlot.objects.filter(is_active=True)
@@ -73,7 +73,7 @@ def reports_page(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def export_excel(request):
     bookings, filter_meta = get_filtered_bookings(request)
     excel_content = generate_bookings_excel(bookings, filter_meta)
@@ -87,7 +87,7 @@ def export_excel(request):
     return response
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def export_pdf(request):
     bookings, filter_meta = get_filtered_bookings(request)
     pdf_content = generate_bookings_pdf(bookings, filter_meta)
@@ -96,3 +96,4 @@ def export_pdf(request):
     response = HttpResponse(pdf_content, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
+

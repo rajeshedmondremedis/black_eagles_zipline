@@ -135,3 +135,4 @@ class BookingAuditLog(models.Model):
 
     def __str__(self):
         return f"{self.action} on {self.booking.booking_reference} at {self.timestamp}"
+

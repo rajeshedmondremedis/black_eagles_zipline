@@ -38,3 +38,4 @@ class BookingAuditLogAdmin(admin.ModelAdmin):
     list_display = ('booking', 'action', 'performed_by', 'timestamp')
     list_filter = ('action', 'timestamp')
     search_fields = ('booking__booking_reference', 'details')
+

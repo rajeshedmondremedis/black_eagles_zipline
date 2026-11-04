@@ -34,3 +34,4 @@ class ContactForm(forms.ModelForm):
                 'required': 'required'
             }),
         }
+

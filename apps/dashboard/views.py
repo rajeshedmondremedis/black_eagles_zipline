@@ -1,12 +1,15 @@
+import os
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import models, transaction
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from PIL import Image
 
+from apps.core.decorators import admin_required
+from apps.core.utils import extract_validation_error_message
 from apps.bookings.models import Booking, BookingSlot, Holiday, BookingAuditLog
 from apps.bookings.services import (
     cancel_booking_atomic,
@@ -16,9 +19,12 @@ from apps.bookings.services import (
 from apps.core.models import SiteSettings
 from apps.website.models import GalleryImage, SafetyGuideline, PricingPackage, ContactMessage
 
+ALLOWED_IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.webp')
+MAX_IMAGE_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+
 
 def admin_login_view(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
         return redirect('dashboard:index')
 
     if request.method == 'POST':
@@ -44,7 +50,7 @@ def admin_logout_view(request):
     return redirect('dashboard:login')
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def dashboard_index(request):
     today = timezone.localdate()
 
@@ -116,7 +122,7 @@ def dashboard_index(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def bookings_list(request):
     bookings = Booking.objects.select_related('slot').order_by('-booking_date', '-created_at')
 
@@ -163,7 +169,7 @@ def bookings_list(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def booking_detail(request, booking_id):
     booking = get_object_or_404(Booking.objects.select_related('slot'), id=booking_id)
     slots = BookingSlot.objects.filter(is_active=True)
@@ -197,7 +203,7 @@ def booking_detail(request, booking_id):
                 messages.success(request, f"Booking {booking.booking_reference} updated successfully.")
                 return redirect('dashboard:booking_detail', booking_id=booking.id)
             except ValidationError as e:
-                messages.error(request, e.message if hasattr(e, 'message') else str(e))
+                messages.error(request, extract_validation_error_message(e))
             except Exception as e:
                 messages.error(request, f"Failed to modify booking: {e}")
 
@@ -208,7 +214,7 @@ def booking_detail(request, booking_id):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def slots_list(request):
     slots = BookingSlot.objects.all().order_by('order', 'start_time')
     today = timezone.localdate()
@@ -231,7 +237,7 @@ def slots_list(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def slot_save(request, slot_id=None):
     slot = get_object_or_404(BookingSlot, id=slot_id) if slot_id else None
 
@@ -248,11 +254,7 @@ def slot_save(request, slot_id=None):
             if capacity_int < 1:
                 raise ValueError("Capacity must be at least 1.")
 
-            # Safety check from Section 6.3:
-            # "Prevent capacity from being reduced below the number of already-confirmed members.
-            # Do not allow unsafe modifications to slots that already contain bookings."
             if slot:
-                # Check upcoming dates where confirmed bookings exceed the proposed new capacity
                 today = timezone.localdate()
                 max_future_booking = Booking.objects.filter(
                     slot=slot,
@@ -294,7 +296,7 @@ def slot_save(request, slot_id=None):
     return redirect('dashboard:slots_list')
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def slot_toggle(request, slot_id):
     slot = get_object_or_404(BookingSlot, id=slot_id)
     slot.is_active = not slot.is_active
@@ -304,7 +306,7 @@ def slot_toggle(request, slot_id):
     return redirect('dashboard:slots_list')
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def holidays_list(request):
     holidays = Holiday.objects.all().order_by('holiday_date')
     today = timezone.localdate()
@@ -321,14 +323,11 @@ def holidays_list(request):
             try:
                 h_date = datetime.date.fromisoformat(date_str)
                 
-                # Wednesday check notice
                 if h_date.weekday() == 2:
                     messages.info(request, "Note: Wednesdays are already automatically blocked across the entire system.")
 
-                # Check if confirmed bookings already exist on this date (Section 6.4 requirement)
                 existing_bookings = Booking.objects.filter(booking_date=h_date, status='CONFIRMED')
                 if existing_bookings.exists() and not override_warning:
-                    # Require explicit administrator confirmation
                     booked_pax = existing_bookings.aggregate(total=models.Sum('number_of_members'))['total'] or 0
                     messages.warning(
                         request,
@@ -368,7 +367,7 @@ def holidays_list(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def website_settings_edit(request):
     settings_obj = SiteSettings.get_settings()
 
@@ -377,6 +376,17 @@ def website_settings_edit(request):
         settings_obj.tagline = request.POST.get('tagline', settings_obj.tagline).strip()
         settings_obj.hero_heading = request.POST.get('hero_heading', settings_obj.hero_heading).strip()
         settings_obj.hero_subheading = request.POST.get('hero_subheading', settings_obj.hero_subheading).strip()
+
+        # Stats Ribbon Configuration
+        settings_obj.stat_1_val = request.POST.get('stat_1_val', settings_obj.stat_1_val).strip()
+        settings_obj.stat_1_lbl = request.POST.get('stat_1_lbl', settings_obj.stat_1_lbl).strip()
+        settings_obj.stat_2_val = request.POST.get('stat_2_val', settings_obj.stat_2_val).strip()
+        settings_obj.stat_2_lbl = request.POST.get('stat_2_lbl', settings_obj.stat_2_lbl).strip()
+        settings_obj.stat_3_val = request.POST.get('stat_3_val', settings_obj.stat_3_val).strip()
+        settings_obj.stat_3_lbl = request.POST.get('stat_3_lbl', settings_obj.stat_3_lbl).strip()
+        settings_obj.stat_4_val = request.POST.get('stat_4_val', settings_obj.stat_4_val).strip()
+        settings_obj.stat_4_lbl = request.POST.get('stat_4_lbl', settings_obj.stat_4_lbl).strip()
+
         settings_obj.phone_number = request.POST.get('phone_number', settings_obj.phone_number).strip()
         settings_obj.whatsapp_number = request.POST.get('whatsapp_number', settings_obj.whatsapp_number).strip()
         settings_obj.email_address = request.POST.get('email_address', settings_obj.email_address).strip()
@@ -400,7 +410,7 @@ def website_settings_edit(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def gallery_manage(request):
     images = GalleryImage.objects.all()
 
@@ -413,17 +423,37 @@ def gallery_manage(request):
             is_featured = request.POST.get('is_featured') == 'on'
             image_file = request.FILES.get('image')
 
-            if image_file and title:
-                GalleryImage.objects.create(
-                    title=title,
-                    caption=caption,
-                    category=category,
-                    is_featured=is_featured,
-                    image=image_file
-                )
-                messages.success(request, "New photo added to the gallery.")
-            else:
+            if not (image_file and title):
                 messages.error(request, "Please specify a title and choose an image file.")
+                return redirect('dashboard:gallery_manage')
+
+            # Security File Validation
+            ext = os.path.splitext(image_file.name)[1].lower()
+            if ext not in ALLOWED_IMAGE_EXTENSIONS:
+                messages.error(request, f"Invalid file format '{ext}'. Allowed extensions: {', '.join(ALLOWED_IMAGE_EXTENSIONS)}.")
+                return redirect('dashboard:gallery_manage')
+
+            if image_file.size > MAX_IMAGE_FILE_SIZE:
+                messages.error(request, "File exceeds maximum upload size of 5 MB.")
+                return redirect('dashboard:gallery_manage')
+
+            try:
+                # Verify genuine image structure using Pillow
+                img = Image.open(image_file)
+                img.verify()
+                image_file.seek(0)
+            except Exception:
+                messages.error(request, "Invalid or corrupted image file.")
+                return redirect('dashboard:gallery_manage')
+
+            GalleryImage.objects.create(
+                title=title,
+                caption=caption,
+                category=category,
+                is_featured=is_featured,
+                image=image_file
+            )
+            messages.success(request, "New photo added to the gallery.")
             return redirect('dashboard:gallery_manage')
 
         elif action == 'delete':
@@ -447,7 +477,7 @@ def gallery_manage(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def pricing_manage(request):
     packages = PricingPackage.objects.all()
 
@@ -505,7 +535,7 @@ def pricing_manage(request):
     })
 
 
-@login_required(login_url='dashboard:login')
+@admin_required
 def safety_manage(request):
     guidelines = SafetyGuideline.objects.all()
 

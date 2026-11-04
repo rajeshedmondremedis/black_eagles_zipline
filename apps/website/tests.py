@@ -45,3 +45,4 @@ class WebsitePublicViewsTests(TestCase):
         for route in ['website:about', 'website:gallery', 'website:safety', 'website:pricing', 'website:contact']:
             res = self.client.get(reverse(route))
             self.assertEqual(res.status_code, 200)
+

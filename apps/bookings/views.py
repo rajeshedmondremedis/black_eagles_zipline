@@ -15,6 +15,7 @@ from apps.bookings.services import (
     validate_booking_date
 )
 from apps.core.models import SiteSettings
+from apps.core.utils import extract_validation_error_message
 
 
 def booking_page(request):
@@ -97,7 +98,7 @@ def booking_submit(request):
             )
             return redirect('bookings:booking_success', reference=booking.booking_reference)
         except ValidationError as e:
-            error_msg = e.message if hasattr(e, 'message') else str(e)
+            error_msg = extract_validation_error_message(e)
             messages.error(request, error_msg)
             return render(request, 'bookings/booking_page.html', {
                 'form': form,
@@ -133,3 +134,4 @@ def booking_success(request, reference):
         'booking': booking,
         'site_settings': site_settings,
     })
+

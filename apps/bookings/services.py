@@ -307,3 +307,4 @@ def send_booking_confirmation_email(booking):
         )
     except Exception as e:
         logger.error(f"Failed to send confirmation email: {e}")
+

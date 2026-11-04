@@ -62,6 +62,40 @@ class AdminDashboardTests(TestCase):
             self.assertEqual(response.status_code, 302, f"URL {url} is not protected!")
             self.assertIn(reverse('dashboard:login'), response.url)
 
+    def test_non_staff_users_cannot_access_admin_pages(self):
+        """Security Verification: Authenticated users without staff role are rejected."""
+        regular_user = User.objects.create_user(
+            username='regularrider',
+            email='rider@example.com',
+            password='Password123!',
+            is_staff=False,
+            is_superuser=False
+        )
+        self.client.force_login(regular_user)
+        response = self.client.get(reverse('dashboard:index'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('dashboard:login'), response.url)
+
+    def test_file_upload_security_restrictions(self):
+        """Security Verification: Executable or non-image files are rejected from gallery."""
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        self.client.force_login(self.admin_user)
+
+        fake_script = SimpleUploadedFile(
+            "malicious.php",
+            b"<?php echo 'attack'; ?>",
+            content_type="application/x-php"
+        )
+        res = self.client.post(reverse('dashboard:gallery_manage'), {
+            'action': 'add',
+            'title': 'Exploit attempt',
+            'category': 'zipline',
+            'image': fake_script
+        })
+        self.assertEqual(res.status_code, 302)
+        from apps.website.models import GalleryImage
+        self.assertFalse(GalleryImage.objects.filter(title='Exploit attempt').exists())
+
     def test_15_admin_can_view_bookings(self):
         """Scenario 15: Admin can view bookings."""
         self.client.force_login(self.admin_user)
@@ -141,3 +175,4 @@ class AdminDashboardTests(TestCase):
         })
         self.assertEqual(res_del.status_code, 302)
         self.assertFalse(Holiday.objects.filter(id=holiday.id).exists())
+

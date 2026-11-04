@@ -9,3 +9,4 @@ urlpatterns = [
     path('book/submit/', views.booking_submit, name='booking_submit'),
     path('booking/success/<str:reference>/', views.booking_success, name='booking_success'),
 ]
+

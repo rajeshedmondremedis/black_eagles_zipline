@@ -18,3 +18,4 @@ loglevel = "info"
 # Process naming
 proc_name = "black_eagles_zipline"
 pythonpath = "/var/www/black_eagles_zipline"
+

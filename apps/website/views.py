@@ -79,3 +79,4 @@ def contact(request):
         'settings': settings,
         'form': form,
     })
+

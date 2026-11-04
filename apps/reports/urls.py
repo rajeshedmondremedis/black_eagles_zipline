@@ -8,3 +8,4 @@ urlpatterns = [
     path('admin-panel/reports/excel/', views.export_excel, name='export_excel'),
     path('admin-panel/reports/pdf/', views.export_pdf, name='export_pdf'),
 ]
+

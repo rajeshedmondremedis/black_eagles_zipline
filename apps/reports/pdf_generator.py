@@ -169,3 +169,4 @@ def generate_bookings_pdf(bookings_queryset, filter_meta=None):
     doc.build(story)
     buffer.seek(0)
     return buffer.getvalue()
+
