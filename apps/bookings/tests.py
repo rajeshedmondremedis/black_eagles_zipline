@@ -349,12 +349,25 @@ class BookingEngineTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, booking.booking_reference)
 
-        # 4. Lookup with invalid reference
+        # 4. Lookup by mobile number alone (reference is optional)
+        response = self.client.post(reverse('bookings:booking_lookup'), {
+            'mobile_number': '9876543210'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, booking.booking_reference)
+        self.assertContains(response, 'Test Lookup Rider')
+
+        # 5. Lookup with invalid reference
         response = self.client.post(reverse('bookings:booking_lookup'), {
             'booking_reference': 'BEZ-INVALID-999999'
         })
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'No reservation found matching reference')
+
+        # 6. Lookup with empty inputs
+        response = self.client.post(reverse('bookings:booking_lookup'), {})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Please enter your Booking Reference or your Registered Mobile Number')
 
 
 class ConcurrencyBookingTests(TransactionTestCase):

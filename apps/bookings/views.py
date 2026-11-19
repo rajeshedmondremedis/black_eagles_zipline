@@ -142,10 +142,12 @@ def booking_success(request, reference):
 def booking_lookup(request):
     """
     Public self-service lookup portal allowing customers to retrieve their
-    boarding pass voucher, check flight status, or reprint tickets.
+    boarding pass voucher, check flight status, or reprint tickets using either
+    their Booking Reference or their Registered Mobile Number.
     """
     site_settings = SiteSettings.get_settings()
     found_booking = None
+    multiple_bookings = []
     search_attempted = False
     error_message = None
 
@@ -156,29 +158,50 @@ def booking_lookup(request):
         ref_query = request.POST.get('booking_reference', '').strip()
         mobile_query = request.POST.get('mobile_number', '').strip()
 
-    if ref_query:
+    if ref_query or mobile_query:
         search_attempted = True
-        try:
-            booking = Booking.objects.select_related('slot').get(
-                booking_reference__iexact=ref_query
-            )
-            # If mobile provided, verify match (last 10 digits to be phone-format tolerant)
-            if mobile_query:
-                clean_mobile = ''.join(c for c in mobile_query if c.isdigit())
-                clean_booking_mobile = ''.join(c for c in booking.mobile_number if c.isdigit())
+        qs = Booking.objects.select_related('slot')
+
+        if ref_query and mobile_query:
+            clean_mobile = ''.join(c for c in mobile_query if c.isdigit())
+            match_ref = qs.filter(booking_reference__iexact=ref_query).first()
+            if match_ref:
+                clean_booking_mobile = ''.join(c for c in match_ref.mobile_number if c.isdigit())
                 if clean_mobile and not clean_booking_mobile.endswith(clean_mobile[-10:]):
-                    error_message = "The mobile number provided does not match the contact number registered with this reference."
-                    booking = None
+                    error_message = f"Reservation '{ref_query}' was found, but the registered mobile number does not match."
+                else:
+                    found_booking = match_ref
+            else:
+                error_message = f"No reservation found matching reference '{ref_query}'."
 
-            if booking:
-                found_booking = booking
-        except Booking.DoesNotExist:
-            error_message = f"No reservation found matching reference '{ref_query}'. Please verify your reference code."
+        elif ref_query:
+            found_booking = qs.filter(booking_reference__iexact=ref_query).first()
+            if not found_booking:
+                error_message = f"No reservation found matching reference '{ref_query}'. Please verify your code."
 
-    # Calculate flight countdown if booking found
+        elif mobile_query:
+            clean_mobile = ''.join(c for c in mobile_query if c.isdigit())
+            if len(clean_mobile) >= 4:
+                matches = list(qs.filter(mobile_number__icontains=clean_mobile[-10:]).order_by('-booking_date', '-created_at')[:10])
+                if len(matches) == 1:
+                    found_booking = matches[0]
+                elif len(matches) > 1:
+                    multiple_bookings = matches
+                else:
+                    error_message = f"No reservations found registered to mobile number '{mobile_query}'."
+            else:
+                error_message = "Please enter at least 4 digits of your registered mobile number."
+
+    elif request.method == 'POST':
+        search_attempted = True
+        error_message = "Please enter your Booking Reference or your Registered Mobile Number to find your ticket."
+
+    # Calculate flight countdown if a single booking is found
     days_until_flight = None
     is_today = False
     is_past = False
+    qr_svg = None
+
     if found_booking:
         today = timezone.localdate()
         delta = (found_booking.booking_date - today).days
@@ -188,14 +211,13 @@ def booking_lookup(request):
         elif delta < 0:
             is_past = True
 
-    qr_svg = None
-    if found_booking:
         lookup_url = request.build_absolute_uri(f"/booking/lookup/?ref={found_booking.booking_reference}")
         qr_svg = generate_qr_svg(lookup_url, size=115)
 
     return render(request, 'bookings/booking_lookup.html', {
         'site_settings': site_settings,
         'booking': found_booking,
+        'multiple_bookings': multiple_bookings,
         'search_attempted': search_attempted,
         'error_message': error_message,
         'ref_query': ref_query,
