@@ -86,6 +86,12 @@
   box-sizing: border-box;
 }
 
+.dash-breadcrumb,
+.dash-breadcrumb li {
+  list-style: none !important;
+  list-style-type: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
