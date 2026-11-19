@@ -39,35 +39,54 @@
 
       <!-- Voucher Body -->
       <div class="p-4 p-md-5">
-        <div class="row g-4 mb-4">
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Lead Passenger</span>
-            <strong class="fs-5 text-dark">{{ booking.full_name }}</strong>
-            <div class="text-secondary small">{{ booking.place }}</div>
+        <div class="row g-4 mb-4 align-items-center">
+          <div class="col-lg-8">
+            <div class="row g-4">
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Lead Passenger</span>
+                <strong class="fs-5 text-dark">{{ booking.full_name }}</strong>
+                <div class="text-secondary small">{{ booking.place }}</div>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Contact Info</span>
+                <strong class="text-dark">{{ booking.mobile_number }}</strong>
+                <div class="text-secondary small">{{ booking.email }}</div>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Flight Date</span>
+                <strong class="fs-5 text-dark">{{ booking.booking_date|date:"l, d F Y" }}</strong>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Flight Slot & Time</span>
+                <strong class="fs-5 text-success">{{ booking.slot.formatted_time }}</strong>
+                <div class="text-secondary small">{{ booking.slot.name }}</div>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Total Passengers</span>
+                <strong class="fs-5 text-dark">{{ booking.number_of_members }} Rider{{ booking.number_of_members|pluralize }}</strong>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Reservation Status</span>
+                <span class="badge bg-success text-white px-3 py-2 fw-bold text-uppercase">
+                  <i class="bi bi-check-circle-fill me-1"></i> {{ booking.get_status_display }}
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Contact Info</span>
-            <strong class="text-dark">{{ booking.mobile_number }}</strong>
-            <div class="text-secondary small">{{ booking.email }}</div>
-          </div>
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Flight Date</span>
-            <strong class="fs-5 text-dark">{{ booking.booking_date|date:"l, d F Y" }}</strong>
-          </div>
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Flight Slot & Time</span>
-            <strong class="fs-5 text-success">{{ booking.slot.formatted_time }}</strong>
-            <div class="text-secondary small">{{ booking.slot.name }}</div>
-          </div>
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Total Passengers</span>
-            <strong class="fs-5 text-dark">{{ booking.number_of_members }} Rider{{ booking.number_of_members|pluralize }}</strong>
-          </div>
-          <div class="col-sm-6">
-            <span class="text-muted small d-block">Reservation Status</span>
-            <span class="badge bg-success text-white px-3 py-2 fw-bold text-uppercase">
-              <i class="bi bi-check-circle-fill me-1"></i> {{ booking.get_status_display }}
-            </span>
+
+          <!-- Official Turnstile QR Code -->
+          <div class="col-lg-4 text-center">
+            <div class="p-3 rounded-3 border border-secondary border-opacity-25 bg-white d-inline-block shadow-sm">
+              <div class="d-flex justify-content-center">
+                {{ qr_svg|safe }}
+              </div>
+              <div class="mt-2 text-dark fw-bold" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                {{ booking.booking_reference }}
+              </div>
+              <span class="text-secondary d-block" style="font-size: 0.68rem;">
+                Scan for Base Camp Check-In
+              </span>
+            </div>
           </div>
         </div>
 

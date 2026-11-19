@@ -53,6 +53,7 @@ class AdminDashboardTests(TestCase):
             reverse('dashboard:gallery_manage'),
             reverse('dashboard:pricing_manage'),
             reverse('dashboard:safety_manage'),
+            reverse('dashboard:api_search'),
             reverse('reports:reports_page'),
         ]
 
@@ -175,4 +176,28 @@ class AdminDashboardTests(TestCase):
         })
         self.assertEqual(res_del.status_code, 302)
         self.assertFalse(Holiday.objects.filter(id=holiday.id).exists())
+
+    def test_spotlight_search_api(self):
+        """Spotlight search API returns matching booking JSON."""
+        self.client.force_login(self.admin_user)
+
+        # Search by ref
+        res = self.client.get(reverse('dashboard:api_search') + '?q=TEST01')
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['reference'], 'BEZ-2026-TEST01')
+        self.assertEqual(data['results'][0]['name'], 'Alice Wonderland')
+
+        # Search by name
+        res = self.client.get(reverse('dashboard:api_search') + '?q=Alice')
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(len(data['results']), 1)
+
+        # Search short query < 2 chars returns empty list
+        res = self.client.get(reverse('dashboard:api_search') + '?q=a')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(len(res.json()['results']), 0)
+
 

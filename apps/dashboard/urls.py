@@ -18,5 +18,6 @@ urlpatterns = [
     path('admin-panel/gallery/', views.gallery_manage, name='gallery_manage'),
     path('admin-panel/pricing/', views.pricing_manage, name='pricing_manage'),
     path('admin-panel/safety/', views.safety_manage, name='safety_manage'),
+    path('admin-panel/api/search/', views.api_booking_search, name='api_search'),
 ]
 

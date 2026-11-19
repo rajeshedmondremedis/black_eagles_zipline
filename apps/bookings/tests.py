@@ -318,6 +318,44 @@ class BookingEngineTests(TestCase):
         s2 = next(s for s in res['slots'] if s['id'] == self.slot2.id)
         self.assertEqual(s2['available_seats'], 3)
 
+    def test_15_booking_lookup_portal(self):
+        """Scenario 15: Self-service booking lookup and boarding pass retrieval."""
+        # 1. Lookup page loads
+        response = self.client.get(reverse('bookings:booking_lookup'))
+        self.assertEqual(response.status_code, 200)
+
+        # Create a booking
+        booking = create_booking_atomic(
+            full_name='Test Lookup Rider',
+            mobile_number='9876543210',
+            email='lookup@example.com',
+            place='Kochi',
+            booking_date=self.valid_date,
+            slot_id=self.slot1.id,
+            number_of_members=2
+        )
+
+        # 2. Lookup by reference via GET ?ref=
+        response = self.client.get(reverse('bookings:booking_lookup') + f'?ref={booking.booking_reference}')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, booking.booking_reference)
+        self.assertContains(response, 'Test Lookup Rider')
+
+        # 3. Lookup by POST
+        response = self.client.post(reverse('bookings:booking_lookup'), {
+            'booking_reference': booking.booking_reference,
+            'mobile_number': '9876543210'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, booking.booking_reference)
+
+        # 4. Lookup with invalid reference
+        response = self.client.post(reverse('bookings:booking_lookup'), {
+            'booking_reference': 'BEZ-INVALID-999999'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'No reservation found matching reference')
+
 
 class ConcurrencyBookingTests(TransactionTestCase):
     """

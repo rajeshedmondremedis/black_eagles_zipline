@@ -14,3 +14,28 @@ def extract_validation_error_message(e):
         return e.message
     return str(e)
 
+
+def generate_qr_svg(data, size=110):
+    """
+    Generates a vector SVG string of a QR Code for the given string data.
+    Uses ReportLab's built-in vector barcode engine.
+    """
+    from reportlab.graphics.shapes import Drawing
+    from reportlab.graphics.barcode.qr import QrCodeWidget
+    from reportlab.graphics import renderSVG
+    import io
+
+    try:
+        qr = QrCodeWidget(str(data))
+        bounds = qr.getBounds()
+        w = max(bounds[2] - bounds[0], 1)
+        scale = size / w
+        d = Drawing(size, size, transform=[scale, 0, 0, scale, 0, 0])
+        d.add(qr)
+        buf = io.StringIO()
+        renderSVG.drawToFile(d, buf)
+        return buf.getvalue()
+    except Exception:
+        return ""
+
+

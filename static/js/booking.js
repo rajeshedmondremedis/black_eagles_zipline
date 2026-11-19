@@ -20,17 +20,135 @@ document.addEventListener('DOMContentLoaded', function () {
   const summarySlot = document.getElementById('summarySlot');
   const summaryMembers = document.getElementById('summaryMembers');
 
+  // Visual Calendar Elements
+  const calDaysGrid = document.getElementById('calDaysGrid');
+  const calMonthTitle = document.getElementById('calMonthTitle');
+  const calPrevBtn = document.getElementById('calPrevMonth');
+  const calNextBtn = document.getElementById('calNextMonth');
+
   let currentSelectedSlot = null;
+
+  // Calendar State
+  let calCurrentYear = 2026;
+  let calCurrentMonth = 10; // 0-indexed (10 = November)
+  if (dateInput && dateInput.value) {
+    const parts = dateInput.value.split('-').map(Number);
+    if (parts.length === 3) {
+      calCurrentYear = parts[0];
+      calCurrentMonth = parts[1] - 1;
+    }
+  }
 
   // Initialize
   if (dateInput && slotContainer) {
     // Initial fetch on page load
     fetchSlotsForDate(dateInput.value);
 
+    // Initial render of visual calendar
+    if (calDaysGrid && calMonthTitle) {
+      renderVisualCalendar(calCurrentYear, calCurrentMonth);
+
+      if (calPrevBtn) {
+        calPrevBtn.addEventListener('click', function () {
+          calCurrentMonth--;
+          if (calCurrentMonth < 0) {
+            calCurrentMonth = 11;
+            calCurrentYear--;
+          }
+          renderVisualCalendar(calCurrentYear, calCurrentMonth);
+        });
+      }
+
+      if (calNextBtn) {
+        calNextBtn.addEventListener('click', function () {
+          calCurrentMonth++;
+          if (calCurrentMonth > 11) {
+            calCurrentMonth = 0;
+            calCurrentYear++;
+          }
+          renderVisualCalendar(calCurrentYear, calCurrentMonth);
+        });
+      }
+    }
+
     // Fetch on date change
     dateInput.addEventListener('change', function () {
+      const parts = this.value.split('-').map(Number);
+      if (parts.length === 3) {
+        calCurrentYear = parts[0];
+        calCurrentMonth = parts[1] - 1;
+        if (calDaysGrid) renderVisualCalendar(calCurrentYear, calCurrentMonth);
+      }
       fetchSlotsForDate(this.value);
     });
+  }
+
+  function renderVisualCalendar(year, month) {
+    if (!calDaysGrid || !calMonthTitle) return;
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    calMonthTitle.textContent = `${monthNames[month]} ${year}`;
+
+    calDaysGrid.innerHTML = '';
+
+    const firstDayIndex = new Date(year, month, 1).getDay(); // 0 = Sun, 1 = Mon, ...
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const minDateStr = dateInput.min || '';
+    const maxDateStr = dateInput.max || '';
+    const selectedDateStr = dateInput.value || '';
+
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+    // Previous month padding
+    for (let i = 0; i < firstDayIndex; i++) {
+      const padCell = document.createElement('div');
+      padCell.className = 'cal-day-cell disabled';
+      calDaysGrid.appendChild(padCell);
+    }
+
+    // Days of current month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const cell = document.createElement('div');
+      const dayDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const dayOfWeek = new Date(year, month, day, 12, 0, 0).getDay();
+
+      cell.className = 'cal-day-cell';
+      cell.textContent = day;
+      cell.dataset.date = dayDateStr;
+
+      if (dayDateStr === todayStr) {
+        cell.classList.add('today');
+      }
+
+      if (dayDateStr === selectedDateStr) {
+        cell.classList.add('selected');
+      }
+
+      // Check min/max bounds
+      if (minDateStr && dayDateStr < minDateStr) {
+        cell.classList.add('disabled');
+      } else if (maxDateStr && dayDateStr > maxDateStr) {
+        cell.classList.add('disabled');
+      } else if (dayOfWeek === 3) { // 3 = Wednesday
+        cell.classList.add('wednesday');
+        cell.title = 'Wednesdays permanently closed for line maintenance';
+      } else {
+        // Clickable operating day
+        cell.addEventListener('click', function () {
+          document.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('selected'));
+          this.classList.add('selected');
+          dateInput.value = dayDateStr;
+          fetchSlotsForDate(dayDateStr);
+        });
+      }
+
+      calDaysGrid.appendChild(cell);
+    }
   }
 
   function fetchSlotsForDate(dateStr) {

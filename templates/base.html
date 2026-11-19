@@ -7,6 +7,38 @@
   <title>{% block title %}{{ site_settings.site_name }} | {{ site_settings.tagline }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ site_settings.hero_subheading }}{% endblock %}">
 
+  <!-- OpenGraph / Social Share Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site_settings.site_name }}">
+  <meta property="og:title" content="{% block og_title %}{{ site_settings.site_name }} | {{ site_settings.tagline }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ site_settings.hero_subheading }}{% endblock %}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero-zipline.jpg' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ site_settings.site_name }} | {{ site_settings.tagline }}">
+  <meta name="twitter:description" content="{{ site_settings.hero_subheading }}">
+  <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero-zipline.jpg' %}">
+
+  <!-- JSON-LD Structured Data for Google Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "{{ site_settings.site_name|escapejs }}",
+    "description": "{{ site_settings.hero_subheading|escapejs }}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "telephone": "{{ site_settings.phone_number|escapejs }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ site_settings.address|escapejs }}"
+    },
+    "openingHours": "Th,Fr,Sa,Su,Mo,Tu 09:30-18:30",
+    "priceRange": "₹1499 - ₹2299"
+  }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85'>🦅</text></svg>">
 

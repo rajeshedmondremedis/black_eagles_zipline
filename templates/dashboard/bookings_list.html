@@ -87,9 +87,14 @@
         {% for b in bookings %}
         <tr>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-decoration-none" style="color: var(--c-burnt-orange);">
-              {{ b.booking_reference }}
-            </a>
+            <div class="d-flex align-items-center">
+              <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-decoration-none" style="color: var(--c-burnt-orange);">
+                {{ b.booking_reference }}
+              </a>
+              <button type="button" class="btn btn-sm btn-link p-0 text-muted ms-2 copy-ref-btn" data-ref="{{ b.booking_reference }}" title="Copy reference">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
           </td>
           <td>
             <div class="fw-bold text-white">{{ b.full_name }}</div>
@@ -117,9 +122,14 @@
           </td>
           <td class="small" style="color: var(--c-secondary-text);">{{ b.created_at|date:"d-M-Y H:i" }}</td>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="btn btn-sm btn-outline-light">
-              <i class="bi bi-eye me-1"></i> Manage
-            </a>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:booking_detail' b.id %}" class="btn btn-sm btn-outline-light" title="Inspect booking">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a href="{% url 'bookings:booking_success' b.booking_reference %}" target="_blank" class="btn btn-sm btn-outline-warning" title="View printable boarding voucher">
+                <i class="bi bi-printer"></i>
+              </a>
+            </div>
           </td>
         </tr>
         {% empty %}
@@ -134,4 +144,26 @@
     </table>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.copy-ref-btn').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const ref = this.getAttribute('data-ref');
+        if (ref && navigator.clipboard) {
+          navigator.clipboard.writeText(ref).then(() => {
+            const icon = this.querySelector('i');
+            if (icon) {
+              icon.className = 'bi bi-check-lg text-success';
+              setTimeout(() => icon.className = 'bi bi-clipboard', 1800);
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

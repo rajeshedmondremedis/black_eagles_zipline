@@ -15,7 +15,7 @@ from apps.bookings.services import (
     validate_booking_date
 )
 from apps.core.models import SiteSettings
-from apps.core.utils import extract_validation_error_message
+from apps.core.utils import extract_validation_error_message, generate_qr_svg
 
 
 def booking_page(request):
@@ -130,8 +130,79 @@ def booking_success(request, reference):
     """
     booking = get_object_or_404(Booking, booking_reference=reference)
     site_settings = SiteSettings.get_settings()
+    lookup_url = request.build_absolute_uri(f"/booking/lookup/?ref={booking.booking_reference}")
+    qr_svg = generate_qr_svg(lookup_url, size=115)
     return render(request, 'bookings/booking_success.html', {
         'booking': booking,
         'site_settings': site_settings,
+        'qr_svg': qr_svg,
+    })
+
+
+def booking_lookup(request):
+    """
+    Public self-service lookup portal allowing customers to retrieve their
+    boarding pass voucher, check flight status, or reprint tickets.
+    """
+    site_settings = SiteSettings.get_settings()
+    found_booking = None
+    search_attempted = False
+    error_message = None
+
+    ref_query = request.GET.get('ref', '').strip()
+    mobile_query = request.GET.get('mobile', '').strip()
+
+    if request.method == 'POST':
+        ref_query = request.POST.get('booking_reference', '').strip()
+        mobile_query = request.POST.get('mobile_number', '').strip()
+
+    if ref_query:
+        search_attempted = True
+        try:
+            booking = Booking.objects.select_related('slot').get(
+                booking_reference__iexact=ref_query
+            )
+            # If mobile provided, verify match (last 10 digits to be phone-format tolerant)
+            if mobile_query:
+                clean_mobile = ''.join(c for c in mobile_query if c.isdigit())
+                clean_booking_mobile = ''.join(c for c in booking.mobile_number if c.isdigit())
+                if clean_mobile and not clean_booking_mobile.endswith(clean_mobile[-10:]):
+                    error_message = "The mobile number provided does not match the contact number registered with this reference."
+                    booking = None
+
+            if booking:
+                found_booking = booking
+        except Booking.DoesNotExist:
+            error_message = f"No reservation found matching reference '{ref_query}'. Please verify your reference code."
+
+    # Calculate flight countdown if booking found
+    days_until_flight = None
+    is_today = False
+    is_past = False
+    if found_booking:
+        today = timezone.localdate()
+        delta = (found_booking.booking_date - today).days
+        days_until_flight = delta
+        if delta == 0:
+            is_today = True
+        elif delta < 0:
+            is_past = True
+
+    qr_svg = None
+    if found_booking:
+        lookup_url = request.build_absolute_uri(f"/booking/lookup/?ref={found_booking.booking_reference}")
+        qr_svg = generate_qr_svg(lookup_url, size=115)
+
+    return render(request, 'bookings/booking_lookup.html', {
+        'site_settings': site_settings,
+        'booking': found_booking,
+        'search_attempted': search_attempted,
+        'error_message': error_message,
+        'ref_query': ref_query,
+        'mobile_query': mobile_query,
+        'days_until_flight': days_until_flight,
+        'is_today': is_today,
+        'is_past': is_past,
+        'qr_svg': qr_svg,
     })
 

@@ -583,3 +583,42 @@ def safety_manage(request):
         'guidelines': guidelines,
         'categories': SafetyGuideline.CATEGORY_CHOICES,
     })
+
+
+@admin_required
+def api_booking_search(request):
+    """
+    Spotlight search endpoint for operator control console (Ctrl+K).
+    Returns JSON matches by reference, customer name, mobile, or email.
+    """
+    from django.http import JsonResponse
+    from django.urls import reverse
+
+    q = request.GET.get('q', '').strip()
+    if not q or len(q) < 2:
+        return JsonResponse({'results': []})
+
+    qs = Booking.objects.select_related('slot').filter(
+        models.Q(booking_reference__icontains=q) |
+        models.Q(full_name__icontains=q) |
+        models.Q(mobile_number__icontains=q) |
+        models.Q(email__icontains=q)
+    ).order_by('-created_at')[:8]
+
+    results = []
+    for b in qs:
+        results.append({
+            'id': b.id,
+            'reference': b.booking_reference,
+            'name': b.full_name,
+            'mobile': b.mobile_number,
+            'date': b.booking_date.strftime('%d-%b-%Y'),
+            'slot': b.slot.name,
+            'slot_time': b.slot.formatted_time,
+            'members': b.number_of_members,
+            'status': b.status,
+            'url': reverse('dashboard:booking_detail', args=[b.id]),
+        })
+
+    return JsonResponse({'results': results})
+

@@ -117,6 +117,13 @@
       </div>
 
       <div class="d-flex align-items-center gap-3">
+        <!-- Spotlight Search Trigger Button (Ctrl+K) -->
+        <button type="button" class="btn btn-sm d-none d-md-flex align-items-center gap-2" id="spotlightTriggerBtn" style="border-radius: 20px; border: 1px solid var(--c-border); color: var(--c-secondary-text); background-color: var(--c-card-bg); padding: 0.45rem 1rem;" title="Press Ctrl+K to search">
+          <i class="bi bi-search text-orange"></i>
+          <span style="font-size: 0.82rem;">Search bookings...</span>
+          <kbd class="border border-secondary border-opacity-50 px-1 py-0 rounded text-muted" style="background-color: var(--c-forest-deep); font-size: 0.68rem;">Ctrl K</kbd>
+        </button>
+
         <div class="dash-user-pill">
           <div class="user-status-dot"></div>
           <span class="text-white fw-bold">{{ request.user.username }}</span>
@@ -147,6 +154,27 @@
 
     <!-- Page Content -->
     {% block content %}{% endblock %}
+
+    <!-- Spotlight Search Modal (Ctrl+K) -->
+    <div class="modal fade" id="spotlightModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="background-color: var(--c-emerald-dark); border: 1px solid var(--c-border); border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.85);">
+          <div class="modal-header p-3 border-bottom" style="border-color: var(--c-border) !important;">
+            <div class="d-flex align-items-center gap-2 w-100">
+              <i class="bi bi-search text-orange fs-5"></i>
+              <input type="text" id="spotlightInput" class="form-control border-0 shadow-none text-white fs-5 p-0 bg-transparent" placeholder="Type booking reference, customer name, mobile..." autocomplete="off">
+              <span class="badge" style="background-color: var(--c-forest-deep); color: var(--c-secondary-text); border: 1px solid var(--c-border); font-size: 0.7rem;">ESC</span>
+            </div>
+          </div>
+          <div class="modal-body p-3" style="max-height: 420px; overflow-y: auto;" id="spotlightResults">
+            <div class="text-center text-muted py-4 small">
+              <i class="bi bi-keyboard fs-3 d-block mb-1 text-secondary"></i>
+              Type at least 2 characters to search confirmed or cancelled bookings across the system...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Bootstrap Bundle JS -->
