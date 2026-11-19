@@ -2,12 +2,13 @@
 {% load static %}
 
 {% block page_title %}Dashboard Overview{% endblock %}
+{% block page_heading %}Dashboard Overview{% endblock %}
 {% block page_subtitle %}Live flight capacity & reservation metrics for {{ today|date:"l, d F Y" }}{% endblock %}
 
 {% block content %}
 <!-- KPI Summary Row -->
 <div class="row g-3 mb-4">
-  <!-- Total Bookings -->
+  <!-- Total Reservations -->
   <div class="col-sm-6 col-xl-3">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-blue">
@@ -35,12 +36,12 @@
       <div class="kpi-icon-box kpi-icon-orange">
         <i class="bi bi-airplane-engines"></i>
       </div>
-      <div class="kpi-value text-orange">{{ today_confirmed_count }}</div>
+      <div class="kpi-value" style="color: var(--c-burnt-orange);">{{ today_confirmed_count }}</div>
       <div class="kpi-label">Today's Bookings</div>
     </div>
   </div>
 
-  <!-- Upcoming Flights -->
+  <!-- Upcoming Future Bookings -->
   <div class="col-sm-6 col-xl-3">
     <div class="kpi-card">
       <div class="kpi-icon-box kpi-icon-emerald">
@@ -55,17 +56,17 @@
 <!-- Today's Slot Capacities & Occupancy Progress -->
 <div class="row g-4 mb-4">
   <div class="col-lg-8">
-    <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+    <div class="p-4 rounded-4 h-100" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h5 class="text-white fw-bold mb-1">Today's Daily Flight Slots</h5>
-          <p class="text-muted small mb-0">{{ today|date:"l, d F Y" }} • 4 Fixed Operating Slots</p>
+          <p class="text-muted small mb-0">{{ today|date:"l, d F Y" }} • 4 Fixed Operating Departures</p>
         </div>
         <div class="d-flex gap-2">
-          <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-35 px-2 py-1">
+          <span class="badge bg-success-subtle text-success border border-success border-opacity-35 px-2 py-1">
             {{ available_slots_today_count }} Available
           </span>
-          <span class="badge bg-danger bg-opacity-15 text-danger border border-danger border-opacity-35 px-2 py-1">
+          <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-35 px-2 py-1">
             {{ fully_booked_today_count }} Full
           </span>
         </div>
@@ -74,11 +75,13 @@
       <div class="row g-3">
         {% for item in slots_today_info %}
         <div class="col-md-6">
-          <div class="p-3 rounded-3" style="background: rgba(233, 237, 233, 0.03); border: 1px solid var(--dash-border);">
-            <div class="d-flex justify-content-between align-items-start mb-1">
+          <div class="p-3 rounded-3" style="background: var(--c-card-secondary); border: 1px solid var(--c-border);">
+            <div class="d-flex justify-content-between align-items-start mb-2">
               <div>
-                <strong class="text-white">{{ item.slot.name }}</strong>
-                <div class="text-warning small"><i class="bi bi-clock me-1"></i> {{ item.slot.formatted_time }}</div>
+                <strong class="text-white d-block" style="font-size: 0.95rem;">{{ item.slot.name }}</strong>
+                <div class="small fw-bold" style="color: var(--c-burnt-orange);">
+                  <i class="bi bi-clock me-1"></i> {{ item.slot.formatted_time }}
+                </div>
               </div>
               {% if item.is_full %}
                 <span class="badge bg-danger text-white">FULLY BOOKED</span>
@@ -87,9 +90,9 @@
               {% endif %}
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-3 small text-muted">
-              <span>Booked: <strong class="text-white">{{ item.booked }}</strong> / {{ item.slot.max_capacity }} pax</span>
-              <span>{{ item.occupancy_pct }}% Occupancy</span>
+            <div class="d-flex justify-content-between align-items-center mt-3 small">
+              <span class="text-light opacity-75">Booked: <strong class="text-white">{{ item.booked }}</strong> / {{ item.slot.max_capacity }} pax</span>
+              <span class="text-white fw-bold">{{ item.occupancy_pct }}% Occupancy</span>
             </div>
 
             <div class="slot-progress-track">
@@ -104,18 +107,18 @@
 
   <!-- Weekly Manifest Trend Chart -->
   <div class="col-lg-4">
-    <div class="p-4 rounded-4 h-100 d-flex flex-column" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+    <div class="p-4 rounded-4 h-100 d-flex flex-column" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
       <h5 class="text-white fw-bold mb-1">Weekly Rider Volume</h5>
       <p class="text-muted small mb-3">Passenger count over last 7 days</p>
-      <div class="flex-grow-1 position-relative" style="min-height: 200px;">
+      <div class="flex-grow-1 position-relative" style="min-height: 220px;">
         <canvas id="weeklyTrendChart"></canvas>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Recent Bookings Table -->
-<div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+<!-- Recent Bookings Table (Dark Themed, High Contrast) -->
+<div class="p-4 rounded-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
       <h5 class="text-white fw-bold mb-1">Recent Booking Registrations</h5>
@@ -144,26 +147,30 @@
         {% for b in recent_bookings %}
         <tr>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-orange text-decoration-none">
+            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-decoration-none" style="color: var(--c-burnt-orange);">
               {{ b.booking_reference }}
             </a>
           </td>
           <td>
             <div class="fw-bold text-white">{{ b.full_name }}</div>
-            <div class="text-muted small">{{ b.mobile_number }} • {{ b.place }}</div>
+            <div class="small" style="color: var(--c-secondary-text);">{{ b.mobile_number }} • {{ b.place }}</div>
           </td>
-          <td>{{ b.booking_date|date:"d-M-Y" }}</td>
+          <td>
+            <span class="text-white fw-bold">{{ b.booking_date|date:"d-M-Y" }}</span>
+          </td>
           <td>
             <div class="small text-white">{{ b.slot.name }}</div>
-            <div class="text-muted small">({{ b.slot.formatted_time }})</div>
+            <div class="small" style="color: var(--c-muted-text);">({{ b.slot.formatted_time }})</div>
           </td>
-          <td><span class="badge bg-secondary fs-6">{{ b.number_of_members }}</span></td>
+          <td>
+            <span class="badge bg-secondary fs-6 px-2 py-1">{{ b.number_of_members }}</span>
+          </td>
           <td>
             <span class="badge-status {% if b.status == 'CONFIRMED' %}badge-status-confirmed{% else %}badge-status-cancelled{% endif %}">
               {{ b.get_status_display }}
             </span>
           </td>
-          <td class="text-muted small">{{ b.created_at|date:"d M, H:i" }}</td>
+          <td class="small" style="color: var(--c-secondary-text);">{{ b.created_at|date:"d M, H:i" }}</td>
           <td>
             <a href="{% url 'dashboard:booking_detail' b.id %}" class="btn btn-sm btn-outline-light">
               Inspect
@@ -189,17 +196,17 @@
     const chartEl = document.getElementById('weeklyTrendChart');
     if (!chartEl) return;
     const ctx = chartEl.getContext('2d');
-    const chart = new Chart(ctx, {
+    new Chart(ctx, {
       type: 'bar',
       data: {
         labels: {{ chart_dates|safe }},
         datasets: [{
           label: 'Confirmed Riders',
           data: {{ chart_counts|safe }},
-          backgroundColor: '#10B981',
-          borderColor: '#34D399',
+          backgroundColor: '#18A66A',
+          borderColor: '#22C55E',
           borderWidth: 1,
-          borderRadius: 8
+          borderRadius: 6
         }]
       },
       options: {
@@ -208,22 +215,22 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#1C2723',
-            titleColor: '#F8F8F4',
-            bodyColor: '#34D399',
-            borderColor: 'rgba(233,237,233,0.16)',
+            backgroundColor: '#13251E',
+            titleColor: '#F5F7F5',
+            bodyColor: '#18A66A',
+            borderColor: '#30443A',
             borderWidth: 1
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: '#8E9E96', font: { size: 10 } }
+            ticks: { color: '#A6B5AC', font: { size: 10 } }
           },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(233,237,233,0.06)' },
-            ticks: { color: '#8E9E96', stepSize: 1, font: { size: 10 } }
+            grid: { color: 'rgba(48, 68, 58, 0.4)' },
+            ticks: { color: '#A6B5AC', stepSize: 1, font: { size: 10 } }
           }
         }
       }

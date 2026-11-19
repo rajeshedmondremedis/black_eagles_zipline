@@ -6,14 +6,14 @@
 
 {% block content %}
 <div class="row g-4 mb-4">
-  <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
-    <div>
-      <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-35 px-3 py-2 fw-bold">
-        Operating Policy: 4 Daily Slots • Max 6 Pax Each • 24 Daily Max Capacity
+  <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge px-3 py-2 fw-bold d-inline-flex align-items-center gap-2" style="background-color: var(--c-success-bg); color: var(--c-success); border: 1px solid var(--c-success-border); font-size: 0.85rem; border-radius: 9999px;">
+        <i class="bi bi-shield-check"></i> Standard Operating Rule: 4 Daily Slots • Max 6 Pax Each • 24 Daily Max Capacity
       </span>
     </div>
     <button type="button" class="btn btn-dash-primary" data-bs-toggle="modal" data-bs-target="#createSlotModal">
-      <i class="bi bi-plus-circle me-1"></i> Add New Slot
+      <i class="bi bi-plus-circle"></i> Add New Slot
     </button>
   </div>
 </div>
@@ -21,45 +21,58 @@
 <div class="row g-4">
   {% for item in slot_stats %}
   <div class="col-md-6 col-xl-3">
-    <div class="p-4 rounded-4 h-100 d-flex flex-column justify-content-between" style="background-color: var(--dash-card); border: 1px solid var(--dash-border); box-shadow: var(--shadow-sm);">
+    <div class="slot-dash-card">
       <div>
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge bg-secondary">Order #{{ item.slot.order }}</span>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge" style="background-color: var(--c-forest-deep); color: var(--c-secondary-text); border: 1px solid var(--c-border); font-size: 0.75rem; border-radius: 6px;">
+            Slot #{{ item.slot.order }}
+          </span>
           {% if item.slot.is_active %}
-            <span class="badge bg-success">Active</span>
+            <span class="badge-status badge-status-confirmed">
+              <i class="bi bi-check-circle-fill"></i> Active
+            </span>
           {% else %}
-            <span class="badge bg-danger">Inactive</span>
+            <span class="badge-status badge-status-cancelled">
+              <i class="bi bi-pause-circle-fill"></i> Paused
+            </span>
           {% endif %}
         </div>
 
-        <h5 class="text-white fw-bold mb-1">{{ item.slot.name }}</h5>
-        <div class="text-orange small mb-3">
-          <i class="bi bi-clock-fill me-1"></i> {{ item.slot.formatted_time }}
+        <h5 class="fw-bold mb-1 text-white" style="font-family: var(--font-display);">{{ item.slot.name }}</h5>
+        <div class="d-flex align-items-center gap-1 mb-3" style="color: var(--c-burnt-orange); font-weight: 600; font-size: 0.9rem;">
+          <i class="bi bi-clock-fill"></i>
+          <span>{{ item.slot.formatted_time }}</span>
         </div>
 
-        <hr class="border-secondary border-opacity-25 my-3">
+        <hr style="border-color: var(--c-border); opacity: 0.6; margin: 1rem 0;">
 
-        <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-          <span>Max Capacity:</span>
-          <strong class="text-white fs-6">{{ item.slot.max_capacity }} Pax</strong>
+        <div class="slot-stat-row">
+          <span class="slot-stat-label">Max Allowed:</span>
+          <strong class="slot-stat-value">{{ item.slot.max_capacity }} Riders</strong>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-          <span>Today's Booked:</span>
-          <strong class="text-white">{{ item.today_booked }} Pax</strong>
+        <div class="slot-stat-row">
+          <span class="slot-stat-label">Today's Booked:</span>
+          <strong class="slot-stat-value">{{ item.today_booked }} Pax</strong>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center small text-muted">
-          <span>Today's Remaining:</span>
+        <div class="slot-stat-row">
+          <span class="slot-stat-label">Today's Remaining:</span>
           {% if item.today_remaining > 0 %}
-            <span class="text-success fw-bold">{{ item.today_remaining }} Seat(s)</span>
+            <span class="fw-bold" style="color: var(--c-success);">{{ item.today_remaining }} Seat(s)</span>
           {% else %}
-            <span class="text-danger fw-bold">FULL</span>
+            <span class="fw-bold" style="color: var(--c-danger);">FULL</span>
           {% endif %}
+        </div>
+
+        <!-- Mini Capacity Track -->
+        <div class="slot-progress-track">
+          <div class="slot-progress-fill {% if item.today_remaining == 0 %}full{% endif %}" 
+               style="width: {% widthratio item.today_booked item.slot.max_capacity 100 %}%;"></div>
         </div>
       </div>
 
-      <div class="d-flex gap-2 mt-4 pt-3 border-top border-secondary border-opacity-25">
+      <div class="d-flex gap-2 mt-4 pt-3" style="border-top: 1px solid var(--c-border);">
         <button type="button" class="btn btn-sm btn-outline-warning flex-grow-1" data-bs-toggle="modal" data-bs-target="#editSlotModal{{ item.slot.id }}">
           <i class="bi bi-pencil me-1"></i> Edit
         </button>
@@ -76,44 +89,44 @@
   <!-- Edit Modal for Slot -->
   <div class="modal fade" id="editSlotModal{{ item.slot.id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-dark text-white border border-secondary">
+      <div class="modal-content">
         <form method="post" action="{% url 'dashboard:slot_edit' item.slot.id %}">
           {% csrf_token %}
-          <div class="modal-header border-secondary border-opacity-25">
-            <h5 class="modal-title fw-bold">Edit {{ item.slot.name }}</h5>
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold text-white">Edit {{ item.slot.name }}</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label text-light-grey small fw-bold">Slot Name *</label>
+              <label class="form-label">Slot Name *</label>
               <input type="text" name="name" class="form-control" value="{{ item.slot.name }}" required>
             </div>
-            <div class="row g-2 mb-3">
+            <div class="row g-3 mb-3">
               <div class="col-6">
-                <label class="form-label text-light-grey small fw-bold">Start Time *</label>
+                <label class="form-label">Start Time *</label>
                 <input type="time" name="start_time" class="form-control" value="{{ item.slot.start_time|time:'H:i' }}" required>
               </div>
               <div class="col-6">
-                <label class="form-label text-light-grey small fw-bold">End Time *</label>
+                <label class="form-label">End Time *</label>
                 <input type="time" name="end_time" class="form-control" value="{{ item.slot.end_time|time:'H:i' }}" required>
               </div>
             </div>
-            <div class="row g-2 mb-3">
+            <div class="row g-3 mb-3">
               <div class="col-6">
-                <label class="form-label text-light-grey small fw-bold">Max Capacity *</label>
+                <label class="form-label">Max Capacity *</label>
                 <input type="number" name="max_capacity" class="form-control" min="1" max="24" value="{{ item.slot.max_capacity }}" required>
               </div>
               <div class="col-6">
-                <label class="form-label text-light-grey small fw-bold">Display Order</label>
+                <label class="form-label">Display Order</label>
                 <input type="number" name="order" class="form-control" value="{{ item.slot.order }}">
               </div>
             </div>
-            <div class="form-check form-switch mt-2">
+            <div class="form-check form-switch mt-3">
               <input class="form-check-input" type="checkbox" name="is_active" id="activeCheck{{ item.slot.id }}" {% if item.slot.is_active %}checked{% endif %}>
-              <label class="form-check-label text-light-grey small" for="activeCheck{{ item.slot.id }}">Slot Active for Online Bookings</label>
+              <label class="form-check-label small" for="activeCheck{{ item.slot.id }}" style="color: var(--c-primary-text);">Slot Active for Online Bookings</label>
             </div>
           </div>
-          <div class="modal-footer border-secondary border-opacity-25">
+          <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-dash-primary">Save Changes</button>
           </div>
@@ -127,45 +140,45 @@
 <!-- Modal: Create New Slot -->
 <div class="modal fade" id="createSlotModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark text-white border border-secondary">
+    <div class="modal-content">
       <form method="post" action="{% url 'dashboard:slots_list' %}">
         {% csrf_token %}
         <input type="hidden" name="action" value="create">
-        <div class="modal-header border-secondary border-opacity-25">
-          <h5 class="modal-title fw-bold">Add New Flight Slot</h5>
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold text-white">Add New Flight Slot</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Slot Name *</label>
+            <label class="form-label">Slot Name *</label>
             <input type="text" name="name" class="form-control" placeholder="e.g. Sunset Golden Hour Flight" required>
           </div>
-          <div class="row g-2 mb-3">
+          <div class="row g-3 mb-3">
             <div class="col-6">
-              <label class="form-label text-light-grey small fw-bold">Start Time *</label>
+              <label class="form-label">Start Time *</label>
               <input type="time" name="start_time" class="form-control" required>
             </div>
             <div class="col-6">
-              <label class="form-label text-light-grey small fw-bold">End Time *</label>
+              <label class="form-label">End Time *</label>
               <input type="time" name="end_time" class="form-control" required>
             </div>
           </div>
-          <div class="row g-2 mb-3">
+          <div class="row g-3 mb-3">
             <div class="col-6">
-              <label class="form-label text-light-grey small fw-bold">Max Capacity *</label>
+              <label class="form-label">Max Capacity *</label>
               <input type="number" name="max_capacity" class="form-control" min="1" max="24" value="6" required>
             </div>
             <div class="col-6">
-              <label class="form-label text-light-grey small fw-bold">Display Order</label>
+              <label class="form-label">Display Order</label>
               <input type="number" name="order" class="form-control" value="5">
             </div>
           </div>
-          <div class="form-check form-switch mt-2">
+          <div class="form-check form-switch mt-3">
             <input class="form-check-input" type="checkbox" name="is_active" id="newActiveCheck" checked>
-            <label class="form-check-label text-light-grey small" for="newActiveCheck">Slot Active for Online Bookings</label>
+            <label class="form-check-label small" for="newActiveCheck" style="color: var(--c-primary-text);">Slot Active for Online Bookings</label>
           </div>
         </div>
-        <div class="modal-footer border-secondary border-opacity-25">
+        <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-dash-primary">Create Slot</button>
         </div>

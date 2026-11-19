@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,10 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85'>🦅</text></svg>">
 
-  <!-- Google Fonts: Plus Jakarta Sans, Outfit, Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5.3.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,14 +24,14 @@
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
-<body class="dashboard-body">
+<body class="dashboard-body" data-bs-theme="dark">
 
   <!-- Sidebar -->
   <aside class="dash-sidebar">
     <a href="{% url 'dashboard:index' %}" class="sidebar-brand">
       <i class="bi bi-feather brand-icon"></i>
       <div>
-        <div class="text-white fw-bold leading-tight" style="font-size: 1.05rem;">BLACK EAGLES</div>
+        <div class="text-white fw-bold leading-tight" style="font-size: 1.05rem; letter-spacing: 0.5px;">BLACK EAGLES</div>
         <div class="text-muted" style="font-size: 0.72rem; letter-spacing: 1px;">OPERATIONS PORTAL</div>
       </div>
     </a>
@@ -104,16 +104,23 @@
           <i class="bi bi-list fs-5"></i>
         </button>
         <div>
-          <h1 class="dash-title">{% block page_title %}Dashboard{% endblock %}</h1>
+          <nav aria-label="breadcrumb">
+            <ol class="dash-breadcrumb mb-1">
+              <li class="me-2"><a href="{% url 'dashboard:index' %}">Portal</a></li>
+              <li class="me-2"><i class="bi bi-chevron-right text-muted" style="font-size: 0.7rem;"></i></li>
+              <li class="text-white fw-bold">{% block breadcrumb_current %}{% block page_title %}Dashboard{% endblock %}{% endblock %}</li>
+            </ol>
+          </nav>
+          <h1 class="dash-title">{% block page_heading %}{% block page_title_inner %}{% endblock %}{% endblock %}</h1>
           <p class="dash-subtitle">{% block page_subtitle %}Black Eagles Zipline Operations{% endblock %}</p>
         </div>
       </div>
 
       <div class="d-flex align-items-center gap-3">
-        <div class="d-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-dark border border-secondary border-opacity-25 small">
-          <i class="bi bi-person-circle text-success fs-5"></i>
+        <div class="dash-user-pill">
+          <div class="user-status-dot"></div>
           <span class="text-white fw-bold">{{ request.user.username }}</span>
-          <span class="badge bg-secondary">Administrator</span>
+          <span class="badge bg-secondary" style="font-size: 0.7rem;">Administrator</span>
         </div>
       </div>
     </header>

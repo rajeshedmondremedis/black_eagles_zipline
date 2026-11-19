@@ -2,16 +2,17 @@
 {% load static %}
 
 {% block page_title %}Reservation Inspector: {{ booking.booking_reference }}{% endblock %}
+{% block page_heading %}Reservation Inspector{% endblock %}
 {% block page_subtitle %}Review passenger manifest, reschedule slot, or process cancellation{% endblock %}
 
 {% block content %}
 <div class="row g-4">
   <!-- Left Column: Details & Actions -->
   <div class="col-lg-8">
-    <div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
         <div>
-          <span class="badge bg-warning bg-opacity-20 text-orange border border-warning border-opacity-35 fw-bold px-3 py-1 mb-2">
+          <span class="badge fw-bold px-3 py-1 mb-2" style="background: rgba(244, 123, 22, 0.15); color: var(--c-burnt-orange); border: 1px solid rgba(244, 123, 22, 0.35);">
             REFERENCE: {{ booking.booking_reference }}
           </span>
           <h3 class="text-white fw-bold mb-0">{{ booking.full_name }}</h3>
@@ -25,43 +26,43 @@
 
       <div class="row g-4 mb-4">
         <div class="col-sm-6">
-          <span class="text-muted small d-block">Mobile Number</span>
+          <span class="small d-block" style="color: var(--c-secondary-text);">Mobile Number</span>
           <strong class="text-white fs-6">{{ booking.mobile_number }}</strong>
         </div>
         <div class="col-sm-6">
-          <span class="text-muted small d-block">Email Address</span>
+          <span class="small d-block" style="color: var(--c-secondary-text);">Email Address</span>
           <strong class="text-white fs-6">{{ booking.email }}</strong>
         </div>
         <div class="col-sm-6">
-          <span class="text-muted small d-block">City / Place of Origin</span>
+          <span class="small d-block" style="color: var(--c-secondary-text);">City / Place of Origin</span>
           <strong class="text-white fs-6">{{ booking.place }}</strong>
         </div>
         <div class="col-sm-6">
-          <span class="text-muted small d-block">Passenger Count</span>
-          <strong class="text-orange fs-5">{{ booking.number_of_members }} Rider{{ booking.number_of_members|pluralize }}</strong>
+          <span class="small d-block" style="color: var(--c-secondary-text);">Passenger Count</span>
+          <strong class="fs-5" style="color: var(--c-burnt-orange);">{{ booking.number_of_members }} Rider{{ booking.number_of_members|pluralize }}</strong>
         </div>
         <div class="col-sm-6">
-          <span class="text-muted small d-block">Reserved Flight Date</span>
+          <span class="small d-block" style="color: var(--c-secondary-text);">Reserved Flight Date</span>
           <strong class="text-white fs-6">{{ booking.booking_date|date:"l, d F Y" }}</strong>
         </div>
         <div class="col-sm-6">
-          <span class="text-muted small d-block">Flight Slot & Time</span>
+          <span class="small d-block" style="color: var(--c-secondary-text);">Flight Slot & Time</span>
           <strong class="text-white fs-6">{{ booking.slot.name }}</strong>
-          <div class="text-orange small"><i class="bi bi-clock me-1"></i>{{ booking.slot.formatted_time }}</div>
+          <div class="small fw-bold" style="color: var(--c-burnt-orange);"><i class="bi bi-clock me-1"></i>{{ booking.slot.formatted_time }}</div>
         </div>
       </div>
 
       {% if booking.admin_notes %}
-      <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-4">
-        <span class="text-muted small d-block mb-1">Administrative Notes:</span>
-        <div class="text-light-grey small" style="white-space: pre-wrap;">{{ booking.admin_notes }}</div>
+      <div class="p-3 rounded-3 mb-4" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
+        <span class="small d-block mb-1" style="color: var(--c-secondary-text);">Administrative Notes:</span>
+        <div class="text-white small" style="white-space: pre-wrap;">{{ booking.admin_notes }}</div>
       </div>
       {% endif %}
 
       <!-- Action Buttons -->
       <div class="d-flex flex-wrap gap-2 pt-3 border-top border-secondary border-opacity-25">
         {% if booking.status == 'CONFIRMED' %}
-          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modifyModal">
+          <button type="button" class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#modifyModal">
             <i class="bi bi-pencil-square me-1"></i> Reschedule / Modify Booking
           </button>
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
@@ -79,20 +80,20 @@
     </div>
 
     <!-- Audit History Trail -->
-    <div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-journal-text text-orange me-2"></i> Audit Trail & Activity Log</h5>
+    <div class="p-4 rounded-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3"><i class="bi bi-journal-text me-2" style="color: var(--c-burnt-orange);"></i> Audit Trail & Activity Log</h5>
       
       <div class="d-flex flex-column gap-3">
         {% for log in audit_logs %}
-        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+        <div class="p-3 rounded-3" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
           <div class="d-flex justify-content-between align-items-center mb-1">
             <span class="badge {% if log.action == 'CREATED' %}bg-success{% elif log.action == 'MODIFIED' %}bg-warning text-dark{% else %}bg-danger{% endif %} fw-bold">
               {{ log.action }}
             </span>
-            <span class="text-muted small">{{ log.timestamp|date:"d-M-Y H:i:s" }}</span>
+            <span class="small" style="color: var(--c-muted-text);">{{ log.timestamp|date:"d-M-Y H:i:s" }}</span>
           </div>
-          <div class="text-light-grey small mt-1">{{ log.details }}</div>
-          <div class="text-muted small mt-1">
+          <div class="text-white small mt-1">{{ log.details }}</div>
+          <div class="small mt-1" style="color: var(--c-secondary-text);">
             <i class="bi bi-person me-1"></i> Performed by: 
             {% if log.performed_by %}
               <strong class="text-white">{{ log.performed_by.username }}</strong>
@@ -102,7 +103,7 @@
           </div>
         </div>
         {% empty %}
-        <div class="text-muted small">No audit log records for this booking.</div>
+        <div class="small text-muted">No audit log records for this booking.</div>
         {% endfor %}
       </div>
     </div>
@@ -110,13 +111,13 @@
 
   <!-- Right Column: Navigation & Quick Info -->
   <div class="col-lg-4">
-    <div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
       <h6 class="text-white fw-bold mb-3">Operational Info</h6>
-      <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
-        <li><strong>Created:</strong> {{ booking.created_at|date:"d-M-Y H:i" }}</li>
-        <li><strong>Last Updated:</strong> {{ booking.updated_at|date:"d-M-Y H:i" }}</li>
-        <li><strong>Slot Capacity:</strong> {{ booking.slot.max_capacity }} riders</li>
-        <li><strong>Active Status:</strong> {% if booking.slot.is_active %}<span class="text-success">Slot Active</span>{% else %}<span class="text-danger">Slot Inactive</span>{% endif %}</li>
+      <ul class="list-unstyled small mb-0 d-flex flex-column gap-2" style="color: var(--c-secondary-text);">
+        <li><strong class="text-white">Created:</strong> {{ booking.created_at|date:"d-M-Y H:i" }}</li>
+        <li><strong class="text-white">Last Updated:</strong> {{ booking.updated_at|date:"d-M-Y H:i" }}</li>
+        <li><strong class="text-white">Slot Capacity:</strong> {{ booking.slot.max_capacity }} riders</li>
+        <li><strong class="text-white">Active Status:</strong> {% if booking.slot.is_active %}<span class="text-success fw-bold">Slot Active</span>{% else %}<span class="text-danger fw-bold">Slot Inactive</span>{% endif %}</li>
       </ul>
       <hr class="border-secondary border-opacity-25 my-3">
       <a href="{% url 'dashboard:bookings_list' %}" class="btn btn-outline-secondary w-100 btn-sm">
@@ -129,27 +130,27 @@
 <!-- Modal: Cancel Booking -->
 <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark text-white border border-danger">
+    <div class="modal-content">
       <form method="post" action="{% url 'dashboard:booking_detail' booking.id %}">
         {% csrf_token %}
         <input type="hidden" name="action" value="cancel">
-        <div class="modal-header border-secondary border-opacity-25">
+        <div class="modal-header">
           <h5 class="modal-title fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Cancel Reservation</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p class="text-light-grey">
+          <p class="text-white">
             Are you sure you want to cancel booking <strong>{{ booking.booking_reference }}</strong> for <strong>{{ booking.full_name }}</strong>?
           </p>
-          <div class="alert alert-dark border border-warning small text-warning">
+          <div class="alert alert-warning small">
             <i class="bi bi-info-circle me-1"></i> This action will immediately release <strong>{{ booking.number_of_members }} seat(s)</strong> back to the slot capacity on {{ booking.booking_date|date:"d-M-Y" }}.
           </div>
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Cancellation Reason</label>
+            <label class="form-label">Cancellation Reason</label>
             <input type="text" name="cancel_reason" class="form-control" placeholder="e.g. Customer requested cancellation due to travel delay" required>
           </div>
         </div>
-        <div class="modal-footer border-secondary border-opacity-25">
+        <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-danger">Confirm Cancellation</button>
         </div>
@@ -161,23 +162,23 @@
 <!-- Modal: Reschedule / Modify Booking -->
 <div class="modal fade" id="modifyModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark text-white border border-secondary">
+    <div class="modal-content">
       <form method="post" action="{% url 'dashboard:booking_detail' booking.id %}">
         {% csrf_token %}
         <input type="hidden" name="action" value="modify">
-        <div class="modal-header border-secondary border-opacity-25">
-          <h5 class="modal-title fw-bold text-white"><i class="bi bi-pencil-square text-orange me-2"></i> Reschedule Reservation</h5>
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold text-white"><i class="bi bi-pencil-square me-2" style="color: var(--c-burnt-orange);"></i> Reschedule Reservation</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Flight Date *</label>
+            <label class="form-label">Flight Date *</label>
             <input type="date" name="booking_date" class="form-control" value="{{ booking.booking_date|date:'Y-m-d' }}" required>
-            <span class="text-muted small">Wednesdays and holidays are automatically blocked.</span>
+            <span class="small" style="color: var(--c-muted-text);">Wednesdays and holidays are automatically blocked.</span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Time Slot *</label>
+            <label class="form-label">Time Slot *</label>
             <select name="slot" class="form-select" required>
               {% for s in slots %}
               <option value="{{ s.id }}" {% if booking.slot_id == s.id %}selected{% endif %}>
@@ -188,16 +189,16 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Number of Passengers (1 - 6) *</label>
+            <label class="form-label">Number of Passengers (1 - 6) *</label>
             <input type="number" name="number_of_members" class="form-control" min="1" max="6" value="{{ booking.number_of_members }}" required>
           </div>
 
           <div class="mb-3">
-            <label class="form-label text-light-grey small fw-bold">Reschedule Reason / Admin Notes</label>
+            <label class="form-label">Reschedule Reason / Admin Notes</label>
             <textarea name="admin_notes" class="form-control" rows="2" placeholder="Rescheduled per customer phone request..."></textarea>
           </div>
         </div>
-        <div class="modal-footer border-secondary border-opacity-25">
+        <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-dash-primary">Save Rescheduled Booking</button>
         </div>

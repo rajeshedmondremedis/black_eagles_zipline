@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const sidebarToggle = document.getElementById('sidebarToggle');
   const dashSidebar = document.querySelector('.dash-sidebar');
 
-  // Create backdrop if it doesn't exist
   let backdrop = document.querySelector('.sidebar-backdrop');
   if (!backdrop) {
     backdrop = document.createElement('div');
@@ -41,7 +40,29 @@ document.addEventListener('DOMContentLoaded', function () {
     backdrop.addEventListener('click', closeSidebar);
   }
 
-  // 2. Auto-dismiss standard alerts after 5 seconds
+  // 2. Settings Tab Navigation System
+  const tabButtons = document.querySelectorAll('.settings-tab-btn');
+  const tabPanes = document.querySelectorAll('.settings-pane');
+
+  if (tabButtons.length > 0 && tabPanes.length > 0) {
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('data-target');
+
+        tabButtons.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.classList.remove('active'));
+
+        this.classList.add('active');
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+          targetPane.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // 3. Auto-dismiss standard alerts after 5 seconds
   const autoAlerts = document.querySelectorAll('.alert-dismissible');
   autoAlerts.forEach(alert => {
     setTimeout(() => {
@@ -49,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const bsAlert = new bootstrap.Alert(alert);
         bsAlert.close();
       } catch (e) {
-        // Ignored if already closed
+        // Ignored if closed manually
       }
     }, 5000);
   });

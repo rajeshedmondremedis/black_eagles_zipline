@@ -5,148 +5,248 @@
 {% block page_subtitle %}Update business contact information, hero headline, about content, and map embeds without touching code{% endblock %}
 
 {% block content %}
-<form method="post" action="{% url 'dashboard:settings_edit' %}" class="row g-4">
+<form method="post" action="{% url 'dashboard:settings_edit' %}">
   {% csrf_token %}
 
-  <!-- Core Brand & Hero Content -->
-  <div class="col-lg-6">
-    <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-megaphone text-orange me-2"></i> Branding & Hero Section</h5>
+  <!-- Settings Tab Navigation -->
+  <div class="settings-tab-nav">
+    <button type="button" class="settings-tab-btn active" data-tab="tab-branding">
+      <i class="bi bi-megaphone"></i>
+      <span>Branding & Hero</span>
+    </button>
+    <button type="button" class="settings-tab-btn" data-tab="tab-stats">
+      <i class="bi bi-bar-chart-line"></i>
+      <span>Homepage Stats</span>
+    </button>
+    <button type="button" class="settings-tab-btn" data-tab="tab-about">
+      <i class="bi bi-journal-text"></i>
+      <span>About & Safety Content</span>
+    </button>
+    <button type="button" class="settings-tab-btn" data-tab="tab-contact">
+      <i class="bi bi-geo-alt"></i>
+      <span>Contact & Base Camp</span>
+    </button>
+    <button type="button" class="settings-tab-btn" data-tab="tab-social">
+      <i class="bi bi-share"></i>
+      <span>Maps & Social Links</span>
+    </button>
+  </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Company / Brand Name</label>
-        <input type="text" name="site_name" class="form-control" value="{{ settings.site_name }}" required>
-      </div>
+  <!-- TAB 1: Branding & Hero Section -->
+  <div id="tab-branding" class="settings-pane active">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3" style="font-family: var(--font-display);">
+        <i class="bi bi-megaphone text-orange me-2"></i> Branding & Hero Section
+      </h5>
+      <p class="small mb-4" style="color: var(--c-secondary-text);">Core branding text and prime callout elements featured at the top of the homepage.</p>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Brand Tagline</label>
-        <input type="text" name="tagline" class="form-control" value="{{ settings.tagline }}" required>
-      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Company / Brand Name *</label>
+          <input type="text" name="site_name" class="form-control" value="{{ settings.site_name }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Hero Main Heading</label>
-        <input type="text" name="hero_heading" class="form-control" value="{{ settings.hero_heading }}" required>
-      </div>
+        <div class="col-md-6">
+          <label class="form-label">Brand Tagline *</label>
+          <input type="text" name="tagline" class="form-control" value="{{ settings.tagline }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Hero Subtitle / Introduction</label>
-        <textarea name="hero_subheading" class="form-control" rows="3" required>{{ settings.hero_subheading }}</textarea>
-      </div>
+        <div class="col-12">
+          <label class="form-label">Hero Main Heading *</label>
+          <input type="text" name="hero_heading" class="form-control" value="{{ settings.hero_heading }}" required>
+        </div>
 
-      <h6 class="text-white fw-bold mt-4 mb-2">Homepage Stats Highlights</h6>
-      <div class="row g-2 mb-2">
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 1 Value</label>
-          <input type="text" name="stat_1_val" class="form-control" value="{{ settings.stat_1_val }}">
+        <div class="col-12">
+          <label class="form-label">Hero Subtitle / Introduction *</label>
+          <textarea name="hero_subheading" class="form-control" rows="3" required>{{ settings.hero_subheading }}</textarea>
+          <span class="small" style="color: var(--c-muted-text);">Keep under 180 characters for optimal rendering on mobile viewports.</span>
         </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 1 Label</label>
-          <input type="text" name="stat_1_lbl" class="form-control" value="{{ settings.stat_1_lbl }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 2 Value</label>
-          <input type="text" name="stat_2_val" class="form-control" value="{{ settings.stat_2_val }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 2 Label</label>
-          <input type="text" name="stat_2_lbl" class="form-control" value="{{ settings.stat_2_lbl }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 3 Value</label>
-          <input type="text" name="stat_3_val" class="form-control" value="{{ settings.stat_3_val }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 3 Label</label>
-          <input type="text" name="stat_3_lbl" class="form-control" value="{{ settings.stat_3_lbl }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 4 Value</label>
-          <input type="text" name="stat_4_val" class="form-control" value="{{ settings.stat_4_val }}">
-        </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Stat 4 Label</label>
-          <input type="text" name="stat_4_lbl" class="form-control" value="{{ settings.stat_4_lbl }}">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">About Page Summary</label>
-        <textarea name="about_summary" class="form-control" rows="3">{{ settings.about_summary }}</textarea>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">About Our Valley Story</label>
-        <textarea name="about_story" class="form-control" rows="4">{{ settings.about_story }}</textarea>
-      </div>
-
-      <div class="mb-0">
-        <label class="form-label text-light-grey small fw-bold">Safety Commitment Overview</label>
-        <textarea name="safety_overview" class="form-control" rows="3">{{ settings.safety_overview }}</textarea>
       </div>
     </div>
   </div>
 
-  <!-- Contact Info & Social Links -->
-  <div class="col-lg-6">
-    <div class="p-4 rounded-4 h-100" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-      <h5 class="text-white fw-bold mb-3"><i class="bi bi-geo-alt text-orange me-2"></i> Contact & Location Details</h5>
+  <!-- TAB 2: Homepage Stats -->
+  <div id="tab-stats" class="settings-pane">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3" style="font-family: var(--font-display);">
+        <i class="bi bi-bar-chart-line text-orange me-2"></i> Homepage Stats Highlights
+      </h5>
+      <p class="small mb-4" style="color: var(--c-secondary-text);">4 metrics displayed on the floating ribbon beneath the homepage hero section.</p>
 
-      <div class="row g-2 mb-3">
-        <div class="col-6">
-          <label class="form-label text-light-grey small fw-bold">Phone / Helpline Number</label>
+      <div class="row g-4">
+        <!-- Stat 1 -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
+            <h6 class="text-white fw-bold mb-3">Metric 1</h6>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Value</label>
+                <input type="text" name="stat_1_val" class="form-control" value="{{ settings.stat_1_val }}" placeholder="e.g. 100%">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Label</label>
+                <input type="text" name="stat_1_lbl" class="form-control" value="{{ settings.stat_1_lbl }}" placeholder="e.g. Safety Focus">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat 2 -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
+            <h6 class="text-white fw-bold mb-3">Metric 2</h6>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Value</label>
+                <input type="text" name="stat_2_val" class="form-control" value="{{ settings.stat_2_val }}" placeholder="e.g. 4">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Label</label>
+                <input type="text" name="stat_2_lbl" class="form-control" value="{{ settings.stat_2_lbl }}" placeholder="e.g. Daily Departures">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat 3 -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
+            <h6 class="text-white fw-bold mb-3">Metric 3</h6>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Value</label>
+                <input type="text" name="stat_3_val" class="form-control" value="{{ settings.stat_3_val }}" placeholder="e.g. 6 Max">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Label</label>
+                <input type="text" name="stat_3_lbl" class="form-control" value="{{ settings.stat_3_lbl }}" placeholder="e.g. Group Size">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat 4 -->
+        <div class="col-md-6">
+          <div class="p-3 rounded-3" style="background-color: var(--c-card-secondary); border: 1px solid var(--c-border);">
+            <h6 class="text-white fw-bold mb-3">Metric 4</h6>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Value</label>
+                <input type="text" name="stat_4_val" class="form-control" value="{{ settings.stat_4_val }}" placeholder="e.g. 2:1">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Label</label>
+                <input type="text" name="stat_4_lbl" class="form-control" value="{{ settings.stat_4_lbl }}" placeholder="e.g. Guide Ratio">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: About & Safety Content -->
+  <div id="tab-about" class="settings-pane">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3" style="font-family: var(--font-display);">
+        <i class="bi bi-journal-text text-orange me-2"></i> About & Safety Narratives
+      </h5>
+
+      <div class="mb-3">
+        <label class="form-label">About Page Summary</label>
+        <textarea name="about_summary" class="form-control" rows="3">{{ settings.about_summary }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">About Our Valley Story</label>
+        <textarea name="about_story" class="form-control" rows="5">{{ settings.about_story }}</textarea>
+      </div>
+
+      <div class="mb-0">
+        <label class="form-label">Safety Commitment Overview</label>
+        <textarea name="safety_overview" class="form-control" rows="4">{{ settings.safety_overview }}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Contact & Base Camp -->
+  <div id="tab-contact" class="settings-pane">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3" style="font-family: var(--font-display);">
+        <i class="bi bi-geo-alt text-orange me-2"></i> Base Camp & Direct Contact
+      </h5>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Phone / Helpline Number *</label>
           <input type="text" name="phone_number" class="form-control" value="{{ settings.phone_number }}" required>
         </div>
-        <div class="col-6">
-          <label class="form-label text-light-grey small fw-bold">WhatsApp Number</label>
+
+        <div class="col-md-6">
+          <label class="form-label">WhatsApp Number *</label>
           <input type="text" name="whatsapp_number" class="form-control" value="{{ settings.whatsapp_number }}" required>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Official Email Address</label>
-        <input type="email" name="email_address" class="form-control" value="{{ settings.email_address }}" required>
-      </div>
+        <div class="col-md-6">
+          <label class="form-label">Official Email Address *</label>
+          <input type="email" name="email_address" class="form-control" value="{{ settings.email_address }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Base Camp Physical Address</label>
-        <textarea name="address" class="form-control" rows="2" required>{{ settings.address }}</textarea>
-      </div>
+        <div class="col-md-6">
+          <label class="form-label">Operating Hours Description *</label>
+          <input type="text" name="operating_hours" class="form-control" value="{{ settings.operating_hours }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label class="form-label text-light-grey small fw-bold">Operating Hours Description</label>
-        <input type="text" name="operating_hours" class="form-control" value="{{ settings.operating_hours }}" required>
+        <div class="col-12">
+          <label class="form-label">Base Camp Physical Address *</label>
+          <textarea name="address" class="form-control" rows="2" required>{{ settings.address }}</textarea>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- TAB 5: Maps & Social Links -->
+  <div id="tab-social" class="settings-pane">
+    <div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
+      <h5 class="text-white fw-bold mb-3" style="font-family: var(--font-display);">
+        <i class="bi bi-share text-orange me-2"></i> Maps Embed & Social Channels
+      </h5>
 
       <div class="mb-4">
-        <label class="form-label text-light-grey small fw-bold">Google Maps Embed URL</label>
+        <label class="form-label">Google Maps Embed URL</label>
         <input type="text" name="google_maps_embed_url" class="form-control" value="{{ settings.google_maps_embed_url }}">
-        <span class="text-muted small">Paste iframe src URL from Google Maps share embed option.</span>
+        <span class="small" style="color: var(--c-muted-text);">Paste iframe src URL from Google Maps share embed option.</span>
       </div>
 
-      <h6 class="text-white fw-bold mb-2">Social Media Profiles</h6>
-      <div class="row g-2 mb-4">
-        <div class="col-6">
-          <label class="form-label text-muted small">Facebook URL</label>
-          <input type="url" name="facebook_url" class="form-control" value="{{ settings.facebook_url }}">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-facebook me-1 text-primary"></i> Facebook URL</label>
+          <input type="url" name="facebook_url" class="form-control" value="{{ settings.facebook_url }}" placeholder="https://facebook.com/...">
         </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Instagram URL</label>
-          <input type="url" name="instagram_url" class="form-control" value="{{ settings.instagram_url }}">
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-instagram me-1 text-danger"></i> Instagram URL</label>
+          <input type="url" name="instagram_url" class="form-control" value="{{ settings.instagram_url }}" placeholder="https://instagram.com/...">
         </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">YouTube URL</label>
-          <input type="url" name="youtube_url" class="form-control" value="{{ settings.youtube_url }}">
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-youtube me-1 text-danger"></i> YouTube URL</label>
+          <input type="url" name="youtube_url" class="form-control" value="{{ settings.youtube_url }}" placeholder="https://youtube.com/...">
         </div>
-        <div class="col-6">
-          <label class="form-label text-muted small">Twitter / X URL</label>
-          <input type="url" name="twitter_url" class="form-control" value="{{ settings.twitter_url }}">
+        <div class="col-md-6">
+          <label class="form-label"><i class="bi bi-twitter-x me-1 text-light"></i> Twitter / X URL</label>
+          <input type="url" name="twitter_url" class="form-control" value="{{ settings.twitter_url }}" placeholder="https://x.com/...">
         </div>
       </div>
-
-      <button type="submit" class="btn btn-dash-primary w-100 py-3 justify-content-center fs-6">
-        <i class="bi bi-save2-fill me-1"></i> Save Website Settings
-      </button>
     </div>
+  </div>
+
+  <!-- Sticky Actions Bar -->
+  <div class="p-3 rounded-4 d-flex justify-content-between align-items-center" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-md);">
+    <div class="small" style="color: var(--c-secondary-text);">
+      <i class="bi bi-info-circle text-orange me-1"></i> Changes apply immediately across all public pages.
+    </div>
+    <button type="submit" class="btn btn-dash-primary px-4 py-2 fs-6">
+      <i class="bi bi-check2-circle"></i> Save Website Settings
+    </button>
   </div>
 </form>
 {% endblock %}

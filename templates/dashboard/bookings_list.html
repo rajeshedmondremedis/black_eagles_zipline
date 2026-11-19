@@ -2,30 +2,31 @@
 {% load static %}
 
 {% block page_title %}Bookings Manifest{% endblock %}
+{% block page_heading %}Bookings Manifest{% endblock %}
 {% block page_subtitle %}Search, filter, inspect, and manage customer flight reservations{% endblock %}
 
 {% block content %}
-<div class="p-4 rounded-4 mb-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
-  <!-- Search & Filter Form -->
+<!-- Search & Filter Card -->
+<div class="p-4 rounded-4 mb-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
   <form method="get" action="{% url 'dashboard:bookings_list' %}" class="row g-3 align-items-end">
     <!-- Keyword Search -->
     <div class="col-md-4">
-      <label class="form-label text-muted small fw-bold">Search</label>
+      <label class="form-label">Search</label>
       <div class="input-group">
-        <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
         <input type="text" name="q" class="form-control" placeholder="Ref, Name, Mobile, Email..." value="{{ search_query }}">
       </div>
     </div>
 
     <!-- Date Filter -->
     <div class="col-md-3">
-      <label class="form-label text-muted small fw-bold">Flight Date</label>
+      <label class="form-label">Flight Date</label>
       <input type="date" name="date" class="form-control" value="{{ selected_date }}">
     </div>
 
     <!-- Slot Filter -->
     <div class="col-md-2">
-      <label class="form-label text-muted small fw-bold">Slot</label>
+      <label class="form-label">Slot</label>
       <select name="slot" class="form-select">
         <option value="">All Slots</option>
         {% for s in slots %}
@@ -38,7 +39,7 @@
 
     <!-- Status Filter -->
     <div class="col-md-2">
-      <label class="form-label text-muted small fw-bold">Status</label>
+      <label class="form-label">Status</label>
       <select name="status" class="form-select">
         <option value="">All Statuses</option>
         <option value="CONFIRMED" {% if selected_status == 'CONFIRMED' %}selected{% endif %}>Confirmed</option>
@@ -55,10 +56,10 @@
   </form>
 </div>
 
-<!-- Bookings Manifest Table -->
-<div class="p-4 rounded-4" style="background-color: var(--dash-card); border: 1px solid var(--dash-border);">
+<!-- Bookings Manifest Table (High Contrast Dark Theme) -->
+<div class="p-4 rounded-4" style="background-color: var(--c-card-bg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm);">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <div class="text-muted small">
+    <div class="small" style="color: var(--c-secondary-text);">
       Found <strong class="text-white">{{ total_count }}</strong> reservation record{{ total_count|pluralize }}
     </div>
     {% if search_query or selected_date or selected_slot or selected_status %}
@@ -86,25 +87,25 @@
         {% for b in bookings %}
         <tr>
           <td>
-            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-orange text-decoration-none">
+            <a href="{% url 'dashboard:booking_detail' b.id %}" class="fw-bold text-decoration-none" style="color: var(--c-burnt-orange);">
               {{ b.booking_reference }}
             </a>
           </td>
           <td>
             <div class="fw-bold text-white">{{ b.full_name }}</div>
-            <div class="text-muted small">
+            <div class="small" style="color: var(--c-secondary-text);">
               <i class="bi bi-telephone me-1"></i>{{ b.mobile_number }} • 
               <i class="bi bi-geo-alt me-1"></i>{{ b.place }}
             </div>
-            <div class="text-muted small">{{ b.email }}</div>
+            <div class="small" style="color: var(--c-muted-text);">{{ b.email }}</div>
           </td>
           <td>
             <strong class="text-white">{{ b.booking_date|date:"d-M-Y" }}</strong>
-            <div class="text-muted small">{{ b.booking_date|date:"l" }}</div>
+            <div class="small" style="color: var(--c-secondary-text);">{{ b.booking_date|date:"l" }}</div>
           </td>
           <td>
-            <div class="text-light small fw-bold">{{ b.slot.name }}</div>
-            <div class="text-muted small">({{ b.slot.formatted_time }})</div>
+            <div class="small fw-bold text-white">{{ b.slot.name }}</div>
+            <div class="small" style="color: var(--c-muted-text);">({{ b.slot.formatted_time }})</div>
           </td>
           <td>
             <span class="badge bg-secondary fs-6 px-3 py-1">{{ b.number_of_members }}</span>
@@ -114,7 +115,7 @@
               {{ b.get_status_display }}
             </span>
           </td>
-          <td class="text-muted small">{{ b.created_at|date:"d-M-Y H:i" }}</td>
+          <td class="small" style="color: var(--c-secondary-text);">{{ b.created_at|date:"d-M-Y H:i" }}</td>
           <td>
             <a href="{% url 'dashboard:booking_detail' b.id %}" class="btn btn-sm btn-outline-light">
               <i class="bi bi-eye me-1"></i> Manage

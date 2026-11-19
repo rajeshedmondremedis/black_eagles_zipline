@@ -87,11 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (slotContainer) {
       slotContainer.innerHTML = `
         <div class="col-12">
-          <div class="p-3 rounded-3 bg-dark border border-warning border-opacity-50 text-warning d-flex align-items-center gap-3">
-            <i class="bi bi-shield-exclamation fs-3"></i>
+          <div class="p-3 rounded-4 d-flex align-items-center gap-3" style="background-color: var(--c-warning-bg); border: 1px solid var(--c-warning-border); color: var(--c-warning);">
+            <i class="bi bi-shield-exclamation fs-3 flex-shrink-0"></i>
             <div>
               <strong class="d-block text-white">Date Unavailable</strong>
-              <span class="small">${msg}</span>
+              <span class="small" style="color: var(--c-primary-text);">${msg}</span>
             </div>
           </div>
         </div>
